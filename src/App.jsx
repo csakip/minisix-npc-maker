@@ -52,7 +52,7 @@ function App() {
     return `${before}d${after === 0 ? "" : "+" + after}`;
   }
 
-  function attrButton(item) {
+  function attrButton(item, step = 1) {
     const variant = findAttr(item.name)?.value > 0 ? "primary" : "secondary";
     return (
       <Button
@@ -61,19 +61,19 @@ function App() {
         size='sm'
         type='button'
         className='py-0 text-nowrap'
-        onMouseDown={(e) => attrButtonClicked(e, item.name)}>
+        onMouseDown={(e) => attrButtonClicked(e, item.name, step)}>
         {item.name.split(":")[0]}
         {item.noParent && " *"}
       </Button>
     );
   }
 
-  function attrButtonClicked(e, name) {
+  function attrButtonClicked(e, name, step = 1) {
     e.stopPropagation();
     e.preventDefault();
 
     // Add or subtract 1 or 3 depending on the ctrl key
-    const add = e.button === 0 ? (e.ctrlKey ? 3 : 1) : e.ctrlKey ? -3 : -1;
+    const add = e.button === 0 ? (e.ctrlKey ? 3 * step : step) : e.ctrlKey ? -3 * step : -step;
 
     // Increase the value of the attr with the same name as "name"
     let a = findAttr(name);
@@ -291,6 +291,7 @@ function App() {
         <div className='pe-0' style={{ width: "17rem" }}>
           <div className='scrollable-menu' style={{ height: "100vh", overflow: "auto" }}>
             <Button
+              title='Specializaciók'
               className='float-end btn-sm px-2 py-0 mt-0'
               onClick={() => setShowSpec(!showSpec)}>
               {showSpec ? (
@@ -339,20 +340,20 @@ function App() {
                 <h5>{calculateCost()}</h5>
               </Col>
               <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
-                <Button onClick={download}>
+                <Button onClick={download} title='Letöltés'>
                   <i className='bi bi-floppy'></i>
                 </Button>
-                <Button onClick={upload}>
+                <Button onClick={upload} title='Feltöltés'>
                   <i className='bi bi-upload'></i>
                 </Button>
-                <Button onClick={resetChar}>
+                <Button onClick={resetChar} title='Törlés'>
                   <i className='bi bi-x-circle'></i>
                 </Button>
               </Col>
             </Row>
             <Row>
               <InputGroup>
-                <InputGroup.Text>Cucc</InputGroup.Text>
+                <InputGroup.Text>Egyéb</InputGroup.Text>
                 <Form.Control
                   as='textarea'
                   value={charNotes}
@@ -361,7 +362,12 @@ function App() {
               </InputGroup>
             </Row>
             <div className='d-flex gap-2 mt-2'>
-              {skillTree.calculated.map((c) => attrButton({ name: Object.keys(c)[0] }))}
+              {skillTree.calculated.map((c) =>
+                attrButton(
+                  { name: Object.keys(c)[0] },
+                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1
+                )
+              )}
             </div>
             <Row className='pt-2'>
               {skillTree.attributes.map(
