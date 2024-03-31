@@ -9,3 +9,12 @@ pre {
   line-height: var(--bs-body-line-height);
   color: var(--bs-body-color);
 }
+
+[data-bs-theme="dark"] .scrollable-menu {
+  scrollbar-color: var(--bs-gray-dark) var(--bs-body-bg);
+}
+
+.scrollable-menu {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bs-gray-light) var(--bs-body-bg);
+}
