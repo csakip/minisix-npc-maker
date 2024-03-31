@@ -291,7 +291,7 @@ function App() {
         <div className='pe-0' style={{ width: "17rem" }}>
           <div className='scrollable-menu' style={{ height: "100vh", overflow: "auto" }}>
             <Button
-              className='float-end btn-sm px-2 py-0 mt-1'
+              className='float-end btn-sm px-2 py-0 mt-0'
               onClick={() => setShowSpec(!showSpec)}>
               {showSpec ? (
                 <i className='bi bi-chevron-contract'></i>
@@ -299,31 +299,31 @@ function App() {
                 <i className='bi bi-chevron-expand'></i>
               )}
             </Button>
-            <ListGroup className='py-0'>
+            <div className='py-0'>
               {skillTree.attributes.map((attribute) => (
-                <ListGroup.Item key={attribute.name} className='border-0 py-0 p-0'>
+                <div key={attribute.name} className='border-0 py-0 p-0'>
                   {attrButton(attribute)}
                   {attribute.skills && (
-                    <ListGroup className='py-1'>
+                    <div className='py-0'>
                       {attribute.skills.map((skill) => (
-                        <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
+                        <div key={skill.name} className='border-0 py-0 ms-4 pe-0'>
                           {attrButton(skill)}
                           {showSpec && skill.specs && (
-                            <ListGroup className='py-0 ms-2'>
+                            <div className='py-0'>
                               {skill.specs.map((spec) => (
-                                <ListGroup.Item key={spec.name} className='border-0 py-0 ms-2 pe-0'>
+                                <div key={spec.name} className='border-0 py-0 ms-4 pe-0'>
                                   {attrButton(spec)}
-                                </ListGroup.Item>
+                                </div>
                               ))}
-                            </ListGroup>
+                            </div>
                           )}
-                        </ListGroup.Item>
+                        </div>
                       ))}
-                    </ListGroup>
+                    </div>
                   )}
-                </ListGroup.Item>
+                </div>
               ))}
-            </ListGroup>
+            </div>
           </div>
         </div>
         <Col>
@@ -335,8 +335,10 @@ function App() {
                   <Form.Control value={charName} onChange={(e) => setCharName(e.target.value)} />
                 </InputGroup>
               </Col>
-              <Col className='gap-2 d-flex align-items-baseline justify-content-end'>
-                <span>{calculateCost()}</span>
+              <Col>
+                <h5>{calculateCost()}</h5>
+              </Col>
+              <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
                 <Button onClick={download}>
                   <i className='bi bi-floppy'></i>
                 </Button>
