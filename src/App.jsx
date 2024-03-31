@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import skillTree from "./assets/skillTree.json";
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 
@@ -55,7 +55,13 @@ function App() {
   function attrButton(item) {
     const variant = findAttr(item.name)?.value > 0 ? "primary" : "secondary";
     return (
-      <Button variant={variant} size='sm' type='button' className='py-0 text-nowrap'>
+      <Button
+        key={item.name}
+        variant={variant}
+        size='sm'
+        type='button'
+        className='py-0 text-nowrap'
+        onMouseDown={(e) => attrButtonClicked(e, item.name)}>
         {item.name.split(":")[0]}
         {item.noParent && " *"}
       </Button>
@@ -81,6 +87,34 @@ function App() {
     const newAttrs = attrs.filter((attr) => attr.value > 0);
     setAttrs(newAttrs.map((attr) => (attr.name === name ? a : attr)));
   }
+
+  // Finds the entry in the skill tree in attributes or skills or specs
+  // function findInSkillTree(name) {
+  //   console.log("findInSkillTree", name);
+
+  //   // return attribute if found
+  //   const attr = skillTree.attributes.find((attr) => attr.name === name);
+  //   if (attr) return attr;
+
+  //   // return skill if found
+  //   const skill = skillTree.attributes
+  //     .map((attr) => attr.skills || [])
+  //     .flat()
+  //     .find((skill) => skill.name === name);
+  //   if (skill) {
+  //     console.log("skill", name, skill);
+  //     return skill;
+  //   }
+
+  //   // return spec if found
+  //   const spec = skillTree.attributes
+  //     .map((attr) => attr.skills || [])
+  //     .flat()
+  //     .map((skill) => skill.specs || [])
+  //     .flat()
+  //     .find((spec) => spec.name === name);
+  //   if (spec) return spec;
+  // }
 
   function displaySkills() {
     const filteredSkillTree = cloneDeep(skillTree);
@@ -141,7 +175,10 @@ function App() {
     const value = Object.values(calculated)[0];
     if (Array.isArray(value)) {
       return (
-        name + ": " + value.map((value) => findAttr(value)?.value || 0).reduce((a, b) => a + b, 0)
+        name +
+        ": " +
+        (value.map((value) => findAttr(value)?.value || 0).reduce((a, b) => a + b, 0) +
+          (findAttr(name)?.value || 0))
       );
     }
     if (isNumber(value)) {
@@ -168,6 +205,86 @@ function App() {
     return "nope";
   }
 
+  function download() {
+    const toSave = {
+      charName: charName,
+      charNotes: charNotes,
+      attrs: attrs,
+    };
+    const element = document.createElement("a");
+    element.setAttribute(
+      "href",
+      "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(toSave))
+    );
+    element.setAttribute("download", `${charName || "MiniSixNPC"}.m6.json`);
+
+    element.style.display = "none";
+    document.body.appendChild(element);
+
+    element.click();
+
+    document.body.removeChild(element);
+  }
+
+  // Displays a file selector for json files and reads back the same format as the download function
+  function upload() {
+    const input = document.createElement("input");
+    input.type = "file";
+    input.accept = ".json";
+    input.onchange = () => {
+      const file = input.files[0];
+      const reader = new FileReader();
+      reader.onload = () => {
+        const json = JSON.parse(reader.result);
+        setCharName(json.charName);
+        setCharNotes(json.charNotes);
+        setAttrs(json.attrs);
+      };
+      reader.readAsText(file);
+    };
+    input.click();
+  }
+
+  function calculateCost() {
+    let attrCost = 0;
+    let skillCost = 0;
+    let skipSkillCost = 7 * 3;
+    skillTree.attributes.forEach((attribute) => {
+      const a = findAttr(attribute.name);
+      if (a) {
+        attrCost += a.value;
+        // add each skill cost
+        attribute.skills?.forEach((skill) => {
+          const s = findAttr(skill.name);
+          if (s) {
+            // skillCost is calculated by (its value + its parent attribute's value) / 3 for each increment of the value
+            for (let i = 0; i < s.value; i++) {
+              if (i < 6 && skipSkillCost > 0) {
+                skipSkillCost--;
+                continue;
+              }
+              skillCost += Math.floor((s.value + (a.value || 0)) / 3);
+            }
+          }
+          // specs are calculated in the same way, but adding the skill value too for each spec
+          skill?.specs?.forEach((spec) => {
+            const sp = findAttr(spec.name);
+            if (sp) {
+              for (let i = 0; i < sp.value; i++) {
+                if (i < 3 && skipSkillCost > 0) {
+                  skipSkillCost -= 1 / 3;
+                  continue;
+                }
+                skillCost += Math.floor((sp.value + (s?.value || 0) + (a.value || 0)) / 6);
+              }
+            }
+          });
+        });
+      }
+    });
+    return `Tulajdonság: ${displayAsDiceCode(attrCost)} és ${skillCost} Kp`;
+  }
+
   return (
     <Container fluid className='ps-1'>
       <Row>
@@ -184,26 +301,17 @@ function App() {
             </Button>
             <ListGroup className='py-0'>
               {skillTree.attributes.map((attribute) => (
-                <ListGroup.Item
-                  key={attribute.name}
-                  className='border-0 py-0 p-0'
-                  onMouseDown={(e) => attrButtonClicked(e, attribute.name)}>
+                <ListGroup.Item key={attribute.name} className='border-0 py-0 p-0'>
                   {attrButton(attribute)}
                   {attribute.skills && (
                     <ListGroup className='py-1'>
                       {attribute.skills.map((skill) => (
-                        <ListGroup.Item
-                          key={skill.name}
-                          className='border-0 py-0 ms-2 pe-0'
-                          onMouseDown={(e) => attrButtonClicked(e, skill.name)}>
+                        <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
                           {attrButton(skill)}
                           {showSpec && skill.specs && (
                             <ListGroup className='py-0 ms-2'>
                               {skill.specs.map((spec) => (
-                                <ListGroup.Item
-                                  key={spec.name}
-                                  className='border-0 py-0 ms-2 pe-0'
-                                  onMouseDown={(e) => attrButtonClicked(e, spec.name)}>
+                                <ListGroup.Item key={spec.name} className='border-0 py-0 ms-2 pe-0'>
                                   {attrButton(spec)}
                                 </ListGroup.Item>
                               ))}
@@ -221,13 +329,20 @@ function App() {
         <Col>
           <Container className='main-content' fluid>
             <Row className='pt-2'>
-              <Col>
-                <InputGroup className='mb-3'>
+              <Col xs={6}>
+                <InputGroup className='mb-2'>
                   <InputGroup.Text>Név</InputGroup.Text>
                   <Form.Control value={charName} onChange={(e) => setCharName(e.target.value)} />
                 </InputGroup>
               </Col>
-              <Col xs={1}>
+              <Col className='gap-2 d-flex align-items-baseline justify-content-end'>
+                <span>{calculateCost()}</span>
+                <Button onClick={download}>
+                  <i className='bi bi-floppy'></i>
+                </Button>
+                <Button onClick={upload}>
+                  <i className='bi bi-upload'></i>
+                </Button>
                 <Button onClick={resetChar}>
                   <i className='bi bi-x-circle'></i>
                 </Button>
@@ -243,6 +358,9 @@ function App() {
                 />
               </InputGroup>
             </Row>
+            <div className='d-flex gap-2 mt-2'>
+              {skillTree.calculated.map((c) => attrButton({ name: Object.keys(c)[0] }))}
+            </div>
             <Row className='pt-2'>
               {skillTree.attributes.map(
                 (attribute) =>
@@ -283,16 +401,13 @@ function App() {
               <p>
                 <b>{charName}</b>: {displaySkills()}
                 <br />
-                {charNotes}
-              </p>
-            </Row>
-            <Row>
-              <p>
                 {skillTree.calculated
                   .map((c) => getCalculatedValue(c))
                   .filter((v) => v)
                   .join(", ")}
+                <br />
               </p>
+              <pre>{charNotes}</pre>
             </Row>
           </Container>
         </Col>
