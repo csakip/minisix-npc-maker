@@ -1,0 +1,388 @@
+{
+  "attributes": [
+    {
+      "name": "Test",
+      "skills": [
+        {
+          "name": "Pusztakezes harc"
+        },
+        {
+          "name": "Közelharc",
+          "specs": [
+            {
+              "name": "Zúzófegyver"
+            },
+            {
+              "name": "Szálfegyver"
+            },
+            {
+              "name": "Vágófegyver"
+            }
+          ]
+        },
+        {
+          "name": "Atlétika",
+          "specs": [
+            {
+              "name": "Mászás"
+            },
+            {
+              "name": "Emelés"
+            },
+            {
+              "name": "Futás"
+            },
+            {
+              "name": "Úszás"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Ügyesség",
+      "skills": [
+        {
+          "name": "Kitérés"
+        },
+        {
+          "name": "Tűzfegyverek",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Pisztoly"
+            },
+            {
+              "name": "Puska"
+            }
+          ]
+        },
+        {
+          "name": "Lőfegyverek",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Íj",
+              "noParent": true
+            },
+            {
+              "name": "Számszeríj"
+            }
+          ]
+        },
+        {
+          "name": "Nehézfegyver",
+          "noParent": true
+        },
+        {
+          "name": "Akrobatika"
+        },
+        {
+          "name": "Lopózás"
+        },
+        {
+          "name": "Kézügyesség",
+          "specs": [
+            {
+              "name": "Zsebmetszés",
+              "noParent": true
+            },
+            {
+              "name": "Szabadulás"
+            }
+          ]
+        },
+        {
+          "name": "Pilóta",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Repülők"
+            },
+            {
+              "name": "Helikopterek"
+            },
+            {
+              "name": "Sugárhajtású"
+            }
+          ]
+        },
+        {
+          "name": "Járművezetés",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Földi"
+            },
+            {
+              "name": "Vízi"
+            },
+            {
+              "name": "Lánctalpas",
+              "noParent": true
+            }
+          ]
+        },
+        {
+          "name": "Hátirakéta",
+          "noParent": true
+        },
+        {
+          "name": "Motorvezetés",
+          "noParent": true
+        },
+        {
+          "name": "Robot és erőpáncél vezetés",
+          "noParent": true
+        },
+        {
+          "name": "Lovaglás"
+        }
+      ]
+    },
+    {
+      "name": "Elme",
+      "skills": [
+        {
+          "name": "Akaraterő"
+        },
+        {
+          "name": "Kommunikációs eszközök",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Kódfejtés",
+              "noParent": true
+            },
+            {
+              "name": "Rádió"
+            },
+            {
+              "name": "Megfigyelő rendszerek"
+            }
+          ]
+        },
+        {
+          "name": "Háziasság",
+          "specs": [
+            {
+              "name": "Főzés"
+            },
+            {
+              "name": "Tánc",
+              "noParent": true
+            },
+            {
+              "name": "Horgászás"
+            },
+            {
+              "name": "Valamely hangszer",
+              "noParent": true
+            },
+            {
+              "name": "Varrás"
+            },
+            {
+              "name": "Éneklés"
+            }
+          ]
+        },
+        {
+          "name": "Elektronika",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Alap elektronika"
+            },
+            {
+              "name": "Mikroelektronika",
+              "noParent": true
+            },
+            {
+              "name": "Robot, erőpáncél"
+            }
+          ]
+        },
+        {
+          "name": "Kémkedés",
+          "specs": [
+            {
+              "name": "Rejtett dolgok észlelése"
+            },
+            {
+              "name": "Álruha",
+              "noParent": true
+            },
+            {
+              "name": "Hamisítás",
+              "noParent": true
+            },
+            {
+              "name": "Hírszerzés"
+            }
+          ]
+        },
+        {
+          "name": "Túlélés",
+          "specs": [
+            {
+              "name": "Nyomkövetés"
+            }
+          ]
+        },
+        {
+          "name": "Szerelés",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Légi jármű"
+            },
+            {
+              "name": "Robot, erőpáncél"
+            },
+            {
+              "name": "Földi és vízi jármű"
+            },
+            {
+              "name": "Zárak"
+            },
+            {
+              "name": "Fegyverek"
+            }
+          ]
+        },
+        {
+          "name": "Orvoslás",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Bűnügyi szakértő",
+              "noParent": true
+            },
+            {
+              "name": "Elsősegély"
+            },
+            {
+              "name": "Holisztikus gyógyászat"
+            },
+            {
+              "name": "Szakorvos (egy szak)",
+              "noParent": true
+            },
+            {
+              "name": "Kibernetika"
+            }
+          ]
+        },
+        {
+          "name": "Katonai",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Robbantás"
+            },
+            {
+              "name": "Taktika"
+            }
+          ]
+        },
+        {
+          "name": "Járműves rendszerek",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Navigáció"
+            },
+            {
+              "name": "Szenzorok"
+            },
+            {
+              "name": "Fegyverrendszerek"
+            }
+          ]
+        },
+        {
+          "name": "Számítógépek",
+          "noParent": true,
+          "specs": [
+            {
+              "name": "Hekkelés",
+              "noParent": true
+            },
+            {
+              "name": "Programozás"
+            }
+          ]
+        },
+        {
+          "name": "Tudományos műveltség",
+          "specs": [
+            {
+              "name": "Egyes tudományok: mindegyik külön specializáció"
+            },
+            {
+              "name": "Valamely nyelv",
+              "noParent": true
+            },
+            {
+              "name": "Írás / olvasás",
+              "noParent": true
+            },
+            {
+              "name": "Démonok, szörnyek"
+            }
+          ]
+        },
+        {
+          "name": "Szakma",
+          "specs": [
+            {
+              "name": "Egyes szakmák: mindegyik külön specializáció",
+              "noParent": true
+            }
+          ]
+        },
+        {
+          "name": "Diplomácia / etikett"
+        }
+      ]
+    },
+    {
+      "name": "Karizma",
+      "skills": [
+        {
+          "name": "Meggyőzés",
+          "specs": [
+            {
+              "name": "Megfélemlítés"
+            }
+          ]
+        },
+        {
+          "name": "Emberismeret"
+        },
+        {
+          "name": "Seftelés"
+        },
+        {
+          "name": "Parancsnoklás"
+        },
+        {
+          "name": "Állatok"
+        }
+      ]
+    },
+    { "name": "Pszi" },
+    { "name": "Mágia" }
+  ],
+  "calculated": [
+    { "Blokk": ["Ügyesség", "Pusztakezes harc"] },
+    { "Kiterés": ["Ügyesség", "Közelharc"] },
+    { "Pszi ellenállás": ["Elme", "Akaraterő", -5] },
+    { "Mágia ellenállás": ["Elme", "Akaraterő"] },
+    { "Félelem ellenállás": ["Elme", "Akaraterő"] },
+    { "Test pont": { "special": "test" } },
+    { "Mozgás": 10 },
+    { "Mega páncél": 0 }
+  ]
+}
