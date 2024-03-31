@@ -9,8 +9,7 @@
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
-    "predeploy": "yarn run build",
-    "deploy": "gh-pages -d dist"
+    "deploy": "yarn run build & gh-pages -d dist"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
