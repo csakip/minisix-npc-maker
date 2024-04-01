@@ -71,3 +71,7 @@ pre {
 .list-group-item.calculated:hover {
   background-color: #fff5;
 }
+
+#char-display {
+  white-space: pre-line;
+}

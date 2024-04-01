@@ -5,16 +5,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 
+const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
+
 function App() {
   // get from local storage
   const [attrs, setAttrs] = useState(
-    JSON.parse(localStorage.getItem("minisix-npc-generator")) ||
+    localStored?.attributes ||
       skillTree.attributes
         .filter((a) => !["Pszi", "Mágia"].includes(a.name))
         .map((a) => ({ name: a.name, value: 6 }))
   );
-  const [charName, setCharName] = useState("");
-  const [charNotes, setCharNotes] = useState("");
+  const [charName, setCharName] = useState(localStored?.charName || "");
+  const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
   const [showSpec, setShowSpec] = useState(false);
 
   const localStoreTimerRef = useRef();
@@ -26,9 +28,12 @@ function App() {
     }
 
     localStoreTimerRef.current = setTimeout(() => {
-      localStorage.setItem("minisix-npc-generator", JSON.stringify(attrs));
+      localStorage.setItem(
+        "minisix-npc-generator",
+        JSON.stringify({ charName, charNotes, attributes: attrs })
+      );
     }, 1000);
-  }, [attrs]);
+  }, [attrs, charName, charNotes]);
 
   function findAttr(name) {
     return attrs.find((attr) => attr.name === name);
@@ -297,6 +302,30 @@ function App() {
     return `Tulajdonság: ${displayAsDiceCode(attrCost)} és ${skillCost} Kp`;
   }
 
+  function copyToClipboard() {
+    try {
+      const charDisplay = document.getElementById("char-display");
+      copyToClip(charDisplay.innerHTML);
+      // add success class to button
+      const copyButton = document.getElementById("copy-button");
+      copyButton.classList.add("btn-success");
+      setTimeout(() => copyButton.classList.remove("btn-success"), 1000);
+    } catch (err) {
+      console.error("Failed to copy: ", err);
+    }
+  }
+
+  function copyToClip(str) {
+    function listener(e) {
+      e.clipboardData.setData("text/html", str);
+      e.clipboardData.setData("text/plain", str);
+      e.preventDefault();
+    }
+    document.addEventListener("copy", listener);
+    document.execCommand("copy");
+    document.removeEventListener("copy", listener);
+  }
+
   return (
     <Container fluid className='ps-1'>
       <Row>
@@ -417,16 +446,31 @@ function App() {
             </Row>
             <hr />
             <Row>
-              <p>
-                <b>{charName}</b>: {displaySkills()}
-                <br />
-                {skillTree.calculated
-                  .map((c) => getCalculatedValue(c))
-                  .filter((v) => v)
-                  .join(", ")}
-                <br />
-              </p>
-              <pre>{charNotes}</pre>
+              <Col>
+                <div id='char-display'>
+                  <b>{charName}</b>: {displaySkills()}
+                  <br />
+                  {skillTree.calculated
+                    .map((c) => getCalculatedValue(c))
+                    .filter((v) => v)
+                    .join(", ")}
+                  <br />
+                  {charNotes.split("\n").map((n, idx) => (
+                    <React.Fragment key={idx}>
+                      {n}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </div>
+                <Button
+                  title='Vágólapra'
+                  onClick={copyToClipboard}
+                  className='mt-2 btn-sm'
+                  id='copy-button'
+                  variant='secondary'>
+                  <i className='bi bi-clipboard'></i>
+                </Button>
+              </Col>
             </Row>
           </Container>
         </Col>
