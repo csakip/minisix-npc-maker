@@ -377,7 +377,8 @@
   ],
   "calculated": [
     { "Blokk": ["Ügyesség", "Pusztakezes harc"] },
-    { "Kiterés": ["Ügyesség", "Közelharc"] },
+    { "Hárítás": ["Ügyesség", "Közelharc"] },
+    { "Kiterés": ["Ügyesség", "Kitérés"] },
     { "Pszi ellenállás": ["Elme", "Akaraterő", -5] },
     { "Mágia ellenállás": ["Elme", "Akaraterő"] },
     { "Félelem ellenállás": ["Elme", "Akaraterő"] },
