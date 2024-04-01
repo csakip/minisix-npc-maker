@@ -301,17 +301,21 @@ function App() {
     <Container fluid className='ps-1'>
       <Row>
         <div className='pe-0' style={{ width: "17rem" }}>
-          <div className='scrollable-menu' style={{ height: "100vh", overflow: "auto" }}>
-            <Button
-              title='Specializaciók'
-              className='float-end btn-sm px-2 py-0 mt-0'
-              onClick={() => setShowSpec(!showSpec)}>
-              {showSpec ? (
-                <i className='bi bi-chevron-contract'></i>
-              ) : (
-                <i className='bi bi-chevron-expand'></i>
-              )}
-            </Button>
+          <div
+            className='scrollable-menu position-relative'
+            style={{ height: "100vh", overflow: "auto" }}>
+            <div className='position-absolute top-0 end-0 mt-1' style={{ width: "2.3rem" }}>
+              <Button
+                title='Specializaciók'
+                className='position-fixed btn-sm px-2 py-0 z-1'
+                onClick={() => setShowSpec(!showSpec)}>
+                {showSpec ? (
+                  <i className='bi bi-chevron-contract'></i>
+                ) : (
+                  <i className='bi bi-chevron-expand'></i>
+                )}
+              </Button>
+            </div>
             <ListGroup className='list-group-root'>
               {skillTree.attributes.map((attribute) => (
                 <React.Fragment key={attribute.name}>

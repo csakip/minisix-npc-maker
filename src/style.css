@@ -46,6 +46,7 @@ pre {
 }
 
 .list-group-item {
+  background-color: unset;
   user-select: none;
 }
 

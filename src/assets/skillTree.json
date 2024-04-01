@@ -382,7 +382,7 @@
     { "Mágia ellenállás": ["Elme", "Akaraterő"] },
     { "Félelem ellenállás": ["Elme", "Akaraterő"] },
     { "Test pont": { "special": "test" } },
-    { "Mozgás": 10 },
+    { "Mozgás": 1 },
     { "Mega páncél": 0 }
   ]
 }
