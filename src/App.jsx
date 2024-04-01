@@ -1,7 +1,7 @@
 import { Button, Col, Container, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import skillTree from "./assets/skillTree.json";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 
@@ -52,25 +52,23 @@ function App() {
     return `${before}d${after === 0 ? "" : "+" + after}`;
   }
 
-  function attrButton(item, step = 1) {
-    const variant = findAttr(item.name)?.value > 0 ? "primary" : "secondary";
+  function attrButton(item, step = 1, className = "") {
+    const selected = findAttr(item.name)?.value > 0 ? "selected" : "";
     return (
-      <Button
+      <ListGroup.Item
         key={item.name}
-        variant={variant}
-        size='sm'
-        type='button'
-        className='py-0 text-nowrap'
+        variant={selected}
+        className={`py-0 text-nowrap ${selected} ${className}`}
         onMouseDown={(e) => attrButtonClicked(e, item.name, step)}>
         {item.name.split(":")[0]}
         {item.noParent && " *"}
-      </Button>
+      </ListGroup.Item>
     );
   }
 
   function attrButtonClicked(e, name, step = 1) {
     e.stopPropagation();
-    e.preventDefault();
+    // e.preventDefault();
 
     // Add or subtract 1 or 3 depending on the ctrl key
     const add = e.button === 0 ? (e.ctrlKey ? 3 * step : step) : e.ctrlKey ? -3 * step : -step;
@@ -252,7 +250,21 @@ function App() {
     skillTree.attributes.forEach((attribute) => {
       const a = findAttr(attribute.name);
       if (a) {
-        attrCost += a.value;
+        if (["Pszi", "Mágia"].includes(attribute.name)) {
+          for (let i = 0; i < a.value; i++) {
+            if (i < 6) {
+              attrCost++;
+            } else {
+              if (i < 12 && skipSkillCost > 0) {
+                skipSkillCost--;
+                continue;
+              }
+              skillCost += Math.floor((a.value || 0) / 3);
+            }
+          }
+        } else {
+          attrCost += a.value;
+        }
         // add each skill cost
         attribute.skills?.forEach((skill) => {
           const s = findAttr(skill.name);
@@ -300,31 +312,25 @@ function App() {
                 <i className='bi bi-chevron-expand'></i>
               )}
             </Button>
-            <div className='py-0'>
+            <ListGroup className='list-group-root'>
               {skillTree.attributes.map((attribute) => (
-                <div key={attribute.name} className='border-0 py-0 p-0'>
+                <React.Fragment key={attribute.name}>
                   {attrButton(attribute)}
                   {attribute.skills && (
-                    <div className='py-0'>
+                    <ListGroup>
                       {attribute.skills.map((skill) => (
-                        <div key={skill.name} className='border-0 py-0 ms-4 pe-0'>
+                        <React.Fragment key={skill.name}>
                           {attrButton(skill)}
                           {showSpec && skill.specs && (
-                            <div className='py-0'>
-                              {skill.specs.map((spec) => (
-                                <div key={spec.name} className='border-0 py-0 ms-4 pe-0'>
-                                  {attrButton(spec)}
-                                </div>
-                              ))}
-                            </div>
+                            <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>
                           )}
-                        </div>
+                        </React.Fragment>
                       ))}
-                    </div>
+                    </ListGroup>
                   )}
-                </div>
+                </React.Fragment>
               ))}
-            </div>
+            </ListGroup>
           </div>
         </div>
         <Col>
@@ -365,7 +371,8 @@ function App() {
               {skillTree.calculated.map((c) =>
                 attrButton(
                   { name: Object.keys(c)[0] },
-                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1
+                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1,
+                  "calculated"
                 )
               )}
             </div>
