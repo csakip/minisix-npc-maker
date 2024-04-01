@@ -1,13 +1,12 @@
 import { Button, Col, Container, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import skillTree from "./assets/skillTree.json";
+import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
-function App() {
+function Npc() {
   // get from local storage
   const [attrs, setAttrs] = useState(
     localStored?.attributes ||
@@ -479,4 +478,4 @@ function App() {
   );
 }
 
-export default App;
+export default Npc;
