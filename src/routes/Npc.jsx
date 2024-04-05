@@ -326,12 +326,10 @@ function Npc() {
   }
 
   return (
-    <Container fluid className='ps-1'>
+    <Container fluid className='ps-1 npc-generator'>
       <Row>
         <div className='pe-0' style={{ width: "17rem" }}>
-          <div
-            className='scrollable-menu position-relative'
-            style={{ height: "100vh", overflow: "auto" }}>
+          <div className='scrollable-menu position-relative'>
             <div className='position-absolute top-0 end-0 mt-1' style={{ width: "2.3rem" }}>
               <Button
                 title='Specializaciók'
@@ -344,7 +342,7 @@ function Npc() {
                 )}
               </Button>
             </div>
-            <ListGroup className='list-group-root'>
+            <ListGroup className='list-group-root skill-tree'>
               {skillTree.attributes.map((attribute) => (
                 <React.Fragment key={attribute.name}>
                   {attrButton(attribute)}

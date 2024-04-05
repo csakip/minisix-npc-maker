@@ -9,10 +9,10 @@ export default function TopMenu(props) {
         <Navbar.Collapse id='basic-navbar-nav'>
           <Nav className='mr-auto'>
             <Nav.Link as={Link} to='/'>
-              Initiatives
+              Kezdeményezés
             </Nav.Link>
             <Nav.Link as={Link} to='/npc'>
-              NPC
+              NJK generátor
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
