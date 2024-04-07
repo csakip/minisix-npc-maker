@@ -204,6 +204,12 @@ function Npc() {
         (findAttr("Test pont")?.value || 0);
       return name + ": " + sum;
     }
+    // Calculate psi points
+    if (isObject(value) && value.special === "pszi") {
+      const willpower = (findAttr("Elme")?.value || 0) + (findAttr("Akaraterő")?.value || 0);
+      const psi = findAttr("Pszi")?.value;
+      return name + ": " + (willpower + Math.floor(psi / 3) - 5);
+    }
     return "nope";
   }
 

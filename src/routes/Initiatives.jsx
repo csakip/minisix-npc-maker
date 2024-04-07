@@ -123,7 +123,6 @@ const Initiatives = () => {
         return character;
       })
     );
-    sortCharacters(characters);
   }
 
   function deleteCharacter(id) {

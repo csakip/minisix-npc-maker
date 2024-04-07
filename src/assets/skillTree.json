@@ -379,7 +379,7 @@
     { "Blokk": ["Ügyesség", "Pusztakezes harc"] },
     { "Hárítás": ["Ügyesség", "Közelharc"] },
     { "Kiterés": ["Ügyesség", "Kitérés"] },
-    { "Pszi ellenállás": ["Elme", "Akaraterő", -5] },
+    { "Pszi ellenállás": { "special": "pszi" } },
     { "Mágia ellenállás": ["Elme", "Akaraterő"] },
     { "Félelem ellenállás": ["Elme", "Akaraterő"] },
     { "Test pont": { "special": "test" } },
