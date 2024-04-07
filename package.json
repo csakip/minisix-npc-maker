@@ -20,7 +20,11 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.22.3",
     "react-sortablejs": "^6.1.4",
-    "sortablejs": "^1.15.2"
+    "rxdb": "^15.16.0",
+    "rxjs": "^7.8.1",
+    "sortablejs": "^1.15.2",
+    "use-debounce": "^10.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
