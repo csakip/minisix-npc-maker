@@ -208,7 +208,8 @@ function Npc() {
     if (isObject(value) && value.special === "pszi") {
       const willpower = (findAttr("Elme")?.value || 0) + (findAttr("Akaraterő")?.value || 0);
       const psi = findAttr("Pszi")?.value;
-      return name + ": " + (willpower + Math.floor(psi / 3) - 5);
+      const psiRes = findAttr("Pszi ellenállás")?.value || 0;
+      return name + ": " + (willpower + Math.floor(psi / 3) - 5 + psiRes);
     }
     return "nope";
   }
