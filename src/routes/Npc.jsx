@@ -3,6 +3,9 @@ import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
+import SelectNpcDialog from "../components/SelectNpcDialog";
+import { db } from "../database/dataStore";
+import { v4 as uuid } from "uuid";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
@@ -16,7 +19,9 @@ function Npc() {
   );
   const [charName, setCharName] = useState(localStored?.charName || "");
   const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
+  const [charId, setCharId] = useState(localStored?.id);
   const [showSpec, setShowSpec] = useState(false);
+  const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
 
   const localStoreTimerRef = useRef();
 
@@ -29,7 +34,7 @@ function Npc() {
     localStoreTimerRef.current = setTimeout(() => {
       localStorage.setItem(
         "minisix-npc-generator",
-        JSON.stringify({ charName, charNotes, attributes: attrs })
+        JSON.stringify({ charName, id: charId, charNotes, attributes: attrs })
       );
     }, 1000);
   }, [attrs, charName, charNotes]);
@@ -164,6 +169,7 @@ function Npc() {
   function resetChar() {
     setCharName("");
     setCharNotes("");
+    setCharId(undefined);
     setAttrs(
       skillTree.attributes
         .filter((a) => !["Pszi", "Mágia"].includes(a.name))
@@ -173,6 +179,7 @@ function Npc() {
 
   // Returns the calculated value. if the calculator.value is an array, add the values of their attr.value
   function getCalculatedValue(calculated) {
+    if (attrs.length === 0) return;
     const name = Object.keys(calculated)[0];
     const value = Object.values(calculated)[0];
     if (Array.isArray(value)) {
@@ -217,6 +224,7 @@ function Npc() {
   function download() {
     const toSave = {
       charName: charName,
+      id: charId,
       charNotes: charNotes,
       attrs: attrs,
     };
@@ -247,6 +255,7 @@ function Npc() {
         const json = JSON.parse(reader.result);
         setCharName(json.charName);
         setCharNotes(json.charNotes);
+        setCharId(json.id);
         setAttrs(json.attrs);
       };
       reader.readAsText(file);
@@ -332,6 +341,25 @@ function Npc() {
     document.removeEventListener("copy", listener);
   }
 
+  function setSelectedCharacter(character) {
+    setAttrs(character.attrs);
+    setCharName(character.name);
+    setCharNotes(character.notes);
+    setCharId(character.id);
+  }
+
+  // Store to rxdb
+  function storeNpc() {
+    const toSave = {
+      id: charId || uuid(),
+      name: charName,
+      notes: charNotes,
+      attrs: attrs,
+      updated: Date.now(),
+    };
+    db.npcs.upsert(toSave);
+  }
+
   return (
     <Container fluid className='ps-1 npc-generator'>
       <Row>
@@ -383,10 +411,16 @@ function Npc() {
                 <h5>{calculateCost()}</h5>
               </Col>
               <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
-                <Button onClick={download} title='Letöltés'>
+                <Button onClick={storeNpc} title='Mentés'>
                   <i className='bi bi-floppy'></i>
                 </Button>
-                <Button onClick={upload} title='Feltöltés'>
+                <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
+                  <i className='bi bi-search'></i>
+                </Button>{" "}
+                <Button onClick={download} title='Letöltés'>
+                  <i className='bi bi-download'></i>
+                </Button>
+                <Button onClick={() => upload(true)} title='Feltöltés'>
                   <i className='bi bi-upload'></i>
                 </Button>
                 <Button onClick={resetChar} title='Törlés'>
@@ -479,6 +513,12 @@ function Npc() {
           </Container>
         </Col>
       </Row>
+      <SelectNpcDialog
+        selectedCharacterId={charId}
+        setSelectedCharacter={setSelectedCharacter}
+        open={showSelectNpcDialog}
+        setOpen={setShowSelectNpcDialog}
+      />
     </Container>
   );
 }

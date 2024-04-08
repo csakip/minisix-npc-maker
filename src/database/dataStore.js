@@ -2,7 +2,7 @@ import { addRxPlugin, createRxDatabase } from "rxdb";
 import { getRxStorageDexie } from "rxdb/plugins/storage-dexie";
 import { RxDBDevModePlugin } from "rxdb/plugins/dev-mode";
 import { RxDBMigrationPlugin } from "rxdb/plugins/migration-schema";
-import { characterSchema } from "./schemas";
+import { characterSchema, npcSchema } from "./schemas";
 import { RxDBCleanupPlugin } from "rxdb/plugins/cleanup";
 import { RxDBLeaderElectionPlugin } from "rxdb/plugins/leader-election";
 
@@ -28,6 +28,9 @@ await db.addCollections({
         return oldDoc;
       },
     },
+  },
+  npcs: {
+    schema: npcSchema,
   },
 });
 

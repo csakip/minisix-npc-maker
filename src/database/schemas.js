@@ -42,3 +42,40 @@ export const characterSchema = {
   required: ["id"],
   indexes: ["name"],
 };
+
+// object with name, notes and an array attributes object that have name and value
+export const npcSchema = {
+  title: "npc schema",
+  version: 0,
+  type: "object",
+  primaryKey: "id",
+  properties: {
+    id: {
+      type: "string",
+      primary: true,
+      maxLength: 100,
+    },
+    name: {
+      type: "string",
+      maxLength: 100,
+    },
+    notes: {
+      type: "string",
+    },
+    attrs: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          name: { type: "string" },
+          value: { type: "number" },
+        },
+      },
+    },
+    updated: {
+      type: "number",
+    },
+  },
+  required: ["id"],
+  indexes: ["name"],
+};
