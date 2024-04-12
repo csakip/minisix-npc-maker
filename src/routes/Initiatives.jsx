@@ -13,6 +13,7 @@ import Badge from "react-bootstrap/Badge";
 import AddCharacterDialog from "../components/AddCharacterDialog";
 import { useLiveQuery } from "dexie-react-hooks";
 import SelectNpcDialog from "../components/SelectNpcDialog";
+import SimpleModal from "../components/SimpleModal";
 
 const sortableOptions = {
   animation: 150,
@@ -34,6 +35,7 @@ const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
+  const [simpleModalProps, setSimpleModalProps] = useState({});
   const [customTag, setCustomTag] = useState({
     label: "",
     defaultLength: "",
@@ -202,11 +204,20 @@ const Initiatives = () => {
               size='sm'
               variant='danger'
               onClick={() => {
-                if (confirm("Minden njk-t és a játékosok kezdeményezését törölöd?"))
-                  db.characters.bulkDelete(
-                    characters.filter((c) => c.type === "npc").map((c) => c.id)
-                  );
-                db.characters.toCollection().modify({ initiative: undefined });
+                setSimpleModalProps({
+                  open: true,
+                  title: "Törlés",
+                  body: "Törölsz minden njk-t és a játékosok kezdeményezését?",
+                  cancelButton: "Mégse",
+                  onClose: (ret) => {
+                    if (ret)
+                      db.characters.bulkDelete(
+                        characters.filter((c) => c.type === "npc").map((c) => c.id)
+                      );
+                    db.characters.toCollection().modify({ initiative: undefined });
+                    setSimpleModalProps((props) => ({ ...props, open: false }));
+                  },
+                });
               }}>
               Új harc
             </Button>
@@ -436,6 +447,7 @@ const Initiatives = () => {
         open={showSelectNpcDialog}
         setOpen={setShowSelectNpcDialog}
       />
+      <SimpleModal {...simpleModalProps} />
     </Container>
   );
 };
