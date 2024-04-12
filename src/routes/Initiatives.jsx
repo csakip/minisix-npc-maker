@@ -142,6 +142,14 @@ const Initiatives = () => {
               variant='secondary'
               onClick={() => setEditedCharacter({ name: "", roll: "", id: uuid() })}>
               Új karakter
+            </Button>{" "}
+            <Button
+              size='sm'
+              variant='danger'
+              onClick={() => {
+                if (confirm("Minden karaktert törölsz?")) db.characters.clear();
+              }}>
+              Mindent töröl
             </Button>
           </div>
         </Col>
