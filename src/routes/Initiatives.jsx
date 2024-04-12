@@ -23,16 +23,21 @@ const sortableOptions = {
 };
 
 const tags = [
-  { label: "Kábult", defaultLength: 2, effect: "-3", notes: "-1d mindenre ebben és köv körben." },
-  { label: "Sebesült", defaultLength: undefined, effect: "-3", notes: "-1d mindenre." },
-  { label: "-1d", defaultLength: undefined, effect: "-3", notes: "-1d mindenre." },
-  { label: "-2d", defaultLength: undefined, effect: "-6", notes: "-2d mindenre." },
-  { label: "-3d", defaultLength: undefined, effect: "-9", notes: "-3d mindenre." },
+  { label: "Kábult", defaultLength: 2, notes: "-1d mindenre ebben és köv körben." },
+  { label: "Sebesült", defaultLength: undefined, notes: "-1d mindenre." },
+  { label: "-1d", defaultLength: undefined, notes: "-1d mindenre." },
+  { label: "-2d", defaultLength: undefined, notes: "-2d mindenre." },
+  { label: "-3d", defaultLength: undefined, notes: "-3d mindenre." },
 ];
 
 const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
+  const [customTag, setCustomTag] = useState({
+    label: "",
+    defaultLength: "",
+    notes: "",
+  });
 
   const characters = useLiveQuery(() => db.characters.orderBy("order").toArray());
 
@@ -81,7 +86,7 @@ const Initiatives = () => {
     if (!hadThisTag) {
       newTags = [
         ...(selectedCharacter.tags ?? []),
-        { label: tag.label, length: tag.defaultLength, effect: tag.effect, notes: tag.notes },
+        { label: tag.label, length: tag.defaultLength, notes: tag.notes },
       ];
     } else {
       newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
@@ -118,6 +123,37 @@ const Initiatives = () => {
     db.characters.delete(id);
     // Deselect
     setSelectedCharacterId(undefined);
+  }
+
+  // Adds a new custom tag to the selected character
+  function addCustomTag(e) {
+    e.preventDefault();
+    if (!customTag.label) return;
+    // Can't add a tag with the same name as an existing one
+    if (selectedCharacter.tags?.some((t) => t.label === customTag.label)) return;
+
+    let length;
+    try {
+      length = parseInt(customTag.defaultLength);
+    } catch (e) {
+      length = undefined;
+    }
+
+    const newTags = [
+      ...(selectedCharacter.tags ?? []),
+      {
+        label: customTag.label,
+        length: isNaN(length) ? undefined : length,
+        notes: customTag.notes || "",
+      },
+    ];
+    db.characters.update(selectedCharacterId, { tags: newTags });
+
+    setCustomTag({
+      label: "",
+      defaultLength: "",
+      notes: "",
+    });
   }
 
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
@@ -280,13 +316,63 @@ const Initiatives = () => {
                             {tag.label}
                           </Button>
                         ))}
+                        {selectedCharacter.tags
+                          ?.filter((t) => !tags?.some((tag) => tag.label === t.label))
+                          .map((tag) => (
+                            <Button
+                              size='sm'
+                              variant={
+                                selectedCharacter.tags?.some((t) => t.label === tag.label)
+                                  ? "primary"
+                                  : "outline-secondary"
+                              }
+                              key={tag.label}
+                              onClick={() => toggleTag(selectedCharacterId, tag)}>
+                              {tag.label}
+                            </Button>
+                          ))}
                       </div>
+                    </Col>
+                  </Row>
+                  <Row>
+                    <Col>
+                      <Form onSubmit={addCustomTag}>
+                        <InputGroup className='mt-2'>
+                          <InputGroup.Text>Címke</InputGroup.Text>
+                          <Form.Control
+                            value={customTag.label}
+                            onChange={(e) => setCustomTag({ ...customTag, label: e.target.value })}
+                            placeholder='Név'
+                          />
+                          <Form.Control
+                            value={customTag.defaultLength}
+                            onChange={(e) =>
+                              setCustomTag({ ...customTag, defaultLength: e.target.value })
+                            }
+                            placeholder='Hossz'
+                          />
+                          <Form.Control
+                            value={customTag.notes}
+                            onChange={(e) => setCustomTag({ ...customTag, notes: e.target.value })}
+                            placeholder='Jegyzet'
+                          />
+                          <InputGroup.Text>
+                            <Button
+                              size='sm'
+                              className='py-0 px-1 text-nowrap'
+                              variant='secondary'
+                              type='submit'>
+                              Ok
+                            </Button>
+                          </InputGroup.Text>
+                        </InputGroup>
+                      </Form>
                     </Col>
                   </Row>
                   {selectedCharacter.tags?.map((tag) => (
                     <Row key={tag.label}>
                       <Col className='pt-2'>
-                        {tag.notes}{" "}
+                        {tag.label}: {tag.notes}{" "}
                         {tag.length && (
                           <span>
                             Még
@@ -299,25 +385,14 @@ const Initiatives = () => {
                                   ? 1
                                   : parseInt(e.target.value);
                                 const newTag = { ...tag, length: newValue };
-                                updateCharacters((c) => {
-                                  return c.map((char) => {
-                                    if (char.id === selectedCharacterId) {
-                                      return {
-                                        ...char,
-                                        tags: char.tags?.map((t) => {
-                                          if (t.label === tag.label) {
-                                            return newTag;
-                                          }
-                                          return t;
-                                        }),
-                                      };
-                                    }
-                                    return char;
-                                  });
+                                db.characters.update(selectedCharacterId, {
+                                  tags: selectedCharacter.tags.map((t) =>
+                                    t.label === tag.label ? newTag : t
+                                  ),
                                 });
                               }}
                             />
-                            kör.
+                            körig.
                           </span>
                         )}
                       </Col>
