@@ -14,6 +14,8 @@
   "dependencies": {
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
+    "dexie": "^4.0.4",
+    "dexie-react-hooks": "^1.1.7",
     "lodash": "^4.17.21",
     "react": "^18.2.0",
     "react-bootstrap": "^2.10.2",
@@ -21,8 +23,6 @@
     "react-router-dom": "^6.22.3",
     "react-sortablejs": "^6.1.4",
     "react-textarea-autosize": "^8.5.3",
-    "rxdb": "^15.16.0",
-    "rxjs": "^7.8.1",
     "sortablejs": "^1.15.2",
     "use-debounce": "^10.0.0",
     "uuid": "^9.0.1"

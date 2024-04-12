@@ -1,8 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { parseDice, roll } from "../dice";
 import { cleanupDb, db } from "../database/dataStore";
-import { useDebouncedCallback } from "use-debounce";
 import { v4 as uuid } from "uuid";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -13,6 +12,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import AddCharacterDialog from "../components/AddCharacterDialog";
+import { useLiveQuery } from "dexie-react-hooks";
 
 const sortableOptions = {
   animation: 150,
@@ -31,40 +31,29 @@ const tags = [
 ];
 
 const Initiatives = () => {
-  const [characters, setCharacters] = useState([]);
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
-  const storeCharacters = useDebouncedCallback(
-    (characters) => db.characters.bulkUpsert(characters),
-    1000
-  );
 
-  useEffect(() => {
-    console.log("e");
-    storeCharacters(characters);
-  }, [characters]);
+  const characters = useLiveQuery(() => db.characters.orderBy("order").toArray());
 
-  useEffect(() => {
-    async function getCharacters() {
-      const storedCharacters = await db.characters.find().exec();
-      const chars = storedCharacters.map((x) => x.toMutableJSON());
-      // const chars = JSON.parse(JSON.stringify(storedCharacters));
-      setCharacters(
-        chars.map((c) => {
-          c.initiative = roll(parseDice(c.roll));
-          return c;
-        })
-      );
-    }
-    getCharacters();
-  }, []);
+  function updateCharacters(chars) {
+    if (!chars) return;
+    db.characters.bulkUpdate(chars.map((c) => ({ key: c.id, changes: { ...c } })));
+  }
 
   function sortCharacters(chars) {
     if (!chars) chars = characters;
     const newOrder = [...chars].sort(
       (a, b) => (b.initiative?.reduced || 0) - (a.initiative?.reduced || 0)
     );
-    setCharacters(newOrder);
+    newOrder.forEach((c, i) => {
+      c.order = i;
+    });
+    updateCharacters(newOrder);
+  }
+
+  function reorderCharacters(chars) {
+    updateCharacters(chars.map((c, i) => ({ ...c, order: i })));
   }
 
   function rollInitiative(id) {
@@ -98,7 +87,7 @@ const Initiatives = () => {
       newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
     }
 
-    setCharacters(
+    updateCharacters(
       characters.map((character) =>
         character.id === selectedCharacterId ? { ...character, tags: newTags } : character
       )
@@ -106,7 +95,7 @@ const Initiatives = () => {
   }
 
   function newRound() {
-    setCharacters(
+    updateCharacters(
       characters.map((character) => {
         // if (character.roll) character.initiative = roll(parseDice(character.roll));
         // if a tag has a length, reduce it. if it reaches 0, remove it
@@ -126,15 +115,12 @@ const Initiatives = () => {
   }
 
   function deleteCharacter(id) {
-    setCharacters(characters.filter((c) => c.id !== id));
-    // Remove from db too
-    db.characters.findOne(id).remove();
-    cleanupDb();
+    db.characters.delete(id);
     // Deselect
     setSelectedCharacterId(undefined);
   }
 
-  const selectedCharacter = characters.find((c) => c.id === selectedCharacterId) || null;
+  const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
 
   return (
     <Container fluid className='px-3 initiatives'>
@@ -161,8 +147,8 @@ const Initiatives = () => {
         </Col>
         <Col>
           <ListGroup>
-            <ReactSortable list={characters} setList={setCharacters} {...sortableOptions}>
-              {characters.map((character) => (
+            <ReactSortable list={characters || []} setList={reorderCharacters} {...sortableOptions}>
+              {characters?.map((character) => (
                 <ListGroup.Item
                   key={character.id}
                   className={selectedCharacterId === character.id ? "selected p-0" : "p-0"}>
@@ -305,7 +291,7 @@ const Initiatives = () => {
                                   ? 1
                                   : parseInt(e.target.value);
                                 const newTag = { ...tag, length: newValue };
-                                setCharacters((c) => {
+                                updateCharacters((c) => {
                                   return c.map((char) => {
                                     if (char.id === selectedCharacterId) {
                                       return {
@@ -338,8 +324,6 @@ const Initiatives = () => {
       <AddCharacterDialog
         editedCharacter={editedCharacter}
         setEditedCharacter={setEditedCharacter}
-        characters={characters}
-        setCharacters={setCharacters}
       />
     </Container>
   );

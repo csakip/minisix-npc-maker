@@ -4,23 +4,17 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import { parseDice, roll } from "../dice";
+import { db } from "../database/dataStore";
 
-const AddCharacterDialog = ({ editedCharacter, setEditedCharacter, characters, setCharacters }) => {
+const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
   return (
     <Modal show={editedCharacter} onHide={() => setEditedCharacter(undefined)}>
       <Form
         onSubmit={(e) => {
           e.preventDefault();
-          // Update if id matches, create and add if not
-          const index = characters.findIndex((c) => c.id === editedCharacter?.id);
           editedCharacter.type = editedCharacter.roll ? "npc" : "pc";
-          if (index !== -1) {
-            const newCharacters = [...characters];
-            newCharacters[index] = editedCharacter;
-            setCharacters(newCharacters);
-          } else {
-            setCharacters([...characters, { ...editedCharacter }]);
-          }
+          editedCharacter.order = editedCharacter.order || 100000;
+          db.characters.put(editedCharacter, editedCharacter.id);
           setEditedCharacter(undefined);
         }}>
         <Modal.Header closeButton>
