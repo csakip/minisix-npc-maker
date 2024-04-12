@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
 import { parseDice, roll } from "../dice";
-import { cleanupDb, db } from "../database/dataStore";
+import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";

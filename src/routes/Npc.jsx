@@ -351,7 +351,7 @@ function Npc() {
     setCharId(character.id);
   }
 
-  // Store to rxdb
+  // Store to db
   function storeNpc() {
     const toSave = {
       id: charId || uuid(),
@@ -360,7 +360,7 @@ function Npc() {
       attrs: attrs,
       updated: Date.now(),
     };
-    db.npcs.upsert(toSave);
+    db.npcs.put(toSave, toSave.id);
   }
 
   function generateRandomDescription() {
