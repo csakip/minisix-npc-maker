@@ -70,3 +70,7 @@ export function roll(value) {
 function d6() {
   return Math.floor(Math.random() * 6) + 1;
 }
+
+export function d66s() {
+  return d6().toString() + d6().toString();
+}

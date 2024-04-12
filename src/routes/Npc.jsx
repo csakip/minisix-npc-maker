@@ -6,6 +6,9 @@ import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../components/SelectNpcDialog";
 import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
+import { randomTables } from "../database/randomTables";
+import { d66s } from "../dice";
+import TextareaAutosize from "react-textarea-autosize";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
@@ -360,6 +363,13 @@ function Npc() {
     db.npcs.upsert(toSave);
   }
 
+  function generateRandomDescription() {
+    // make a random description from randomTables
+    const desc = randomTables.descriptor[d66s()];
+    const personality = randomTables.personality[d66s()].toLowerCase();
+    setCharNotes(charNotes + "\n" + `${desc} ${personality}`);
+  }
+
   return (
     <Container fluid className='ps-1 npc-generator'>
       <Row>
@@ -432,11 +442,22 @@ function Npc() {
               <InputGroup>
                 <InputGroup.Text>Egyéb</InputGroup.Text>
                 <Form.Control
-                  as='textarea'
+                  as={TextareaAutosize}
                   value={charNotes}
                   onChange={(e) => setCharNotes(e.target.value)}
                 />
               </InputGroup>
+            </Row>
+            <Row>
+              <Col>
+                <Button
+                  onClick={generateRandomDescription}
+                  size='sm'
+                  variant='secondary'
+                  className='mt-2'>
+                  Véletlen leíró
+                </Button>
+              </Col>
             </Row>
             <div className='d-flex gap-2 mt-2'>
               {skillTree.calculated.map((c) =>
