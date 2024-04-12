@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { parseDice, roll } from "../dice";
+import { format, parseDice, roll } from "../dice";
 import { db } from "../database/dataStore";
-import { v4 as uuid } from "uuid";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -13,6 +12,7 @@ import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
 import AddCharacterDialog from "../components/AddCharacterDialog";
 import { useLiveQuery } from "dexie-react-hooks";
+import SelectNpcDialog from "../components/SelectNpcDialog";
 
 const sortableOptions = {
   animation: 150,
@@ -33,6 +33,7 @@ const tags = [
 const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
+  const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const [customTag, setCustomTag] = useState({
     label: "",
     defaultLength: "",
@@ -156,6 +157,21 @@ const Initiatives = () => {
     });
   }
 
+  function setSelectedNpc(npc) {
+    const initiative = npc.attrs.find((a) => a.name === "Ügyesség")?.value || 6;
+    console.log(initiative, roll(initiative));
+    const toSave = {
+      name: npc.name,
+      roll: format(initiative),
+      type: "npc",
+      initiative: roll(initiative),
+      notes: npc.notes,
+      tags: [],
+      order: 100000,
+    };
+    db.characters.put(toSave);
+  }
+
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
 
   return (
@@ -176,16 +192,23 @@ const Initiatives = () => {
             <Button
               size='sm'
               variant='secondary'
-              onClick={() => setEditedCharacter({ name: "", roll: "", id: uuid() })}>
+              onClick={() => setEditedCharacter({ name: "", roll: "" })}>
               Új karakter
-            </Button>{" "}
+            </Button>
+            <Button size='sm' variant='secondary' onClick={() => setShowSelectNpcDialog(true)}>
+              NJK listából
+            </Button>
             <Button
               size='sm'
               variant='danger'
               onClick={() => {
-                if (confirm("Minden karaktert törölsz?")) db.characters.clear();
+                if (confirm("Minden njk-t és a játékosok kezdeményezését törölöd?"))
+                  db.characters.bulkDelete(
+                    characters.filter((c) => c.type === "npc").map((c) => c.id)
+                  );
+                db.characters.toCollection().modify({ initiative: undefined });
               }}>
-              Mindent töröl
+              Új harc
             </Button>
           </div>
         </Col>
@@ -407,6 +430,11 @@ const Initiatives = () => {
       <AddCharacterDialog
         editedCharacter={editedCharacter}
         setEditedCharacter={setEditedCharacter}
+      />
+      <SelectNpcDialog
+        setSelectedCharacter={setSelectedNpc}
+        open={showSelectNpcDialog}
+        setOpen={setShowSelectNpcDialog}
       />
     </Container>
   );
