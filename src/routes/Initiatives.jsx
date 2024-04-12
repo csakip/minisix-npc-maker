@@ -207,7 +207,7 @@ const Initiatives = () => {
                 setSimpleModalProps({
                   open: true,
                   title: "Törlés",
-                  body: "Törölsz minden njk-t és a játékosok kezdeményezését?",
+                  body: "Törlösz minden njk-t és a játékosok kezdeményezését?",
                   cancelButton: "Mégse",
                   onClose: (ret) => {
                     if (ret)
