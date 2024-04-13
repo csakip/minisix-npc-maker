@@ -30,6 +30,7 @@ const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
                   value={editedCharacter?.name ?? ""}
                   autoFocus
                   onChange={(e) => setEditedCharacter({ ...editedCharacter, name: e.target.value })}
+                  autoComplete='off'
                 />
               </Form.Group>
             </Col>
@@ -39,6 +40,7 @@ const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
                   type='text'
                   placeholder='Dobás'
                   value={editedCharacter?.roll ?? ""}
+                  autoComplete='off'
                   onChange={(e) => {
                     setEditedCharacter({
                       ...editedCharacter,
