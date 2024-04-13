@@ -26,6 +26,9 @@ const sortableOptions = {
 const tags = [
   { label: "Kábult", defaultLength: 2, notes: "-1d mindenre ebben és köv körben." },
   { label: "Sebesült", defaultLength: undefined, notes: "-1d mindenre." },
+  { label: "Súlyos seb.", defaultLength: undefined, notes: "-2d mindenre." },
+  { label: "Magatehetetlen", defaultLength: undefined, notes: "-3d mindenre." },
+  { label: "Halálosan seb.", defaultLength: undefined, notes: "Haldoklik" },
   { label: "-1d", defaultLength: undefined, notes: "-1d mindenre." },
   { label: "-2d", defaultLength: undefined, notes: "-2d mindenre." },
   { label: "-3d", defaultLength: undefined, notes: "-3d mindenre." },
@@ -68,6 +71,9 @@ const Initiatives = () => {
     characters.forEach((character) => {
       if ((id === undefined || character.id === id) && character.roll) {
         character.initiative = roll(parseDice(character.roll));
+      }
+      if (id === undefined && !character.roll) {
+        character.initiative = undefined;
       }
     });
     sortCharacters(characters);
@@ -210,11 +216,12 @@ const Initiatives = () => {
                   body: "Törlösz minden njk-t és a játékosok kezdeményezését?",
                   cancelButton: "Mégse",
                   onClose: (ret) => {
-                    if (ret)
+                    if (ret) {
                       db.characters.bulkDelete(
                         characters.filter((c) => c.type === "npc").map((c) => c.id)
                       );
-                    db.characters.toCollection().modify({ initiative: undefined });
+                      db.characters.toCollection().modify({ initiative: undefined });
+                    }
                     setSimpleModalProps((props) => ({ ...props, open: false }));
                   },
                 });
