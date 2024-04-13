@@ -18,13 +18,13 @@ const Initiatives = () => {
   return (
     <Container fluid className='px-3 initiatives'>
       <Row className='pt-2'>
-        <Col xs='2'>
+        <Col xs='1'>
           <ControlButtons setEditedCharacter={setEditedCharacter} characters={characters} />
         </Col>
         <Col>
           <InitiativeList {...{ characters, selectedCharacterId, setSelectedCharacterId }} />
         </Col>
-        <Col xs='3'>
+        <Col xs='5'>
           <Row>
             <Col className='scrollable-menu'>
               {selectedCharacterId && (

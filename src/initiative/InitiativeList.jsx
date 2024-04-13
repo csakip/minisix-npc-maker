@@ -63,8 +63,8 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
                   </Button>
                 )}
               </Col>
-              <Col xs='3'>
-                <span className='ps-2 character-name'>{character.name}</span>
+              <Col xs='2'>
+                <span className='character-name'>{character.name}</span>
               </Col>
               <Col>
                 {character.tags?.map((tag) => (

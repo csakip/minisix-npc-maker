@@ -48,7 +48,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
     <>
       <div className='scrollable-menu buttons d-flex flex-column'>
         <Button size='sm' variant='secondary' onClick={() => rollInitiative(undefined, characters)}>
-          Kezdeményezés dobás
+          Kezd. dobás
         </Button>
         <Button size='sm' variant='secondary' onClick={() => sortCharacters(characters)}>
           Sorrendbe

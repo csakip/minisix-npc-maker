@@ -1,7 +1,6 @@
 import { Button, Col, Container, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
-import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../common/SelectNpcDialog";
 import { db } from "../database/dataStore";
@@ -9,6 +8,8 @@ import { v4 as uuid } from "uuid";
 import { randomTables } from "../database/randomTables";
 import { d66s } from "../dice";
 import TextareaAutosize from "react-textarea-autosize";
+import CharacterSheet from "../common/CharacterSheet";
+import { displayAsDiceCode, displayCharValue, findAttr } from "../common/utils";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
@@ -42,30 +43,8 @@ function Npc() {
     }, 1000);
   }, [attrs, charName, charNotes]);
 
-  function findAttr(name) {
-    return attrs.find((attr) => attr.name === name);
-  }
-
-  // Returns a string from the value like 2d+1, where value /3 is before the d, the remainder is after the d
-  function displayCharValue(name, add1, add2) {
-    let value1 = findAttr(name)?.value || 0;
-    let value2 = 0;
-    if (add1) value2 += findAttr(add1)?.value || 0;
-    if (add2) value2 += findAttr(add2)?.value || 0;
-    if (!value1) return "";
-    return `${name} ${displayAsDiceCode(value1 + value2)}`;
-  }
-
-  function displayAsDiceCode(value) {
-    // Get the number before the d
-    const before = Math.floor(value / 3);
-    // Get the number after the d
-    const after = value % 3;
-    return `${before}d${after === 0 ? "" : "+" + after}`;
-  }
-
   function attrButton(item, step = 1, className = "") {
-    const selected = findAttr(item.name)?.value > 0 ? "selected" : "";
+    const selected = findAttr(attrs, item.name)?.value > 0 ? "selected" : "";
     return (
       <ListGroup.Item
         key={item.name}
@@ -86,7 +65,7 @@ function Npc() {
     const add = e.button === 0 ? (e.ctrlKey ? 3 * step : step) : e.ctrlKey ? -3 * step : -step;
 
     // Increase the value of the attr with the same name as "name"
-    let a = findAttr(name);
+    let a = findAttr(attrs, name);
     // If the attr doesn't exist, add it
     if (!a) attrs.push((a = { name: name, value: 0 }));
 
@@ -126,49 +105,6 @@ function Npc() {
   //   if (spec) return spec;
   // }
 
-  function displaySkills() {
-    const filteredSkillTree = cloneDeep(skillTree);
-
-    // Delete specs that are not in attrs
-    filteredSkillTree.attributes.forEach((attribute) => {
-      attribute.skills?.forEach((skill) => {
-        skill.specs = skill.specs?.filter((spec) => findAttr(spec.name));
-        if (skill.specs?.length === 0) delete skill.specs;
-      });
-    });
-
-    // Delete skills that are not in attrs
-    filteredSkillTree.attributes.forEach((attribute) => {
-      attribute.skills = attribute.skills?.filter(
-        (skill) => findAttr(skill.name) || skill.specs?.length
-      );
-    });
-
-    filteredSkillTree.attributes = filteredSkillTree.attributes.filter(
-      (attribute) => findAttr(attribute.name) || attribute.skills?.length
-    );
-
-    const attrsStrArray = filteredSkillTree.attributes.map((attribute) =>
-      displayCharValue(attribute.name)
-    );
-    const skillsStrArray = [];
-    filteredSkillTree.attributes.forEach((attribute) => {
-      attribute.skills?.forEach((skill) => {
-        let s = displayCharValue(skill.name, attribute.name);
-        if (skill.specs) {
-          const specArray = [];
-          skill.specs?.forEach((spec) => {
-            specArray.push(displayCharValue(spec.name, skill.name, attribute.name));
-          });
-          s += " (" + specArray.join(", ") + ")";
-        }
-        skillsStrArray.push(s);
-      });
-    });
-
-    return attrsStrArray.join(", ") + " - " + skillsStrArray.join(", ");
-  }
-
   function resetChar() {
     setCharName("");
     setCharNotes("");
@@ -178,50 +114,6 @@ function Npc() {
         .filter((a) => !["Pszi", "Mágia"].includes(a.name))
         .map((a) => ({ name: a.name, value: 6 }))
     );
-  }
-
-  // Returns the calculated value. if the calculator.value is an array, add the values of their attr.value
-  function getCalculatedValue(calculated) {
-    if (attrs.length === 0) return;
-    const name = Object.keys(calculated)[0];
-    const value = Object.values(calculated)[0];
-    if (Array.isArray(value)) {
-      return (
-        name +
-        ": " +
-        (value.map((value) => findAttr(value)?.value || 0).reduce((a, b) => a + b, 0) +
-          (findAttr(name)?.value || 0))
-      );
-    }
-    if (isNumber(value)) {
-      const sum = value + (findAttr(name)?.value || 0);
-      if (!sum) return undefined;
-      return name + ": " + sum;
-    }
-    // Calculate body points (Highest skill under Test d*4 + pip + 20)
-    if (isObject(value) && value.special === "test") {
-      // skill with the highest value
-      const testAttribute = skillTree.attributes.find((a) => a.name === "Test");
-      const highestTestSkill = testAttribute?.skills?.reduce((a, b) =>
-        (findAttr(a.name)?.value || 0) > (findAttr(b.name)?.value || 0) ? a : b
-      );
-      const highestTestSkillValue =
-        findAttr("Test").value + findAttr(highestTestSkill.name)?.value || 0;
-      const sum =
-        Math.floor(highestTestSkillValue / 3) * 4 +
-        (highestTestSkillValue % 3) +
-        20 +
-        (findAttr("Test pont")?.value || 0);
-      return name + ": " + sum;
-    }
-    // Calculate psi points
-    if (isObject(value) && value.special === "pszi") {
-      const willpower = (findAttr("Elme")?.value || 0) + (findAttr("Akaraterő")?.value || 0);
-      const psi = findAttr("Pszi")?.value || 0;
-      const psiRes = findAttr("Pszi ellenállás")?.value || 0;
-      return name + ": " + (willpower + Math.floor(psi / 3) - 5 + psiRes);
-    }
-    return "nope";
   }
 
   function download() {
@@ -271,7 +163,7 @@ function Npc() {
     let skillCost = 0;
     let skipSkillCost = 7 * 3;
     skillTree.attributes.forEach((attribute) => {
-      const a = findAttr(attribute.name);
+      const a = findAttr(attrs, attribute.name);
       if (a) {
         if (["Pszi", "Mágia"].includes(attribute.name)) {
           for (let i = 0; i < a.value; i++) {
@@ -290,7 +182,7 @@ function Npc() {
         }
         // add each skill cost
         attribute.skills?.forEach((skill) => {
-          const s = findAttr(skill.name);
+          const s = findAttr(attrs, skill.name);
           if (s) {
             // skillCost is calculated by (its value + its parent attribute's value) / 3 for each increment of the value
             for (let i = 0; i < s.value; i++) {
@@ -303,7 +195,7 @@ function Npc() {
           }
           // specs are calculated in the same way, but adding the skill value too for each spec
           skill?.specs?.forEach((spec) => {
-            const sp = findAttr(spec.name);
+            const sp = findAttr(attrs, spec.name);
             if (sp) {
               for (let i = 0; i < sp.value; i++) {
                 if (i < 3 && skipSkillCost > 0) {
@@ -474,19 +366,24 @@ function Npc() {
                   !["Pszi", "Mágia"].includes(attribute.name) &&
                   attrs && (
                     <Col key={attribute.name}>
-                      {displayCharValue(attribute.name)}
+                      {displayCharValue(attrs, attribute.name)}
                       {attribute.skills && (
                         <ListGroup className='py-1'>
                           {attribute.skills.map((skill) => (
                             <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
-                              {displayCharValue(skill.name, attribute.name)}
+                              {displayCharValue(attrs, skill.name, attribute.name)}
                               {skill.specs && (
                                 <ListGroup className='py-0 ms-2'>
                                   {skill.specs.map((spec) => (
                                     <ListGroup.Item
                                       key={spec.name}
                                       className='border-0 py-0 ms-2 pe-0'>
-                                      {displayCharValue(spec.name, attribute.name, skill.name)}
+                                      {displayCharValue(
+                                        attrs,
+                                        spec.name,
+                                        attribute.name,
+                                        skill.name
+                                      )}
                                     </ListGroup.Item>
                                   ))}
                                 </ListGroup>
@@ -499,28 +396,14 @@ function Npc() {
                   )
               )}
               <Col xs={1}>
-                <div>{displayCharValue("Pszi")}</div>
-                <div>{displayCharValue("Mágia")}</div>
+                <div>{displayCharValue(attrs, "Pszi")}</div>
+                <div>{displayCharValue(attrs, "Mágia")}</div>
               </Col>
             </Row>
             <hr />
             <Row>
               <Col>
-                <div id='char-display'>
-                  <b>{charName}</b>: {displaySkills()}
-                  <br />
-                  {skillTree.calculated
-                    .map((c) => getCalculatedValue(c))
-                    .filter((v) => v)
-                    .join(", ")}
-                  <br />
-                  {charNotes.split("\n").map((n, idx) => (
-                    <React.Fragment key={idx}>
-                      {n}
-                      <br />
-                    </React.Fragment>
-                  ))}
-                </div>
+                <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
                 <Button
                   title='Vágólapra'
                   onClick={copyToClipboard}

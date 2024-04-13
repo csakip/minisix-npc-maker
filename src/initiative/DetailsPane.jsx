@@ -6,6 +6,8 @@ import Row from "react-bootstrap/Row";
 import { rollInitiative, setInitiative } from "../common/utils";
 import { db } from "../database/dataStore";
 import Tags from "./Tags";
+import CharacterSheet from "../common/CharacterSheet";
+import { useState } from "react";
 
 function DetailsPane({
   selectedCharacterId,
@@ -13,6 +15,8 @@ function DetailsPane({
   setEditedCharacter,
   characters,
 }) {
+  const [npc, setNpc] = useState();
+
   function deleteCharacter(id) {
     db.characters.delete(id);
     // Deselect
@@ -20,6 +24,8 @@ function DetailsPane({
   }
 
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
+  db.npcs.where("name").equals(selectedCharacter.name).first().then(setNpc);
+
   return (
     <>
       <Row>
@@ -57,16 +63,11 @@ function DetailsPane({
           </InputGroup>
         </Col>
       </Row>
-      {!!selectedCharacter.initiative?.rolls?.length && (
+      {npc && (
         <Row>
           <Col className='pt-2'>
-            Dobások: {(selectedCharacter.initiative?.rolls?.map((r) => r) || ["-"]).join(", ")}
+            <CharacterSheet attrs={npc.attrs} charNotes={npc.notes} />
           </Col>
-        </Row>
-      )}
-      {selectedCharacter.notes && (
-        <Row>
-          <Col className='pt-2'>Jegyzetek: {selectedCharacter.notes}</Col>
         </Row>
       )}
 
