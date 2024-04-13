@@ -5,7 +5,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { db } from "../database/dataStore";
 import { useState } from "react";
-import { updateCharacters } from "../utils";
+import { updateCharacters } from "../common/utils";
 
 const tags = [
   { label: "Kábult", defaultLength: 2, notes: "-1d mindenre ebben és köv körben." },

@@ -3,7 +3,7 @@ import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import { cloneDeep, isNumber, isObject } from "lodash";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
-import SelectNpcDialog from "../components/SelectNpcDialog";
+import SelectNpcDialog from "../common/SelectNpcDialog";
 import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
 import { randomTables } from "../database/randomTables";

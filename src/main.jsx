@@ -2,9 +2,9 @@ import * as ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import TopMenu from "./routes/TopMenu";
-import Initiatives from "./routes/Initiatives";
-import Npc from "./routes/Npc";
+import TopMenu from "./common/TopMenu";
+import Initiatives from "./initiative/Initiatives";
+import Npc from "./npcs/Npc";
 
 const router = createBrowserRouter(
   [

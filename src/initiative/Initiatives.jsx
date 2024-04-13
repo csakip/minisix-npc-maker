@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { ReactSortable } from "react-sortablejs";
-import { format, parseDice, roll } from "../dice";
 import { db } from "../database/dataStore";
 import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
@@ -10,12 +9,11 @@ import Row from "react-bootstrap/Row";
 import InputGroup from "react-bootstrap/InputGroup";
 import Form from "react-bootstrap/Form";
 import Badge from "react-bootstrap/Badge";
-import AddCharacterDialog from "../components/AddCharacterDialog";
+import AddCharacterDialog from "./AddCharacterDialog";
 import { useLiveQuery } from "dexie-react-hooks";
-import SelectNpcDialog from "../components/SelectNpcDialog";
-import SimpleModal from "../components/SimpleModal";
-import { updateCharacters } from "../utils";
-import Tags from "../components/Tags";
+import { rollInitiative, sortCharacters, updateCharacters } from "../common/utils";
+import Tags from "./Tags";
+import ControlButtons from "./ControlButtons";
 
 const sortableOptions = {
   animation: 150,
@@ -28,36 +26,11 @@ const sortableOptions = {
 const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
-  const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
-  const [simpleModalProps, setSimpleModalProps] = useState({});
 
   const characters = useLiveQuery(() => db.characters.orderBy("order").toArray());
 
-  function sortCharacters(chars) {
-    if (!chars) chars = characters;
-    const newOrder = [...chars].sort(
-      (a, b) => (b.initiative?.reduced || 0) - (a.initiative?.reduced || 0)
-    );
-    newOrder.forEach((c, i) => {
-      c.order = i;
-    });
-    updateCharacters(newOrder);
-  }
-
   function reorderCharacters(chars) {
     updateCharacters(chars.map((c, i) => ({ ...c, order: i })));
-  }
-
-  function rollInitiative(id) {
-    characters.forEach((character) => {
-      if ((id === undefined || character.id === id) && character.roll) {
-        character.initiative = roll(parseDice(character.roll));
-      }
-      if (id === undefined && !character.roll) {
-        character.initiative = undefined;
-      }
-    });
-    sortCharacters(characters);
   }
 
   function setInitiative(id, value) {
@@ -69,45 +42,10 @@ const Initiatives = () => {
     sortCharacters(characters);
   }
 
-  function newRound() {
-    updateCharacters(
-      characters.map((character) => {
-        // if (character.roll) character.initiative = roll(parseDice(character.roll));
-        // if a tag has a length, reduce it. if it reaches 0, remove it
-        if (character.tags) {
-          character.tags = character.tags
-            .map((t) => {
-              if (t.length) {
-                return { ...t, length: t.length - 1 };
-              }
-              return t;
-            })
-            .filter((t) => t.length === undefined || t.length > 0);
-        }
-        return character;
-      })
-    );
-  }
-
   function deleteCharacter(id) {
     db.characters.delete(id);
     // Deselect
     setSelectedCharacterId(undefined);
-  }
-
-  function setSelectedNpc(npc) {
-    const initiative = npc.attrs.find((a) => a.name === "Ügyesség")?.value || 6;
-    console.log(initiative, roll(initiative));
-    const toSave = {
-      name: npc.name,
-      roll: format(initiative),
-      type: "npc",
-      initiative: roll(initiative),
-      notes: npc.notes,
-      tags: [],
-      order: 100000,
-    };
-    db.characters.put(toSave);
   }
 
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
@@ -116,49 +54,7 @@ const Initiatives = () => {
     <Container fluid className='px-3 initiatives'>
       <Row className='pt-2'>
         <Col xs='2'>
-          <div className='scrollable-menu buttons d-flex flex-column'>
-            <Button size='sm' variant='secondary' onClick={() => rollInitiative()}>
-              Kezdeményezés dobás
-            </Button>
-            <Button size='sm' variant='secondary' onClick={() => sortCharacters()}>
-              Sorrendbe
-            </Button>
-            <Button size='sm' variant='secondary' onClick={() => newRound()}>
-              Új kör
-            </Button>
-            <hr />
-            <Button
-              size='sm'
-              variant='secondary'
-              onClick={() => setEditedCharacter({ name: "", roll: "" })}>
-              Új karakter
-            </Button>
-            <Button size='sm' variant='secondary' onClick={() => setShowSelectNpcDialog(true)}>
-              NJK listából
-            </Button>
-            <Button
-              size='sm'
-              variant='danger'
-              onClick={() => {
-                setSimpleModalProps({
-                  open: true,
-                  title: "Törlés",
-                  body: "Törlösz minden njk-t és a játékosok kezdeményezését?",
-                  cancelButton: "Mégse",
-                  onClose: (ret) => {
-                    if (ret) {
-                      db.characters.bulkDelete(
-                        characters.filter((c) => c.type === "npc").map((c) => c.id)
-                      );
-                      db.characters.toCollection().modify({ initiative: undefined });
-                    }
-                    setSimpleModalProps((props) => ({ ...props, open: false }));
-                  },
-                });
-              }}>
-              Új harc
-            </Button>
-          </div>
+          <ControlButtons setEditedCharacter={setEditedCharacter} characters={characters} />
         </Col>
         <Col>
           <ListGroup>
@@ -180,7 +76,7 @@ const Initiatives = () => {
                               ? "danger"
                               : "secondary"
                           }
-                          onClick={() => rollInitiative(character.id)}>
+                          onClick={() => rollInitiative(character.id, characters)}>
                           {character.initiative?.reduced ?? "-"} ({character.roll})
                         </Button>
                       ) : (
@@ -250,7 +146,7 @@ const Initiatives = () => {
                             size='sm'
                             className='py-0 px-1 text-nowrap'
                             variant='secondary'
-                            onClick={() => rollInitiative(selectedCharacter.id)}>
+                            onClick={() => rollInitiative(selectedCharacter.id, characters)}>
                             {selectedCharacter.roll}
                           </Button>
                         </InputGroup.Text>
@@ -282,12 +178,6 @@ const Initiatives = () => {
         editedCharacter={editedCharacter}
         setEditedCharacter={setEditedCharacter}
       />
-      <SelectNpcDialog
-        setSelectedCharacter={setSelectedNpc}
-        open={showSelectNpcDialog}
-        setOpen={setShowSelectNpcDialog}
-      />
-      <SimpleModal {...simpleModalProps} />
     </Container>
   );
 };
