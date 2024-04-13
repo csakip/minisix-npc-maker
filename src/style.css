@@ -90,12 +90,12 @@ pre {
   display: none;
 }
 
-/* .initiatives .selected.list-group-item {
-	box-shadow: inset 0 0 5px 1px #61a564;
-} */
+.initiatives .selected.list-group-item {
+  background-color: #fff1;
+}
 
-.initiatives .selected.list-group-item .character-name {
-  color: var(--selected-color);
+.initiatives .selected.list-group-item:hover {
+  background-color: #fff2;
 }
 
 .initiatives .row > * {

@@ -27,3 +27,12 @@ export function rollInitiative(id, characters) {
   });
   sortCharacters(characters);
 }
+
+export function setInitiative(id, value, characters) {
+  characters.forEach((character) => {
+    if (character.id === id) {
+      character.initiative = { sum: value, reduced: value, rolls: ["no"] };
+    }
+  });
+  sortCharacters(characters);
+}

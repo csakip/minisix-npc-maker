@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./style.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import TopMenu from "./common/TopMenu";
-import Initiatives from "./initiative/Initiatives";
+import Initiatives from "./initiative/InitiativesPage";
 import Npc from "./npcs/Npc";
 
 const router = createBrowserRouter(
