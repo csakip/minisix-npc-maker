@@ -3,7 +3,7 @@ import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../common/SelectNpcDialog";
-import { db } from "../database/dataStore";
+import { db, exportDatabase, importDatabase } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
 import { randomTables } from "../database/randomTables";
 import { d66s } from "../dice";
@@ -325,6 +325,13 @@ function Npc() {
                 <Button onClick={() => upload(true)} title='Feltöltés' variant='secondary'>
                   <i className='bi bi-upload'></i>
                 </Button>
+                <Button onClick={() => exportDatabase()} title='Mindent ment' variant='warning'>
+                  <i className='bi bi-journal-arrow-down'></i>
+                </Button>
+                <Button onClick={() => importDatabase()} title='DB feltöltése' variant='warning'>
+                  <i className='bi bi-journal-arrow-up'></i>
+                </Button>
+
                 <Button onClick={resetChar} title='Új' variant='danger'>
                   <i className='bi bi-eraser'></i>
                 </Button>

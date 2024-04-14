@@ -68,10 +68,7 @@ const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setO
                             okButton: "Törlés",
                             cancelButton: "Mégse",
                             onClose: (ret) => {
-                              if (ret) {
-                                setSelectedCharacter(undefined);
-                                db.npcs.delete(npc.id);
-                              }
+                              if (ret) db.npcs.delete(npc.id);
                               closeModal();
                             },
                           });

@@ -1010,6 +1010,11 @@ dequal@^2.0.3:
   resolved "https://registry.npmjs.org/dequal/-/dequal-2.0.3.tgz"
   integrity sha512-0je+qPKHEMohvfRTCEo3CrPG6cAzAYgmzKyxRiYSSDkS6eGJdyVJm7WaYA5ECaAD9wLB2T4EEeymA5aFVcYXCA==
 
+dexie-export-import@^4.1.1:
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/dexie-export-import/-/dexie-export-import-4.1.1.tgz#5855adb28e6246c4e2ceec1a1981144e175d19f3"
+  integrity sha512-X6gm08h/HUM/b/iwAOtOTrtyz+maADKOUEODjfAMJDPQ31jwRGehRzycq0e67KL2Wh6xEaqeDmG00VFr2vIQNQ==
+
 dexie-react-hooks@^1.1.7:
   version "1.1.7"
   resolved "https://registry.npmjs.org/dexie-react-hooks/-/dexie-react-hooks-1.1.7.tgz"
