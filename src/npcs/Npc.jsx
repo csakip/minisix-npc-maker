@@ -313,20 +313,20 @@ function Npc() {
                 <h5>{calculateCost()}</h5>
               </Col>
               <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
-                <Button onClick={storeNpc} title='Mentés'>
-                  <i className='bi bi-floppy'></i>
-                </Button>
                 <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
                   <i className='bi bi-search'></i>
-                </Button>{" "}
-                <Button onClick={download} title='Letöltés'>
+                </Button>
+                <Button onClick={storeNpc} title='Mentés' variant='warning'>
+                  <i className='bi bi-floppy'></i>
+                </Button>
+                <Button onClick={download} title='Letöltés' variant='secondary'>
                   <i className='bi bi-download'></i>
                 </Button>
-                <Button onClick={() => upload(true)} title='Feltöltés'>
+                <Button onClick={() => upload(true)} title='Feltöltés' variant='secondary'>
                   <i className='bi bi-upload'></i>
                 </Button>
-                <Button onClick={resetChar} title='Törlés'>
-                  <i className='bi bi-x-circle'></i>
+                <Button onClick={resetChar} title='Új' variant='danger'>
+                  <i className='bi bi-eraser'></i>
                 </Button>
               </Col>
             </Row>
