@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import SelectNpcDialog from "../common/SelectNpcDialog";
-import SimpleModal from "../common/SimpleModal";
 import { rollInitiative, sortCharacters, updateCharacters } from "../common/utils";
 import { db } from "../database/dataStore";
 import { format, roll } from "../dice";
+import { useSimpleModal } from "../common/SimpleModal";
 
 function ControlButtons({ setEditedCharacter, characters }) {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
-  const [simpleModalProps, setSimpleModalProps] = useState({});
+  const { openModal, closeModal, SimpleModal } = useSimpleModal();
 
   function setSelectedNpc(npc) {
     const initiative = npc.attrs.find((a) => a.name === "Ügyesség")?.value || 6;
@@ -70,7 +70,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
           size='sm'
           variant='danger'
           onClick={() => {
-            setSimpleModalProps({
+            openModal({
               open: true,
               title: "Törlés",
               body: "Törlösz minden njk-t és a játékosok kezdeményezését?",
@@ -82,7 +82,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
                   );
                   db.characters.toCollection().modify({ initiative: undefined });
                 }
-                setSimpleModalProps((props) => ({ ...props, open: false }));
+                closeModal();
               },
             });
           }}>
@@ -94,7 +94,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
         open={showSelectNpcDialog}
         setOpen={setShowSelectNpcDialog}
       />
-      <SimpleModal {...simpleModalProps} />
+      <SimpleModal />
     </>
   );
 }

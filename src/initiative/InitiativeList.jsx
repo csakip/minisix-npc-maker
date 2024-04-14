@@ -5,8 +5,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { ReactSortable } from "react-sortablejs";
 import { rollInitiative, setInitiative, updateCharacters } from "../common/utils";
-import SimpleModal from "../common/SimpleModal";
-import { useState } from "react";
+import { useSimpleModal } from "../common/SimpleModal";
 
 const sortableOptions = {
   animation: 150,
@@ -17,17 +16,17 @@ const sortableOptions = {
 };
 
 function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterId }) {
-  const [enterInitiativeOpen, setEnterInitiativeOpen] = useState(false);
+  const { openModal, closeModal, SimpleModal } = useSimpleModal();
 
   function reorderCharacters(chars) {
     updateCharacters(chars.map((c, i) => ({ ...c, order: i })));
   }
 
-  function setInitiativeForSelectedCharacter(value) {
+  function setInitiativeForCharacter(characterId, value) {
     if (value && !isNaN(parseInt(value))) {
-      setInitiative(selectedCharacterId, parseInt(value), characters);
+      setInitiative(characterId, parseInt(value), characters);
     }
-    setEnterInitiativeOpen(false);
+    closeModal(false);
   }
 
   return (
@@ -60,7 +59,15 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
                       className='py-0 px-1 text-nowrap'
                       variant='primary'
                       onClick={() => {
-                        setEnterInitiativeOpen(true);
+                        openModal({
+                          onClose: (value) => setInitiativeForCharacter(character.id, value),
+                          title: "Kezdeményezés",
+                          body: <></>,
+                          okButton: "OK",
+                          cancelButton: "Bezár",
+                          input: true,
+                          defaultInputText: character.initiative?.reduced,
+                        });
                       }}>
                       {character.initiative?.reduced ?? <i className='bi bi-pencil px-1'></i>}
                     </Button>
@@ -81,15 +88,7 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
           ))}
         </ReactSortable>
       </ListGroup>
-      <SimpleModal
-        open={enterInitiativeOpen}
-        onClose={setInitiativeForSelectedCharacter}
-        title='Kezdeményezés'
-        body={<></>}
-        okButton='OK'
-        cancelButton='Bezár'
-        input=' '
-      />
+      <SimpleModal />
     </>
   );
 }
