@@ -17,9 +17,7 @@ export default function TopMenu(props) {
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      {/* eslint-disable react/prop-types */}
       {props.children}
-      {/* eslint-enable react/prop-types */}
     </>
   );
 }
