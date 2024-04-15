@@ -107,6 +107,7 @@ function Tags({ characters, selectedCharacter }) {
               <Button
                 size='sm'
                 variant='outline-secondary'
+                title='Véletlen leíró'
                 onClick={() => setCustomTag({ ...customTag, label: generateRandomDescription() })}>
                 <i className='bi bi-shuffle'></i>
               </Button>

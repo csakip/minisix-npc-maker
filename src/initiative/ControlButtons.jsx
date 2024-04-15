@@ -5,8 +5,9 @@ import { rollInitiative, sortCharacters, updateCharacters } from "../common/util
 import { db } from "../database/dataStore";
 import { format, roll } from "../dice";
 import { useSimpleModal } from "../common/SimpleModal";
+import { ButtonGroup } from "react-bootstrap";
 
-function ControlButtons({ setEditedCharacter, characters }) {
+function ControlButtons({ setEditedCharacter, characters, newRound }) {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const { openModal, closeModal, SimpleModal } = useSimpleModal();
 
@@ -26,7 +27,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
     }
   }
 
-  function newRound() {
+  function startNewRound(increment = 1) {
     updateCharacters(
       characters.map((character) => {
         // if (character.roll) character.initiative = roll(parseDice(character.roll));
@@ -35,7 +36,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
           character.tags = character.tags
             .map((t) => {
               if (t.length) {
-                return { ...t, length: t.length - 1 };
+                return { ...t, length: t.length - increment };
               }
               return t;
             })
@@ -44,6 +45,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
         return character;
       })
     );
+    newRound(increment);
   }
 
   return (
@@ -55,9 +57,14 @@ function ControlButtons({ setEditedCharacter, characters }) {
         <Button size='sm' variant='secondary' onClick={() => sortCharacters(characters)}>
           Sorrendbe
         </Button>
-        <Button size='sm' variant='secondary' onClick={() => newRound()}>
-          Új kör
-        </Button>
+        <ButtonGroup size='sm'>
+          <Button variant='secondary' onClick={() => startNewRound()}>
+            Új kör
+          </Button>
+          <Button variant='outline-secondary' onClick={() => startNewRound(-1)} style={{ flex: 0 }}>
+            -1
+          </Button>
+        </ButtonGroup>
         <hr />
         <Button size='sm' variant='secondary' onClick={() => setEditedCharacter({ name: "", roll: "" })}>
           Új karakter
@@ -76,6 +83,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
               cancelButton: "Mégse",
               onClose: (ret) => {
                 if (ret) {
+                  newRound();
                   db.characters.bulkDelete(characters.filter((c) => c.type === "npc").map((c) => c.id));
                   db.characters.toCollection().modify({ initiative: undefined });
                 }

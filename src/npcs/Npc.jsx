@@ -5,8 +5,6 @@ import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../common/SelectNpcDialog";
 import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
-import { randomTables } from "../database/randomTables";
-import { d66s } from "../dice";
 import TextareaAutosize from "react-textarea-autosize";
 import CharacterSheet from "../common/CharacterSheet";
 import { displayAsDiceCode, displayCharValue, findAttr, generateRandomDescription } from "../common/utils";
