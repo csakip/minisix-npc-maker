@@ -2,6 +2,10 @@
   --selected-color: #77d85e;
 }
 
+body .offcanvas {
+  --bs-offcanvas-width: 300px;
+}
+
 body {
   overflow-y: hidden;
 }

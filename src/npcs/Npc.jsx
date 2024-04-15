@@ -3,13 +3,14 @@ import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../common/SelectNpcDialog";
-import { db, exportDatabase, importDatabase } from "../database/dataStore";
+import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
 import { randomTables } from "../database/randomTables";
 import { d66s } from "../dice";
 import TextareaAutosize from "react-textarea-autosize";
 import CharacterSheet from "../common/CharacterSheet";
 import { displayAsDiceCode, displayCharValue, findAttr } from "../common/utils";
+import NpcSidebar from "./NpcSidebar";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
@@ -17,15 +18,14 @@ function Npc() {
   // get from local storage
   const [attrs, setAttrs] = useState(
     localStored?.attributes ||
-      skillTree.attributes
-        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
-        .map((a) => ({ name: a.name, value: 6 }))
+      skillTree.attributes.filter((a) => !["Pszi", "Mágia"].includes(a.name)).map((a) => ({ name: a.name, value: 6 }))
   );
   const [charName, setCharName] = useState(localStored?.charName || "");
   const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
   const [charId, setCharId] = useState(localStored?.id);
   const [showSpec, setShowSpec] = useState(false);
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const localStoreTimerRef = useRef();
 
@@ -36,10 +36,7 @@ function Npc() {
     }
 
     localStoreTimerRef.current = setTimeout(() => {
-      localStorage.setItem(
-        "minisix-npc-generator",
-        JSON.stringify({ charName, id: charId, charNotes, attributes: attrs })
-      );
+      localStorage.setItem("minisix-npc-generator", JSON.stringify({ charName, id: charId, charNotes, attributes: attrs }));
     }, 1000);
   }, [attrs, charName, charNotes]);
 
@@ -109,53 +106,7 @@ function Npc() {
     setCharName("");
     setCharNotes("");
     setCharId(undefined);
-    setAttrs(
-      skillTree.attributes
-        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
-        .map((a) => ({ name: a.name, value: 6 }))
-    );
-  }
-
-  function download() {
-    const toSave = {
-      charName: charName,
-      id: charId,
-      charNotes: charNotes,
-      attrs: attrs,
-    };
-    const element = document.createElement("a");
-    element.setAttribute(
-      "href",
-      "data:text/plain;charset=utf-8," + encodeURIComponent(JSON.stringify(toSave))
-    );
-    element.setAttribute("download", `${charName || "MiniSixNPC"}.m6.json`);
-
-    element.style.display = "none";
-    document.body.appendChild(element);
-
-    element.click();
-
-    document.body.removeChild(element);
-  }
-
-  // Displays a file selector for json files and reads back the same format as the download function
-  function upload() {
-    const input = document.createElement("input");
-    input.type = "file";
-    input.accept = ".json";
-    input.onchange = () => {
-      const file = input.files[0];
-      const reader = new FileReader();
-      reader.onload = () => {
-        const json = JSON.parse(reader.result);
-        setCharName(json.charName);
-        setCharNotes(json.charNotes);
-        setCharId(json.id);
-        setAttrs(json.attrs);
-      };
-      reader.readAsText(file);
-    };
-    input.click();
+    setAttrs(skillTree.attributes.filter((a) => !["Pszi", "Mágia"].includes(a.name)).map((a) => ({ name: a.name, value: 6 })));
   }
 
   function calculateCost() {
@@ -272,11 +223,7 @@ function Npc() {
                 title='Specializaciók'
                 className='position-fixed btn-sm px-2 py-0 z-1'
                 onClick={() => setShowSpec(!showSpec)}>
-                {showSpec ? (
-                  <i className='bi bi-chevron-contract'></i>
-                ) : (
-                  <i className='bi bi-chevron-expand'></i>
-                )}
+                {showSpec ? <i className='bi bi-chevron-contract'></i> : <i className='bi bi-chevron-expand'></i>}
               </Button>
             </div>
             <ListGroup className='list-group-root skill-tree'>
@@ -288,9 +235,7 @@ function Npc() {
                       {attribute.skills.map((skill) => (
                         <React.Fragment key={skill.name}>
                           {attrButton(skill)}
-                          {showSpec && skill.specs && (
-                            <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>
-                          )}
+                          {showSpec && skill.specs && <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>}
                         </React.Fragment>
                       ))}
                     </ListGroup>
@@ -319,52 +264,30 @@ function Npc() {
                 <Button onClick={storeNpc} title='Mentés' variant='warning'>
                   <i className='bi bi-floppy'></i>
                 </Button>
-                <Button onClick={download} title='Letöltés' variant='secondary'>
-                  <i className='bi bi-download'></i>
-                </Button>
-                <Button onClick={() => upload(true)} title='Feltöltés' variant='secondary'>
-                  <i className='bi bi-upload'></i>
-                </Button>
-                <Button onClick={() => exportDatabase()} title='Mindent ment' variant='warning'>
-                  <i className='bi bi-journal-arrow-down'></i>
-                </Button>
-                <Button onClick={() => importDatabase()} title='DB feltöltése' variant='warning'>
-                  <i className='bi bi-journal-arrow-up'></i>
-                </Button>
-
                 <Button onClick={resetChar} title='Új' variant='danger'>
                   <i className='bi bi-eraser'></i>
+                </Button>
+                <Button onClick={() => setShowSidebar(!showSidebar)} title='Menü' variant='secondary'>
+                  <i className='bi bi-list'></i>
                 </Button>
               </Col>
             </Row>
             <Row>
               <InputGroup>
                 <InputGroup.Text>Egyéb</InputGroup.Text>
-                <Form.Control
-                  as={TextareaAutosize}
-                  value={charNotes}
-                  onChange={(e) => setCharNotes(e.target.value)}
-                />
+                <Form.Control as={TextareaAutosize} value={charNotes} onChange={(e) => setCharNotes(e.target.value)} />
               </InputGroup>
             </Row>
             <Row>
               <Col>
-                <Button
-                  onClick={generateRandomDescription}
-                  size='sm'
-                  variant='secondary'
-                  className='mt-2'>
+                <Button onClick={generateRandomDescription} size='sm' variant='secondary' className='mt-2'>
                   Véletlen leíró
                 </Button>
               </Col>
             </Row>
             <div className='d-flex gap-2 mt-2'>
               {skillTree.calculated.map((c) =>
-                attrButton(
-                  { name: Object.keys(c)[0] },
-                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1,
-                  "calculated"
-                )
+                attrButton({ name: Object.keys(c)[0] }, Object.keys(c)[0] === "Mega páncél" ? 10 : 1, "calculated")
               )}
             </div>
             <Row className='pt-2'>
@@ -382,15 +305,8 @@ function Npc() {
                               {skill.specs && (
                                 <ListGroup className='py-0 ms-2'>
                                   {skill.specs.map((spec) => (
-                                    <ListGroup.Item
-                                      key={spec.name}
-                                      className='border-0 py-0 ms-2 pe-0'>
-                                      {displayCharValue(
-                                        attrs,
-                                        spec.name,
-                                        attribute.name,
-                                        skill.name
-                                      )}
+                                    <ListGroup.Item key={spec.name} className='border-0 py-0 ms-2 pe-0'>
+                                      {displayCharValue(attrs, spec.name, attribute.name, skill.name)}
                                     </ListGroup.Item>
                                   ))}
                                 </ListGroup>
@@ -411,12 +327,7 @@ function Npc() {
             <Row>
               <Col>
                 <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
-                <Button
-                  title='Vágólapra'
-                  onClick={copyToClipboard}
-                  className='mt-2 btn-sm'
-                  id='copy-button'
-                  variant='secondary'>
+                <Button title='Vágólapra' onClick={copyToClipboard} className='mt-2 btn-sm' id='copy-button' variant='secondary'>
                   <i className='bi bi-clipboard'></i>
                 </Button>
               </Col>
@@ -429,6 +340,18 @@ function Npc() {
         setSelectedCharacter={setSelectedCharacter}
         open={showSelectNpcDialog}
         setOpen={setShowSelectNpcDialog}
+      />
+      <NpcSidebar
+        show={showSidebar}
+        setShow={setShowSidebar}
+        charName={charName}
+        setCharName={setCharName}
+        charId={charId}
+        setCharId={setCharId}
+        charNotes={charNotes}
+        setCharNotes={setCharNotes}
+        attrs={attrs}
+        setAttrs={setAttrs}
       />
     </Container>
   );
