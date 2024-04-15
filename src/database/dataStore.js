@@ -13,8 +13,10 @@ export function cleanupDb() {
   db.npcs.clear();
 }
 
-export async function exportDatabase() {
-  const blob = await exportDB(db);
+export async function exportNpcs() {
+  const blob = await exportDB(db, {
+    filter: (table) => table === "npcs",
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -22,16 +24,19 @@ export async function exportDatabase() {
   link.click();
 }
 
-export async function importDatabase() {
+export async function importNpcs() {
   const input = document.createElement("input");
   input.type = "file";
   input.accept = ".json";
   input.style.display = "none";
   input.onchange = (e) => {
-    cleanupDb();
+    db.npcs.clear();
     const file = e.target.files[0];
-    importInto(db, file).then(() => {
+    importInto(db, file, {
+      filter: (table) => table === "npcs",
+    }).then(() => {
       input.remove();
+      db.npcs.count().then((count) => alert(`${count} NJK feltöltve.`));
     });
   };
   document.body.appendChild(input);

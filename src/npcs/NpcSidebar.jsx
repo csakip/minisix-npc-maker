@@ -1,5 +1,5 @@
 import { ListGroup, Offcanvas } from "react-bootstrap";
-import { exportDatabase, importDatabase } from "../database/dataStore";
+import { exportNpcs, importNpcs } from "../database/dataStore";
 
 function NpcSidebar({
   onclose,
@@ -71,11 +71,11 @@ function NpcSidebar({
           <ListGroup.Item onClick={() => upload(true)}>
             <i className='bi bi-upload me-3'></i>NJK feltöltése
           </ListGroup.Item>
-          <ListGroup.Item onClick={() => exportDatabase()}>
-            <i className='bi bi-journal-arrow-down me-3'></i>DB letöltése
+          <ListGroup.Item onClick={() => exportNpcs()}>
+            <i className='bi bi-journal-arrow-down me-3'></i>Adatbázis letöltése
           </ListGroup.Item>
-          <ListGroup.Item onClick={() => importDatabase()}>
-            <i className='bi bi-journal-arrow-up me-3'></i>DB feltöltése
+          <ListGroup.Item onClick={() => importNpcs()}>
+            <i className='bi bi-journal-arrow-up me-3'></i>Adatbázis feltöltése
           </ListGroup.Item>
         </ListGroup>
       </Offcanvas.Body>
