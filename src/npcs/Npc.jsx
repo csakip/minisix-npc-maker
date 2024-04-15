@@ -1,4 +1,4 @@
-import { Button, Col, Container, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
+import { Button, ButtonGroup, Col, Container, Dropdown, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
@@ -9,7 +9,7 @@ import { randomTables } from "../database/randomTables";
 import { d66s } from "../dice";
 import TextareaAutosize from "react-textarea-autosize";
 import CharacterSheet from "../common/CharacterSheet";
-import { displayAsDiceCode, displayCharValue, findAttr } from "../common/utils";
+import { displayAsDiceCode, displayCharValue, findAttr, generateRandomDescription } from "../common/utils";
 import NpcSidebar from "./NpcSidebar";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
@@ -38,7 +38,7 @@ function Npc() {
     localStoreTimerRef.current = setTimeout(() => {
       localStorage.setItem("minisix-npc-generator", JSON.stringify({ charName, id: charId, charNotes, attributes: attrs }));
     }, 1000);
-  }, [attrs, charName, charNotes]);
+  }, [attrs, charName, charNotes, charId]);
 
   function attrButton(item, step = 1, className = "") {
     const selected = findAttr(attrs, item.name)?.value > 0 ? "selected" : "";
@@ -195,22 +195,21 @@ function Npc() {
   }
 
   // Store to db
-  function storeNpc() {
+  function storeNpc(saveAs = false) {
+    console.log(saveAs, charId);
     const toSave = {
-      id: charId || uuid(),
+      id: saveAs ? uuid() : charId || uuid(),
       name: charName,
       notes: charNotes,
       attrs: attrs,
       updated: Date.now(),
     };
-    db.npcs.put(toSave, toSave.id);
+    db.npcs.put(toSave, toSave.id).then((ret) => setCharId(ret));
   }
 
-  function generateRandomDescription() {
-    // make a random description from randomTables
-    const desc = randomTables.descriptor[d66s()];
-    const personality = randomTables.personality[d66s()].toLowerCase();
-    setCharNotes(charNotes + "\n" + `${desc} ${personality}`);
+  function addRandomDescription() {
+    const rndDesc = generateRandomDescription();
+    setCharNotes(charNotes + "\n" + rndDesc);
   }
 
   return (
@@ -261,9 +260,15 @@ function Npc() {
                 <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
                   <i className='bi bi-search'></i>
                 </Button>
-                <Button onClick={storeNpc} title='Mentés' variant='warning'>
-                  <i className='bi bi-floppy'></i>
-                </Button>
+                <Dropdown as={ButtonGroup}>
+                  <Button onClick={() => storeNpc()} title='Mentés' variant='warning' className='pe-1'>
+                    <i className='bi bi-floppy'></i>
+                  </Button>
+                  <Dropdown.Toggle split variant='warning' className='ps-1' />
+                  <Dropdown.Menu>
+                    <Dropdown.Item onClick={() => storeNpc(true)}>Másolat mentése</Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
                 <Button onClick={resetChar} title='Új' variant='danger'>
                   <i className='bi bi-eraser'></i>
                 </Button>
@@ -280,7 +285,7 @@ function Npc() {
             </Row>
             <Row>
               <Col>
-                <Button onClick={generateRandomDescription} size='sm' variant='secondary' className='mt-2'>
+                <Button onClick={addRandomDescription} size='sm' variant='secondary' className='mt-2'>
                   Véletlen leíró
                 </Button>
               </Col>

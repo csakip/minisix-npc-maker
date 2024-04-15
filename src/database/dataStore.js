@@ -5,7 +5,7 @@ export let db = new Dexie("minisix-npc-maker");
 
 db.version(1).stores({
   characters: "++id, order",
-  npcs: "++id, name, order, updated",
+  npcs: "id, name, order, updated",
 });
 
 export function cleanupDb() {

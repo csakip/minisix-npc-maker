@@ -5,7 +5,7 @@ import InputGroup from "react-bootstrap/InputGroup";
 import Row from "react-bootstrap/Row";
 import { db } from "../database/dataStore";
 import { useState } from "react";
-import { updateCharacters } from "../common/utils";
+import { generateRandomDescription, updateCharacters } from "../common/utils";
 
 const tags = [
   { label: "Kábult", defaultLength: 2, notes: "-1d mindenre ebben és köv körben." },
@@ -61,18 +61,13 @@ function Tags({ characters, selectedCharacter }) {
     const hadThisTag = selectedCharacter.tags?.find((t) => t.label === tag.label);
     let newTags;
     if (!hadThisTag) {
-      newTags = [
-        ...(selectedCharacter.tags ?? []),
-        { label: tag.label, length: tag.defaultLength, notes: tag.notes },
-      ];
+      newTags = [...(selectedCharacter.tags ?? []), { label: tag.label, length: tag.defaultLength, notes: tag.notes }];
     } else {
       newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
     }
 
     updateCharacters(
-      characters.map((character) =>
-        character.id === selectedCharacter.id ? { ...character, tags: newTags } : character
-      )
+      characters.map((character) => (character.id === selectedCharacter.id ? { ...character, tags: newTags } : character))
     );
   }
 
@@ -84,11 +79,7 @@ function Tags({ characters, selectedCharacter }) {
             {tags?.map((tag) => (
               <Button
                 size='sm'
-                variant={
-                  selectedCharacter.tags?.some((t) => t.label === tag.label)
-                    ? "primary"
-                    : "outline-secondary"
-                }
+                variant={selectedCharacter.tags?.some((t) => t.label === tag.label) ? "primary" : "outline-secondary"}
                 key={tag.label}
                 onClick={() => toggleTag(tag)}>
                 {tag.label}
@@ -99,11 +90,7 @@ function Tags({ characters, selectedCharacter }) {
               .map((tag) => (
                 <Button
                   size='sm'
-                  variant={
-                    selectedCharacter.tags?.some((t) => t.label === tag.label)
-                      ? "primary"
-                      : "outline-secondary"
-                  }
+                  variant={selectedCharacter.tags?.some((t) => t.label === tag.label) ? "primary" : "outline-secondary"}
                   key={tag.label}
                   onClick={() => toggleTag(tag)}>
                   {tag.label}
@@ -117,6 +104,12 @@ function Tags({ characters, selectedCharacter }) {
           <Form onSubmit={addCustomTag}>
             <InputGroup className='mt-2'>
               <InputGroup.Text>Címke</InputGroup.Text>
+              <Button
+                size='sm'
+                variant='outline-secondary'
+                onClick={() => setCustomTag({ ...customTag, label: generateRandomDescription() })}>
+                <i className='bi bi-shuffle'></i>
+              </Button>
               <Form.Control
                 value={customTag.label}
                 onChange={(e) => setCustomTag({ ...customTag, label: e.target.value })}
@@ -133,11 +126,7 @@ function Tags({ characters, selectedCharacter }) {
                 placeholder='Jegyzet'
               />
               <InputGroup.Text>
-                <Button
-                  size='sm'
-                  className='py-0 px-1 text-nowrap'
-                  variant='secondary'
-                  type='submit'>
+                <Button size='sm' className='py-0 px-1 text-nowrap' variant='secondary' type='submit'>
                   Ok
                 </Button>
               </InputGroup.Text>

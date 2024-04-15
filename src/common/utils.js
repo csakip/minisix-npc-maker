@@ -1,5 +1,6 @@
 import { db } from "../database/dataStore";
-import { parseDice, roll } from "../dice";
+import { randomTables } from "../database/randomTables";
+import { d66s, parseDice, roll } from "../dice";
 
 export function updateCharacters(chars) {
   if (!chars) return;
@@ -7,9 +8,7 @@ export function updateCharacters(chars) {
 }
 
 export function sortCharacters(chars) {
-  const newOrder = [...chars].sort(
-    (a, b) => (b.initiative?.reduced || 0) - (a.initiative?.reduced || 0)
-  );
+  const newOrder = [...chars].sort((a, b) => (b.initiative?.reduced || 0) - (a.initiative?.reduced || 0));
   newOrder.forEach((c, i) => {
     c.order = i;
   });
@@ -59,4 +58,11 @@ export function displayAsDiceCode(value) {
   // Get the number after the d
   const after = value % 3;
   return `${before}d${after === 0 ? "" : "+" + after}`;
+}
+
+export function generateRandomDescription() {
+  // make a random description from randomTables
+  const desc = randomTables.descriptor[d66s()];
+  const personality = randomTables.personality[d66s()].toLowerCase();
+  return `${desc} ${personality}`;
 }
