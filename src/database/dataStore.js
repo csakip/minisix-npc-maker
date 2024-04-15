@@ -4,8 +4,8 @@ import { exportDB, importInto } from "dexie-export-import";
 export let db = new Dexie("minisix-npc-maker");
 
 db.version(1).stores({
-  characters: "++id",
-  npcs: "++id, name",
+  characters: "++id, order",
+  npcs: "++id, name, order, updated",
 });
 
 export function cleanupDb() {
