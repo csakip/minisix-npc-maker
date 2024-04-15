@@ -9,8 +9,9 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { useSimpleModal } from "./SimpleModal";
 
-const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setOpen }) => {
+const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setOpen, showCopies = false }) => {
   const [filter, setFilter] = useState("");
+  const [copies, setCopies] = useState(1);
   const { openModal, closeModal, SimpleModal } = useSimpleModal();
 
   const npcs = useLiveQuery(() => {
@@ -24,6 +25,7 @@ const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setO
 
   function close() {
     setFilter("");
+    setCopies(1);
     setOpen(false);
   }
 
@@ -35,12 +37,21 @@ const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setO
         </Modal.Header>
         <Modal.Body>
           <>
-            <Form.Control
-              value={filter}
-              onChange={(e) => setFilter(e.target.value)}
-              placeholder='Keresés'
-              className='mb-3'
-            />
+            <Row>
+              <Col>
+                <Form.Control value={filter} onChange={(e) => setFilter(e.target.value)} placeholder='Keresés' className='mb-3' />
+              </Col>
+              {showCopies && (
+                <Col xs={2}>
+                  <Form.Control
+                    value={copies}
+                    onChange={(e) => setCopies(parseInt(e.target.value))}
+                    title='Darabszám'
+                    className='mb-3'
+                  />
+                </Col>
+              )}
+            </Row>
             {npcs?.length === 0 && <h4 className='text-center'>Nincs találat</h4>}
             <ListGroup>
               {npcs?.map((npc) => (
@@ -48,7 +59,7 @@ const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setO
                   className={npc.id === selectedCharacterId ? "list-group-item-info" : ""}
                   key={npc.id}
                   onClick={() => {
-                    setSelectedCharacter(npc);
+                    setSelectedCharacter(npc, parseInt(copies));
                     close();
                   }}>
                   <Row>

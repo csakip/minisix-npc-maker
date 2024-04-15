@@ -10,18 +10,20 @@ function ControlButtons({ setEditedCharacter, characters }) {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const { openModal, closeModal, SimpleModal } = useSimpleModal();
 
-  function setSelectedNpc(npc) {
-    const initiative = npc.attrs.find((a) => a.name === "Ügyesség")?.value || 6;
-    const toSave = {
-      name: npc.name,
-      roll: format(initiative),
-      type: "npc",
-      initiative: roll(initiative),
-      notes: npc.notes,
-      tags: [],
-      order: 100000,
-    };
-    db.characters.put(toSave);
+  function setSelectedNpc(npc, copies) {
+    for (let i = 0; i < copies; i++) {
+      const initiative = npc.attrs.find((a) => a.name === "Ügyesség")?.value || 6;
+      const toSave = {
+        name: npc.name,
+        roll: format(initiative),
+        type: "npc",
+        initiative: roll(initiative),
+        notes: npc.notes,
+        tags: [],
+        order: 100000,
+      };
+      db.characters.put(toSave);
+    }
   }
 
   function newRound() {
@@ -57,10 +59,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
           Új kör
         </Button>
         <hr />
-        <Button
-          size='sm'
-          variant='secondary'
-          onClick={() => setEditedCharacter({ name: "", roll: "" })}>
+        <Button size='sm' variant='secondary' onClick={() => setEditedCharacter({ name: "", roll: "" })}>
           Új karakter
         </Button>
         <Button size='sm' variant='secondary' onClick={() => setShowSelectNpcDialog(true)}>
@@ -77,9 +76,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
               cancelButton: "Mégse",
               onClose: (ret) => {
                 if (ret) {
-                  db.characters.bulkDelete(
-                    characters.filter((c) => c.type === "npc").map((c) => c.id)
-                  );
+                  db.characters.bulkDelete(characters.filter((c) => c.type === "npc").map((c) => c.id));
                   db.characters.toCollection().modify({ initiative: undefined });
                 }
                 closeModal();
@@ -93,6 +90,7 @@ function ControlButtons({ setEditedCharacter, characters }) {
         setSelectedCharacter={setSelectedNpc}
         open={showSelectNpcDialog}
         setOpen={setShowSelectNpcDialog}
+        showCopies={true}
       />
       <SimpleModal />
     </>
