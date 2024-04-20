@@ -1,4 +1,14 @@
-import { Button, ButtonGroup, Col, Container, Dropdown, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
+import {
+  Button,
+  ButtonGroup,
+  Col,
+  Container,
+  Dropdown,
+  Form,
+  InputGroup,
+  ListGroup,
+  Row,
+} from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
 import React, { useEffect, useRef, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
@@ -7,7 +17,12 @@ import { db } from "../database/dataStore";
 import { v4 as uuid } from "uuid";
 import TextareaAutosize from "react-textarea-autosize";
 import CharacterSheet from "../common/CharacterSheet";
-import { displayAsDiceCode, displayCharValue, findAttr, generateRandomDescription } from "../common/utils";
+import {
+  displayAsDiceCode,
+  displayCharValue,
+  findAttr,
+  generateRandomDescription,
+} from "../common/utils";
 import NpcSidebar from "./NpcSidebar";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
@@ -16,7 +31,9 @@ function Npc() {
   // get from local storage
   const [attrs, setAttrs] = useState(
     localStored?.attributes ||
-      skillTree.attributes.filter((a) => !["Pszi", "Mágia"].includes(a.name)).map((a) => ({ name: a.name, value: 6 }))
+      skillTree.attributes
+        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
+        .map((a) => ({ name: a.name, value: 6 }))
   );
   const [charName, setCharName] = useState(localStored?.charName || "");
   const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
@@ -27,6 +44,28 @@ function Npc() {
 
   const localStoreTimerRef = useRef();
 
+  // Load character if id is set in query
+  useEffect(() => {
+    async function setFromSearchParams() {
+      const url = new URL(window.location.href);
+      const id = url.searchParams.get("id");
+      if (id) {
+        // Remove id from url
+        const url = window.location.href.split("?")[0];
+        const hash = window.location.hash.split("#")[1];
+        const urlPath = url + "#" + hash;
+        window.history.pushState(null, "", urlPath);
+
+        // Load npc by id
+        const npc = await db.npcs.get(id);
+        if (npc) {
+          setSelectedCharacter(npc);
+        }
+      }
+    }
+    setFromSearchParams();
+  }, []);
+
   // Save attrs to local storage with debounce
   useEffect(() => {
     if (localStoreTimerRef.current) {
@@ -34,7 +73,10 @@ function Npc() {
     }
 
     localStoreTimerRef.current = setTimeout(() => {
-      localStorage.setItem("minisix-npc-generator", JSON.stringify({ charName, id: charId, charNotes, attributes: attrs }));
+      localStorage.setItem(
+        "minisix-npc-generator",
+        JSON.stringify({ charName, id: charId, charNotes, attributes: attrs })
+      );
     }, 1000);
   }, [attrs, charName, charNotes, charId]);
 
@@ -104,7 +146,11 @@ function Npc() {
     setCharName("");
     setCharNotes("");
     setCharId(undefined);
-    setAttrs(skillTree.attributes.filter((a) => !["Pszi", "Mágia"].includes(a.name)).map((a) => ({ name: a.name, value: 6 })));
+    setAttrs(
+      skillTree.attributes
+        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
+        .map((a) => ({ name: a.name, value: 6 }))
+    );
   }
 
   function calculateCost() {
@@ -161,11 +207,21 @@ function Npc() {
     return `Tulajdonság: ${displayAsDiceCode(attrCost)} és ${skillCost} Kp`;
   }
 
-  function copyToClipboard() {
+  function copyToClipboard(target) {
     try {
-      const charDisplay = document.getElementById("char-display");
-      copyToClip(charDisplay.innerHTML);
-      // add success class to button
+      let content;
+      if (target === "statBlock") {
+        const charDisplay = document.getElementById("char-display");
+        content = charDisplay.innerHTML;
+      }
+      if (target === "url") {
+        const hash = window.location.href.split("#");
+        const url = hash[0].split("?")[0];
+        content = url + "?id=" + charId + "#" + hash[1];
+      }
+      console.log(charName, content);
+      copyToClip(content);
+      // Add success class to button
       const copyButton = document.getElementById("copy-button");
       copyButton.classList.add("btn-success");
       setTimeout(() => copyButton.classList.remove("btn-success"), 1000);
@@ -220,7 +276,11 @@ function Npc() {
                 title='Specializaciók'
                 className='position-fixed btn-sm px-2 py-0 z-1'
                 onClick={() => setShowSpec(!showSpec)}>
-                {showSpec ? <i className='bi bi-chevron-contract'></i> : <i className='bi bi-chevron-expand'></i>}
+                {showSpec ? (
+                  <i className='bi bi-chevron-contract'></i>
+                ) : (
+                  <i className='bi bi-chevron-expand'></i>
+                )}
               </Button>
             </div>
             <ListGroup className='list-group-root skill-tree'>
@@ -232,7 +292,9 @@ function Npc() {
                       {attribute.skills.map((skill) => (
                         <React.Fragment key={skill.name}>
                           {attrButton(skill)}
-                          {showSpec && skill.specs && <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>}
+                          {showSpec && skill.specs && (
+                            <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>
+                          )}
                         </React.Fragment>
                       ))}
                     </ListGroup>
@@ -249,6 +311,15 @@ function Npc() {
                 <InputGroup className='mb-2'>
                   <InputGroup.Text>Név</InputGroup.Text>
                   <Form.Control value={charName} onChange={(e) => setCharName(e.target.value)} />
+                  {charId && (
+                    <Button
+                      title='Vágólapra'
+                      onClick={() => copyToClipboard("url")}
+                      id='copy-button'
+                      variant='secondary'>
+                      <i className='bi bi-link'></i>
+                    </Button>
+                  )}
                 </InputGroup>
               </Col>
               <Col>
@@ -259,7 +330,11 @@ function Npc() {
                   <i className='bi bi-search'></i>
                 </Button>
                 <Dropdown as={ButtonGroup}>
-                  <Button onClick={() => storeNpc()} title='Mentés' variant='warning' className='pe-1'>
+                  <Button
+                    onClick={() => storeNpc()}
+                    title='Mentés'
+                    variant='warning'
+                    className='pe-1'>
                     <i className='bi bi-floppy'></i>
                   </Button>
                   <Dropdown.Toggle split variant='warning' className='ps-1' />
@@ -270,7 +345,10 @@ function Npc() {
                 <Button onClick={resetChar} title='Új' variant='danger'>
                   <i className='bi bi-eraser'></i>
                 </Button>
-                <Button onClick={() => setShowSidebar(!showSidebar)} title='Menü' variant='secondary'>
+                <Button
+                  onClick={() => setShowSidebar(!showSidebar)}
+                  title='Menü'
+                  variant='secondary'>
                   <i className='bi bi-list'></i>
                 </Button>
               </Col>
@@ -278,19 +356,31 @@ function Npc() {
             <Row>
               <InputGroup>
                 <InputGroup.Text>Egyéb</InputGroup.Text>
-                <Form.Control as={TextareaAutosize} value={charNotes} onChange={(e) => setCharNotes(e.target.value)} />
+                <Form.Control
+                  as={TextareaAutosize}
+                  value={charNotes}
+                  onChange={(e) => setCharNotes(e.target.value)}
+                />
               </InputGroup>
             </Row>
             <Row>
               <Col>
-                <Button onClick={addRandomDescription} size='sm' variant='secondary' className='mt-2'>
+                <Button
+                  onClick={addRandomDescription}
+                  size='sm'
+                  variant='secondary'
+                  className='mt-2'>
                   Véletlen leíró
                 </Button>
               </Col>
             </Row>
             <div className='d-flex gap-2 mt-2'>
               {skillTree.calculated.map((c) =>
-                attrButton({ name: Object.keys(c)[0] }, Object.keys(c)[0] === "Mega páncél" ? 10 : 1, "calculated")
+                attrButton(
+                  { name: Object.keys(c)[0] },
+                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1,
+                  "calculated"
+                )
               )}
             </div>
             <Row className='pt-2'>
@@ -308,8 +398,15 @@ function Npc() {
                               {skill.specs && (
                                 <ListGroup className='py-0 ms-2'>
                                   {skill.specs.map((spec) => (
-                                    <ListGroup.Item key={spec.name} className='border-0 py-0 ms-2 pe-0'>
-                                      {displayCharValue(attrs, spec.name, attribute.name, skill.name)}
+                                    <ListGroup.Item
+                                      key={spec.name}
+                                      className='border-0 py-0 ms-2 pe-0'>
+                                      {displayCharValue(
+                                        attrs,
+                                        spec.name,
+                                        attribute.name,
+                                        skill.name
+                                      )}
                                     </ListGroup.Item>
                                   ))}
                                 </ListGroup>
@@ -330,7 +427,12 @@ function Npc() {
             <Row>
               <Col>
                 <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
-                <Button title='Vágólapra' onClick={copyToClipboard} className='mt-2 btn-sm' id='copy-button' variant='secondary'>
+                <Button
+                  title='Vágólapra'
+                  onClick={() => copyToClipboard("statBlock")}
+                  className='mt-2 btn-sm'
+                  id='copy-button'
+                  variant='secondary'>
                   <i className='bi bi-clipboard'></i>
                 </Button>
               </Col>
