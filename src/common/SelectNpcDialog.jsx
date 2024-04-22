@@ -9,7 +9,13 @@ import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { useSimpleModal } from "./SimpleModal";
 
-const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setOpen, showCopies = false }) => {
+const SelectNpcDialog = ({
+  selectedCharacterId,
+  setSelectedCharacter,
+  open,
+  setOpen,
+  showCopies = false,
+}) => {
   const [filter, setFilter] = useState("");
   const [copies, setCopies] = useState(1);
   const { openModal, closeModal, SimpleModal } = useSimpleModal();
@@ -39,13 +45,20 @@ const SelectNpcDialog = ({ selectedCharacterId, setSelectedCharacter, open, setO
           <>
             <Row>
               <Col>
-                <Form.Control value={filter} onChange={(e) => setFilter(e.target.value)} placeholder='Keresés' className='mb-3' />
+                <Form.Control
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                  placeholder='Keresés'
+                  className='mb-3'
+                />
               </Col>
               {showCopies && (
                 <Col xs={2}>
                   <Form.Control
                     value={copies}
-                    onChange={(e) => setCopies(parseInt(e.target.value))}
+                    onChange={(e) =>
+                      setCopies(isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value))
+                    }
                     title='Darabszám'
                     className='mb-3'
                   />

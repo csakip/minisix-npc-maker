@@ -2,6 +2,10 @@
   --selected-color: #77d85e;
 }
 
+.tc-selected {
+  color: var(--selected-color);
+}
+
 body .offcanvas {
   --bs-offcanvas-width: 300px;
 }
@@ -31,6 +35,7 @@ pre {
   scrollbar-color: var(--bs-gray-light) var(--bs-body-bg);
   height: calc(100vh - 50px);
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .list-group.list-group-root {
@@ -102,7 +107,7 @@ pre {
   background-color: #fff2;
 }
 
-.initiatives .row > * {
+.initiatives .row * {
   --bs-gutter-x: 1.2rem;
 }
 

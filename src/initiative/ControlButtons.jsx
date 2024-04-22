@@ -22,6 +22,7 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
         notes: npc.notes,
         tags: [],
         order: 100000,
+        charNotes: "",
       };
       db.characters.put(toSave);
     }
@@ -66,7 +67,10 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
           </Button>
         </ButtonGroup>
         <hr />
-        <Button size='sm' variant='secondary' onClick={() => setEditedCharacter({ name: "", roll: "" })}>
+        <Button
+          size='sm'
+          variant='secondary'
+          onClick={() => setEditedCharacter({ name: "", roll: "" })}>
           Új karakter
         </Button>
         <Button size='sm' variant='secondary' onClick={() => setShowSelectNpcDialog(true)}>
@@ -84,7 +88,9 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
               onClose: (ret) => {
                 if (ret) {
                   newRound();
-                  db.characters.bulkDelete(characters.filter((c) => c.type === "npc").map((c) => c.id));
+                  db.characters.bulkDelete(
+                    characters.filter((c) => c.type === "npc").map((c) => c.id)
+                  );
                   db.characters.toCollection().modify({ initiative: undefined });
                 }
                 closeModal();

@@ -101,10 +101,16 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
       )}
       {displaySkills()}
       <br />
-      {skillTree.calculated
-        .map((c) => getCalculatedValue(c))
-        .filter((v) => v)
-        .join(", ")}
+      <span className='text-bold'>
+        {skillTree.calculated
+          .map((c) => getCalculatedValue(c))
+          .filter((v) => v)
+          .map((v, idx) => (
+            <span key={idx} className={`me-2 ${idx < 3 ? "tc-selected" : ""}`}>
+              {v}
+            </span>
+          ))}
+      </span>
       <br />
       {charNotes.split("\n").map((n, idx) => (
         <React.Fragment key={idx}>

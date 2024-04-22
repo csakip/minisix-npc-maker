@@ -7,7 +7,9 @@ import { rollInitiative, setInitiative } from "../common/utils";
 import { db } from "../database/dataStore";
 import Tags from "./Tags";
 import CharacterSheet from "../common/CharacterSheet";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import reactTextareaAutosize from "react-textarea-autosize";
+import { debounce } from "lodash";
 
 function DetailsPane({
   selectedCharacterId,
@@ -17,9 +19,12 @@ function DetailsPane({
 }) {
   const [npc, setNpc] = useState();
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
+  const [charNotes, setCharNotes] = useState(selectedCharacter?.charNotes || "");
 
   useEffect(() => {
     if (selectedCharacter) {
+      setCharNotes(selectedCharacter?.charNotes || "");
+      // If it's an npc (by name), load it from db
       db.npcs.where("name").equals(selectedCharacter.name).first().then(setNpc);
     }
   }, [selectedCharacter]);
@@ -28,6 +33,19 @@ function DetailsPane({
     db.characters.delete(id);
     // Deselect
     setSelectedCharacterId(undefined);
+  }
+
+  // Update char notes in db with debounce
+  const delayedUpdateCharNotes = useCallback(
+    debounce((selectedCharacterId, text) => {
+      db.characters.where({ id: selectedCharacterId }).modify({ charNotes: text });
+    }, 500),
+    []
+  );
+
+  function updateCharNotes(text) {
+    setCharNotes(text);
+    delayedUpdateCharNotes(selectedCharacterId, text);
   }
 
   return (
@@ -79,7 +97,23 @@ function DetailsPane({
           </Row>
         )}
 
-        <Tags characters={characters} selectedCharacter={selectedCharacter} />
+        <Row>
+          <Col>
+            <Tags characters={characters} selectedCharacter={selectedCharacter} />
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <InputGroup className='mt-2'>
+              <Form.Control
+                as={reactTextareaAutosize}
+                value={charNotes}
+                onChange={(e) => updateCharNotes(e.target.value)}
+                placeholder='Jegyzetek'
+              />
+            </InputGroup>
+          </Col>
+        </Row>
       </>
     )
   );

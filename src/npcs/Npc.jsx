@@ -66,7 +66,7 @@ function Npc() {
     setFromSearchParams();
   }, []);
 
-  // Save attrs to local storage with debounce
+  // Save attrs to local storage with throttle
   useEffect(() => {
     if (localStoreTimerRef.current) {
       clearTimeout(localStoreTimerRef.current);

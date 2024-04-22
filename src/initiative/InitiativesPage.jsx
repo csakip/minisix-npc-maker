@@ -12,7 +12,9 @@ import InitiativeList from "./InitiativeList";
 const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
-  const [round, setRound] = useState(parseInt(localStorage.getItem("minisix-npc-generator-round") ?? "1") || 1);
+  const [round, setRound] = useState(
+    parseInt(localStorage.getItem("minisix-npc-generator-round") ?? "1") || 1
+  );
 
   const characters = useLiveQuery(() => db.characters.orderBy("order").toArray());
 
@@ -26,30 +28,35 @@ const Initiatives = () => {
     <Container fluid className='px-3 initiatives'>
       <Row className='pt-2'>
         <Col xs='1'>
-          <ControlButtons setEditedCharacter={setEditedCharacter} characters={characters} newRound={newRound} />
+          <ControlButtons
+            setEditedCharacter={setEditedCharacter}
+            characters={characters}
+            newRound={newRound}
+          />
         </Col>
         <Col>
           <h5>{round}. kör</h5>
           <InitiativeList {...{ characters, selectedCharacterId, setSelectedCharacterId }} />
         </Col>
         <Col xs='5'>
-          <Row>
-            <Col className='scrollable-menu'>
-              {selectedCharacterId && (
-                <DetailsPane
-                  {...{
-                    selectedCharacterId,
-                    setSelectedCharacterId,
-                    setEditedCharacter,
-                    characters,
-                  }}
-                />
-              )}
-            </Col>
-          </Row>
+          <div className='scrollable-menu'>
+            {selectedCharacterId && (
+              <DetailsPane
+                {...{
+                  selectedCharacterId,
+                  setSelectedCharacterId,
+                  setEditedCharacter,
+                  characters,
+                }}
+              />
+            )}
+          </div>
         </Col>
       </Row>
-      <AddCharacterDialog editedCharacter={editedCharacter} setEditedCharacter={setEditedCharacter} />
+      <AddCharacterDialog
+        editedCharacter={editedCharacter}
+        setEditedCharacter={setEditedCharacter}
+      />
     </Container>
   );
 };

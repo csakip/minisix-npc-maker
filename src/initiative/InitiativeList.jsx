@@ -37,7 +37,7 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
             <ListGroup.Item
               key={character.id}
               className={selectedCharacterId === character.id ? "selected p-0" : "p-0"}>
-              <Row onClick={() => setSelectedCharacterId(character.id)} className='p-2'>
+              <Row onMouseDown={() => setSelectedCharacterId(character.id)} className='p-2'>
                 <Col xs='1' className='pe-0'>
                   {character.type === "npc" ? (
                     <Button
