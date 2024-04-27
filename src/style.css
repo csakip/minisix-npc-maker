@@ -114,3 +114,7 @@ pre {
 .initiatives .buttons button {
   margin-bottom: 0.5rem;
 }
+
+.dxc-login-dlg form label {
+  margin-bottom: 1rem;
+}

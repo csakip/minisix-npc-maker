@@ -6,6 +6,8 @@ import { db } from "../database/dataStore";
 export default function TopMenu(props) {
   const user = useObservable(db.cloud.currentUser);
 
+  const isAuthorized = user.name !== "Unauthorized";
+
   return (
     <>
       <Navbar className='py-0 border-bottom'>
@@ -22,16 +24,19 @@ export default function TopMenu(props) {
         </Navbar.Collapse>
         <Navbar.Collapse className='justify-content-end me-2'>
           <Navbar.Text>
-            <a
-              href='#'
-              title='Kijelentkezés'
-              onClick={() => (user.name === "Unauthorized" ? db.cloud.login() : db.cloud.logout())}>
-              <i className='bi bi-person-dash'></i>
-            </a>
+            {isAuthorized ? (
+              <a href='#' title='Kijelentkezés' onClick={() => db.cloud.logout()}>
+                <i className='bi bi-toggle2-on h5'></i>
+              </a>
+            ) : (
+              <a href='#' title='Bejelentkezés' onClick={() => db.cloud.login()}>
+                <i className='bi bi-toggle2-off h5'></i>
+              </a>
+            )}
           </Navbar.Text>
         </Navbar.Collapse>
       </Navbar>
-      {user.name === "Unauthorized" ? null : props.children}
+      {isAuthorized ? props.children : null}
     </>
   );
 }
