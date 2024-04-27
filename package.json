@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "dexie": "^4.0.4",
+    "dexie-cloud-addon": "^4.0.2",
     "dexie-export-import": "^4.1.1",
     "dexie-react-hooks": "^1.1.7",
     "lodash": "^4.17.21",

@@ -1,12 +1,26 @@
 import Dexie from "dexie";
 import { exportDB, importInto } from "dexie-export-import";
+import dexieCloud from "dexie-cloud-addon";
+import dexieConfig from "./../../dexie-cloud.json";
 
-export let db = new Dexie("minisix-npc-maker");
+export let db = new Dexie("minisix-npc-maker", { addons: [dexieCloud] });
 
 db.version(1).stores({
-  characters: "++id, order",
+  characters: "@id, order",
   npcs: "id, name, order, updated",
+
+  // Access Control tables
+  realms: "@realmId",
+  members: "@id", // Optionally, index things also, like "realmId" or "email".
+  roles: "[realmId+name]",
 });
+
+db.cloud.configure({
+  databaseUrl: dexieConfig.dbUrl,
+  requireAuth: false,
+});
+
+db.cloud.login();
 
 export function cleanupDb() {
   db.characters.clear();
@@ -37,6 +51,7 @@ export async function importNpcs() {
     }).then(() => {
       input.remove();
       db.npcs.count().then((count) => alert(`${count} NJK feltöltve.`));
+      db.cloud.sync();
     });
   };
   document.body.appendChild(input);

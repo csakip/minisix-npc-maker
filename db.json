@@ -1,0 +1,18 @@
+{
+  "schema": {
+    "members": "@id",
+    "roles": "[realmId+name]",
+    "realms": "@realmId"
+  },
+  "sealed": false,
+  "data": {
+    "rlm-public": {
+      "realms": {
+        "rlm-public": {
+          "name": "public",
+          "owner": "rlm-public"
+        }
+      }
+    }
+  }
+}
