@@ -53,7 +53,7 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
       const addNum = Math.floor((Math.floor(willpower / 3) + Math.floor(psi / 3)) / 2) + psiRes;
       return {
         name: name,
-        value: "4d" + (addNum ? "+" + addNum : ""),
+        value: "4d" + (addNum ? "+" + addNum : "") + " (vs 20)",
         highlighted: calculated.highlighted,
       };
     }
@@ -65,11 +65,11 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
       const addNum = Math.floor(magic / 3) + magicAttack;
       return {
         name: name,
-        value: "6d" + (addNum ? "+" + addNum : "") + "(vs 24)",
+        value: "6d" + (addNum ? "+" + addNum : "") + " (vs 24)",
         highlighted: calculated.highlighted,
       };
     }
-    return "nope";
+    return;
   }
 
   function displaySkills() {
@@ -112,7 +112,7 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
       });
     });
 
-    return attrsStrArray.join(", ") + " - " + skillsStrArray.join(", ");
+    return attrsStrArray.join(", ") + "\n" + skillsStrArray.join(", ");
   }
 
   return (
@@ -123,8 +123,8 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
         </>
       )}
       {displaySkills()}
-      <br />
-      <span className='text-bold'>
+      <br className='mb-2' />
+      <span>
         {skillTree.calculated
           .map((c) => getCalculatedValue(c))
           .filter((v) => v)
@@ -135,7 +135,7 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
             </span>
           ))}
       </span>
-      <br />
+      <br className='mb-2' />
       {charNotes.split("\n").map((n, idx) => (
         <React.Fragment key={idx}>
           {n}

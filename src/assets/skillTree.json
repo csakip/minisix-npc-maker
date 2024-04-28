@@ -384,7 +384,6 @@
     { "name": "Kiterés", "value": ["Ügyesség", "Kitérés"], "highlighted": true },
     { "name": "Pszi ellenállás", "value": { "special": "pszi" } },
     { "name": "Mágikus erő", "value": { "special": "magic" } },
-    { "name": "Félelem ellenállás", "value": ["Elme", "Akaraterő"] },
     { "name": "Test pont", "value": { "special": "test" } },
     { "name": "Mozgás", "value": 1 },
     { "name": "Mega páncél", "value": 0 }
