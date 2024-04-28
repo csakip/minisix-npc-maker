@@ -39,7 +39,7 @@ function DetailsPane({
   const delayedUpdateCharNotes = useCallback(
     debounce((selectedCharacterId, text) => {
       db.characters.where({ id: selectedCharacterId }).modify({ charNotes: text });
-    }, 500),
+    }, 1000),
     []
   );
 

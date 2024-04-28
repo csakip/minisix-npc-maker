@@ -3,7 +3,9 @@ import { exportDB, importInto } from "dexie-export-import";
 import dexieCloud from "dexie-cloud-addon";
 import dexieConfig from "./../../dexie-cloud.json";
 
-export let db = new Dexie("minisix-npc-maker", { addons: [dexieCloud] });
+export let db = new Dexie("minisix-npc-maker", {
+  addons: [dexieCloud],
+});
 
 db.version(1).stores({
   characters: "@id, order",
@@ -18,6 +20,7 @@ db.version(1).stores({
 db.cloud.configure({
   databaseUrl: dexieConfig.dbUrl,
   requireAuth: false,
+  unsyncedTables: ["characters"],
 });
 
 db.cloud.login();
