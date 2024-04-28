@@ -147,6 +147,9 @@
           "name": "Akaraterő"
         },
         {
+          "name": "Keresés"
+        },
+        {
           "name": "Kommunikációs eszközök",
           "noParent": true,
           "specs": [
@@ -376,14 +379,14 @@
     { "name": "Mágia" }
   ],
   "calculated": [
-    { "Blokk": ["Ügyesség", "Pusztakezes harc"] },
-    { "Hárítás": ["Ügyesség", "Közelharc"] },
-    { "Kiterés": ["Ügyesség", "Kitérés"] },
-    { "Pszi ellenállás": { "special": "pszi" } },
-    { "Mágia ellenállás": ["Elme", "Akaraterő"] },
-    { "Félelem ellenállás": ["Elme", "Akaraterő"] },
-    { "Test pont": { "special": "test" } },
-    { "Mozgás": 1 },
-    { "Mega páncél": 0 }
+    { "name": "Blokk", "value": ["Ügyesség", "Pusztakezes harc"], "highlighted": true },
+    { "name": "Hárítás", "value": ["Ügyesség", "Közelharc"], "highlighted": true },
+    { "name": "Kiterés", "value": ["Ügyesség", "Kitérés"], "highlighted": true },
+    { "name": "Pszi ellenállás", "value": { "special": "pszi" } },
+    { "name": "Mágikus erő", "value": { "special": "magic" } },
+    { "name": "Félelem ellenállás", "value": ["Elme", "Akaraterő"] },
+    { "name": "Test pont", "value": { "special": "test" } },
+    { "name": "Mozgás", "value": 1 },
+    { "name": "Mega páncél", "value": 0 }
   ]
 }

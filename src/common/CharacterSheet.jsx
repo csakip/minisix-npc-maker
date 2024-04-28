@@ -7,21 +7,26 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
   // Returns the calculated value. if the calculator.value is an array, add the values of their attr.value
   function getCalculatedValue(calculated) {
     if (attrs.length === 0) return;
-    const name = Object.keys(calculated)[0];
-    const value = Object.values(calculated)[0];
+    const { name, value } = calculated;
+
+    // If value is an array, calculate the sum of its values
     if (Array.isArray(value)) {
-      return (
-        name +
-        ": " +
-        (value.map((value) => findAttr(attrs, value)?.value || 0).reduce((a, b) => a + b, 0) +
-          (findAttr(attrs, name)?.value || 0))
-      );
+      return {
+        name,
+        value:
+          value.map((value) => findAttr(attrs, value)?.value || 0).reduce((a, b) => a + b, 0) +
+          (findAttr(attrs, name)?.value || 0),
+        highlighted: calculated.highlighted,
+      };
     }
+
+    // If value is a number, use the attribute, and add value to it
     if (isNumber(value)) {
       const sum = value + (findAttr(attrs, name)?.value || 0);
       if (!sum) return undefined;
-      return name + ": " + sum;
+      return { name: name, value: sum, highlighted: calculated.highlighted };
     }
+
     // Calculate body points (Highest skill under Test d*4 + pip + 20)
     if (isObject(value) && value.special === "test") {
       // skill with the highest value
@@ -36,15 +41,33 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
         (highestTestSkillValue % 3) +
         20 +
         (findAttr(attrs, "Test pont")?.value || 0);
-      return name + ": " + sum;
+      return { name: name, value: sum, highlighted: calculated.highlighted };
     }
-    // Calculate psi points
+
+    // Calculate psi resistance
     if (isObject(value) && value.special === "pszi") {
       const willpower =
         (findAttr(attrs, "Elme")?.value || 0) + (findAttr(attrs, "Akaraterő")?.value || 0);
       const psi = findAttr(attrs, "Pszi")?.value || 0;
       const psiRes = findAttr(attrs, "Pszi ellenállás")?.value || 0;
-      return name + ": " + (willpower + Math.floor(psi / 3) - 5 + psiRes);
+      const addNum = Math.floor((Math.floor(willpower / 3) + Math.floor(psi / 3)) / 2) + psiRes;
+      return {
+        name: name,
+        value: "4d" + (addNum ? "+" + addNum : ""),
+        highlighted: calculated.highlighted,
+      };
+    }
+
+    // Calculate magic attack
+    if (findAttr(attrs, "Mágia") && value.special === "magic") {
+      const magic = findAttr(attrs, "Mágia")?.value || 0;
+      const magicAttack = findAttr(attrs, "Mágikus erő")?.value || 0;
+      const addNum = Math.floor(magic / 3) + magicAttack;
+      return {
+        name: name,
+        value: "6d" + (addNum ? "+" + addNum : "") + "(vs 24)",
+        highlighted: calculated.highlighted,
+      };
     }
     return "nope";
   }
@@ -106,8 +129,9 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
           .map((c) => getCalculatedValue(c))
           .filter((v) => v)
           .map((v, idx) => (
-            <span key={idx} className={`me-2 ${idx < 3 ? "tc-selected" : ""}`}>
-              {v}
+            <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
+              {v.name}: {v.value}
+              {idx < skillTree.calculated.length - 1 ? "," : ""}
             </span>
           ))}
       </span>

@@ -115,32 +115,29 @@ function Npc() {
   }
 
   // Finds the entry in the skill tree in attributes or skills or specs
-  // function findInSkillTree(name) {
-  //   console.log("findInSkillTree", name);
-
-  //   // return attribute if found
-  //   const attr = skillTree.attributes.find((attr) => attr.name === name);
-  //   if (attr) return attr;
-
-  //   // return skill if found
-  //   const skill = skillTree.attributes
-  //     .map((attr) => attr.skills || [])
-  //     .flat()
-  //     .find((skill) => skill.name === name);
-  //   if (skill) {
-  //     console.log("skill", name, skill);
-  //     return skill;
-  //   }
-
-  //   // return spec if found
-  //   const spec = skillTree.attributes
-  //     .map((attr) => attr.skills || [])
-  //     .flat()
-  //     .map((skill) => skill.specs || [])
-  //     .flat()
-  //     .find((spec) => spec.name === name);
-  //   if (spec) return spec;
-  // }
+  function findInSkillTree(name) {
+    // return attribute if found
+    for (let a = 0; a < skillTree.attributes.length; a++) {
+      const attr = skillTree.attributes[a];
+      if (attr.name === name) {
+        return { attribute: attr };
+      }
+      // return skill if found
+      for (let s = 0; s < (attr.skills?.length ?? 0); s++) {
+        const skill = attr.skills[s];
+        if (skill.name === name) {
+          return { attribute: attr, skill };
+        }
+        // return spec if found
+        for (let sp = 0; sp < (skill.specs?.length ?? 0); sp++) {
+          const spec = skill.specs[sp];
+          if (spec.name === name) {
+            return { attribute: attr, skill, spec };
+          }
+        }
+      }
+    }
+  }
 
   function resetChar() {
     setCharName("");
@@ -156,55 +153,22 @@ function Npc() {
   function calculateCost() {
     let attrCost = 0;
     let skillCost = 0;
-    let skipSkillCost = 7 * 3;
-    skillTree.attributes.forEach((attribute) => {
-      const a = findAttr(attrs, attribute.name);
-      if (a) {
-        if (["Pszi", "Mágia"].includes(attribute.name)) {
-          for (let i = 0; i < a.value; i++) {
-            if (i < 6) {
-              attrCost++;
-            } else {
-              if (i < 12 && skipSkillCost > 0) {
-                skipSkillCost--;
-                continue;
-              }
-              skillCost += Math.floor((a.value || 0) / 3);
-            }
-          }
-        } else {
-          attrCost += a.value;
-        }
-        // add each skill cost
-        attribute.skills?.forEach((skill) => {
-          const s = findAttr(attrs, skill.name);
-          if (s) {
-            // skillCost is calculated by (its value + its parent attribute's value) / 3 for each increment of the value
-            for (let i = 0; i < s.value; i++) {
-              if (i < 6 && skipSkillCost > 0) {
-                skipSkillCost--;
-                continue;
-              }
-              skillCost += Math.floor((s.value + (a.value || 0)) / 3);
-            }
-          }
-          // specs are calculated in the same way, but adding the skill value too for each spec
-          skill?.specs?.forEach((spec) => {
-            const sp = findAttr(attrs, spec.name);
-            if (sp) {
-              for (let i = 0; i < sp.value; i++) {
-                if (i < 3 && skipSkillCost > 0) {
-                  skipSkillCost -= 1 / 3;
-                  continue;
-                }
-                skillCost += Math.floor((sp.value + (s?.value || 0) + (a.value || 0)) / 6);
-              }
-            }
-          });
-        });
+
+    // Do the specs
+    Object.values(attrs).forEach((attr) => {
+      const asc = findInSkillTree(attr.name);
+      if (asc?.spec) {
+        skillCost += attr.value / 3;
+      } else if (asc?.skill) {
+        skillCost += attr.value;
+      } else if (asc?.attribute) {
+        attrCost += attr.value;
       }
     });
-    return `Tulajdonság: ${displayAsDiceCode(attrCost)} és ${skillCost} Kp`;
+
+    return `Tulajdonság: ${displayAsDiceCode(attrCost)} Képzettség: ${displayAsDiceCode(
+      Math.ceil(skillCost)
+    )}`;
   }
 
   function copyToClipboard(target) {
@@ -374,15 +338,11 @@ function Npc() {
                 </Button>
               </Col>
             </Row>
-            <div className='d-flex gap-2 mt-2'>
+            <ListGroup horizontal className='d-flex gap-2 mt-2'>
               {skillTree.calculated.map((c) =>
-                attrButton(
-                  { name: Object.keys(c)[0] },
-                  Object.keys(c)[0] === "Mega páncél" ? 10 : 1,
-                  "calculated"
-                )
+                attrButton({ name: c.name }, c.name === "Mega páncél" ? 10 : 1, "calculated")
               )}
-            </div>
+            </ListGroup>
             <Row className='pt-2'>
               {skillTree.attributes.map(
                 (attribute) =>

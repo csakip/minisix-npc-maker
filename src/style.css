@@ -91,6 +91,10 @@ pre {
   background-color: #fff5;
 }
 
+.npc-generator .list-group-horizontal > .list-group-item {
+  border-radius: var(--bs-list-group-border-radius) !important;
+}
+
 #char-display {
   white-space: pre-line;
 }
