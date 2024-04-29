@@ -92,7 +92,7 @@ function DetailsPane({
         {npc && (
           <Row>
             <Col className='pt-2'>
-              <CharacterSheet attrs={npc.attrs} charNotes={npc.notes} />
+              <CharacterSheet attrs={npc.attrs} charNotes={npc.notes} formatted={true} />
             </Col>
           </Row>
         )}

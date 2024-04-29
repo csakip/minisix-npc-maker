@@ -2,8 +2,9 @@ import { cloneDeep, isNumber, isObject } from "lodash";
 import { displayCharValue, findAttr } from "./utils";
 import skillTree from "../assets/skillTree.json";
 import React from "react";
+import { Col, Row } from "react-bootstrap";
 
-function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
+function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = false }) {
   // Returns the calculated value. if the calculator.value is an array, add the values of their attr.value
   function getCalculatedValue(calculated) {
     if (attrs.length === 0) return;
@@ -115,33 +116,87 @@ function CharacterSheet({ attrs = [], charName, charNotes = "" }) {
     return attrsStrArray.join(", ") + "\n" + skillsStrArray.join(", ");
   }
 
+  const calculatedValues = skillTree.calculated.map((c) => getCalculatedValue(c)).filter((v) => v);
+  const psiMagic = [];
+  if (findAttr(attrs, "Pszi")) psiMagic.push(displayCharValue(attrs, "Pszi"));
+  if (findAttr(attrs, "Mágia")) psiMagic.push(displayCharValue(attrs, "Mágia"));
+
   return (
     <div id='char-display'>
-      {charName && (
+      {formatted ? (
         <>
-          <b>{charName}</b>:{" "}
+          {charName && (
+            <div>
+              <b>{charName}</b>
+            </div>
+          )}
+          <Row className='mb-2'>
+            {skillTree.attributes
+              .filter((a) => !["Pszi", "Mágia"].includes(a.name))
+              .filter((a) => findAttr(attrs, a.name))
+              .map((a) => (
+                <Col key={a.name}>
+                  <div className='text-nowrap'>{displayCharValue(attrs, a.name)}</div>
+                  <div>
+                    {a.skills?.map((s) => (
+                      <div className='ms-2 text-nowrap' key={s.name}>
+                        {displayCharValue(attrs, s.name, a.name)}
+                        <div>
+                          {s.specs?.map((sp) => (
+                            <div className='ms-2 text-nowrap' key={sp.name}>
+                              {displayCharValue(attrs, sp.name, a.name)}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Col>
+              ))}
+          </Row>
+          {psiMagic.length > 0 && <div>{psiMagic.join(", ")}</div>}
+          <span>
+            {calculatedValues.map((v, idx) => (
+              <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
+                {v.name}: {v.value}
+                {calculatedValues.length - 1 !== idx && ", "}
+              </span>
+            ))}
+          </span>
+          <br className='mb-2' />
+          {charNotes.split("\n").map((n, idx) => (
+            <React.Fragment key={idx}>
+              {n}
+              <br />
+            </React.Fragment>
+          ))}
+        </>
+      ) : (
+        <>
+          {charName && (
+            <>
+              <b>{charName}</b>:{" "}
+            </>
+          )}
+          {displaySkills()}
+          <br className='mb-2' />
+          <span>
+            {calculatedValues.map((v, idx) => (
+              <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
+                {v.name}: {v.value}
+                {calculatedValues.length - 1 !== idx && ", "}
+              </span>
+            ))}
+          </span>
+          <br className='mb-2' />
+          {charNotes.split("\n").map((n, idx) => (
+            <React.Fragment key={idx}>
+              {n}
+              <br />
+            </React.Fragment>
+          ))}
         </>
       )}
-      {displaySkills()}
-      <br className='mb-2' />
-      <span>
-        {skillTree.calculated
-          .map((c) => getCalculatedValue(c))
-          .filter((v) => v)
-          .map((v, idx) => (
-            <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
-              {v.name}: {v.value}
-              {idx < skillTree.calculated.length - 1 ? "," : ""}
-            </span>
-          ))}
-      </span>
-      <br className='mb-2' />
-      {charNotes.split("\n").map((n, idx) => (
-        <React.Fragment key={idx}>
-          {n}
-          <br />
-        </React.Fragment>
-      ))}
     </div>
   );
 }
