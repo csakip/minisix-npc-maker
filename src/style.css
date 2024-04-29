@@ -26,6 +26,10 @@ pre {
   color: var(--bs-body-color);
 }
 
+button i {
+  pointer-events: none;
+}
+
 [data-bs-theme="dark"] .scrollable-menu {
   scrollbar-color: var(--bs-gray-dark) var(--bs-body-bg);
 }

@@ -171,7 +171,7 @@ function Npc() {
     )}`;
   }
 
-  function copyToClipboard(target) {
+  function copyToClipboard(e, target) {
     try {
       let content;
       if (target === "statBlock") {
@@ -186,7 +186,7 @@ function Npc() {
       console.log(charName, content);
       copyToClip(content);
       // Add success class to button
-      const copyButton = document.getElementById("copy-button");
+      const copyButton = e.target;
       copyButton.classList.add("btn-success");
       setTimeout(() => copyButton.classList.remove("btn-success"), 1000);
     } catch (err) {
@@ -278,8 +278,7 @@ function Npc() {
                   {charId && (
                     <Button
                       title='Vágólapra'
-                      onClick={() => copyToClipboard("url")}
-                      id='copy-button'
+                      onClick={(e) => copyToClipboard(e, "url")}
                       variant='secondary'>
                       <i className='bi bi-link'></i>
                     </Button>
@@ -383,15 +382,13 @@ function Npc() {
                 <div>{displayCharValue(attrs, "Mágia")}</div>
               </Col>
             </Row>
-            <hr />
             <Row>
               <Col>
                 <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
                 <Button
                   title='Vágólapra'
-                  onClick={() => copyToClipboard("statBlock")}
+                  onClick={(e) => copyToClipboard(e, "statBlock")}
                   className='mt-2 btn-sm'
-                  id='copy-button'
                   variant='secondary'>
                   <i className='bi bi-clipboard'></i>
                 </Button>

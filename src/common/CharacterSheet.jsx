@@ -174,12 +174,11 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
       ) : (
         <>
           {charName && (
-            <>
+            <div className='d-none'>
               <b>{charName}</b>:{" "}
-            </>
+            </div>
           )}
-          {displaySkills()}
-          <br className='mb-2' />
+          <div className='d-none'>{displaySkills()}</div>
           <span>
             {calculatedValues.map((v, idx) => (
               <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
@@ -188,13 +187,15 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
               </span>
             ))}
           </span>
-          <br className='mb-2' />
-          {charNotes.split("\n").map((n, idx) => (
-            <React.Fragment key={idx}>
-              {n}
-              <br />
-            </React.Fragment>
-          ))}
+          <br className='mb-2 d-none' />
+          <div className='mb-2 d-none'>
+            {charNotes.split("\n").map((n, idx) => (
+              <React.Fragment key={idx}>
+                {n}
+                <br />
+              </React.Fragment>
+            ))}
+          </div>
         </>
       )}
     </div>
