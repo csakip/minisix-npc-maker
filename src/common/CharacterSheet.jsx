@@ -118,8 +118,11 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
 
   const calculatedValues = skillTree.calculated.map((c) => getCalculatedValue(c)).filter((v) => v);
   const psiMagic = [];
-  if (findAttr(attrs, "Pszi")) psiMagic.push(displayCharValue(attrs, "Pszi"));
-  if (findAttr(attrs, "Mágia")) psiMagic.push(displayCharValue(attrs, "Mágia"));
+  skillTree.attributes
+    .filter((a) => a.showAsSkill)
+    .forEach((a) => {
+      if (findAttr(attrs, a.name)) psiMagic.push(displayCharValue(attrs, a.name));
+    });
 
   return (
     <div id='char-display'>
@@ -132,7 +135,7 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
           )}
           <Row className='mb-2'>
             {skillTree.attributes
-              .filter((a) => !["Pszi", "Mágia"].includes(a.name))
+              .filter((a) => !a.showAsSkill)
               .filter((a) => findAttr(attrs, a.name))
               .map((a) => (
                 <Col key={a.name}>

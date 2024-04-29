@@ -375,8 +375,8 @@
         }
       ]
     },
-    { "name": "Pszi" },
-    { "name": "Mágia" }
+    { "name": "Pszi", "showAsSkill": true },
+    { "name": "Mágia", "showAsSkill": true }
   ],
   "calculated": [
     { "name": "Blokk", "value": ["Ügyesség", "Pusztakezes harc"], "highlighted": true },

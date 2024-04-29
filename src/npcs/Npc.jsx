@@ -31,9 +31,7 @@ function Npc() {
   // get from local storage
   const [attrs, setAttrs] = useState(
     localStored?.attributes ||
-      skillTree.attributes
-        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
-        .map((a) => ({ name: a.name, value: 6 }))
+      skillTree.attributes.filter((a) => !a.showAsSkill).map((a) => ({ name: a.name, value: 6 }))
   );
   const [charName, setCharName] = useState(localStored?.charName || "");
   const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
@@ -144,9 +142,7 @@ function Npc() {
     setCharNotes("");
     setCharId(undefined);
     setAttrs(
-      skillTree.attributes
-        .filter((a) => !["Pszi", "Mágia"].includes(a.name))
-        .map((a) => ({ name: a.name, value: 6 }))
+      skillTree.attributes.filter((a) => !a.showAsSkill).map((a) => ({ name: a.name, value: 6 }))
     );
   }
 
@@ -343,43 +339,47 @@ function Npc() {
               )}
             </ListGroup>
             <Row className='pt-2'>
-              {skillTree.attributes.map(
-                (attribute) =>
-                  !["Pszi", "Mágia"].includes(attribute.name) &&
-                  attrs && (
-                    <Col key={attribute.name}>
-                      {displayCharValue(attrs, attribute.name)}
-                      {attribute.skills && (
-                        <ListGroup className='py-1'>
-                          {attribute.skills.map((skill) => (
-                            <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
-                              {displayCharValue(attrs, skill.name, attribute.name)}
-                              {skill.specs && (
-                                <ListGroup className='py-0 ms-2'>
-                                  {skill.specs.map((spec) => (
-                                    <ListGroup.Item
-                                      key={spec.name}
-                                      className='border-0 py-0 ms-2 pe-0'>
-                                      {displayCharValue(
-                                        attrs,
-                                        spec.name,
-                                        attribute.name,
-                                        skill.name
-                                      )}
-                                    </ListGroup.Item>
-                                  ))}
-                                </ListGroup>
-                              )}
-                            </ListGroup.Item>
-                          ))}
-                        </ListGroup>
-                      )}
-                    </Col>
-                  )
-              )}
+              {skillTree.attributes
+                .filter((a) => !a.showAsSkill)
+                .map(
+                  (attribute) =>
+                    attrs && (
+                      <Col key={attribute.name}>
+                        {displayCharValue(attrs, attribute.name)}
+                        {attribute.skills && (
+                          <ListGroup className='py-1'>
+                            {attribute.skills.map((skill) => (
+                              <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
+                                {displayCharValue(attrs, skill.name, attribute.name)}
+                                {skill.specs && (
+                                  <ListGroup className='py-0 ms-2'>
+                                    {skill.specs.map((spec) => (
+                                      <ListGroup.Item
+                                        key={spec.name}
+                                        className='border-0 py-0 ms-2 pe-0'>
+                                        {displayCharValue(
+                                          attrs,
+                                          spec.name,
+                                          attribute.name,
+                                          skill.name
+                                        )}
+                                      </ListGroup.Item>
+                                    ))}
+                                  </ListGroup>
+                                )}
+                              </ListGroup.Item>
+                            ))}
+                          </ListGroup>
+                        )}
+                      </Col>
+                    )
+                )}
               <Col xs={1}>
-                <div>{displayCharValue(attrs, "Pszi")}</div>
-                <div>{displayCharValue(attrs, "Mágia")}</div>
+                {skillTree.attributes
+                  .filter((a) => a.showAsSkill)
+                  .map((a) => (
+                    <div key={a.name}>{displayCharValue(attrs, a.name)}</div>
+                  ))}
               </Col>
             </Row>
             <Row>
