@@ -1,7 +1,12 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import SelectNpcDialog from "../common/SelectNpcDialog";
-import { rollInitiative, sortCharacters, updateCharacters } from "../common/utils";
+import {
+  getCalculatedValue,
+  rollInitiative,
+  sortCharacters,
+  updateCharacters,
+} from "../common/utils";
 import { db } from "../database/dataStore";
 import { format, roll } from "../dice";
 import { useSimpleModal } from "../common/SimpleModal";
@@ -23,7 +28,16 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
         tags: [],
         order: 100000,
         charNotes: "",
+        counters: [],
       };
+      const bodyPoints = getCalculatedValue(npc.attrs, {
+        name: "Test pont",
+        value: { special: "test" },
+      });
+      const armourPoints = npc.attrs.find((a) => a.name === "Mega páncél");
+      if (bodyPoints) toSave.counters.push({ name: bodyPoints.name, value: bodyPoints.value });
+      if (armourPoints)
+        toSave.counters.push({ name: armourPoints.name, value: armourPoints.value });
       db.characters.put(toSave);
     }
   }

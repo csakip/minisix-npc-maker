@@ -10,6 +10,7 @@ import CharacterSheet from "../common/CharacterSheet";
 import { useCallback, useEffect, useState } from "react";
 import reactTextareaAutosize from "react-textarea-autosize";
 import { debounce } from "lodash";
+import Counter from "../common/Counter";
 
 function DetailsPane({
   selectedCharacterId,
@@ -102,6 +103,7 @@ function DetailsPane({
             <Tags characters={characters} selectedCharacter={selectedCharacter} />
           </Col>
         </Row>
+
         <Row>
           <Col>
             <InputGroup className='mt-2'>
@@ -112,6 +114,25 @@ function DetailsPane({
                 placeholder='Jegyzetek'
               />
             </InputGroup>
+          </Col>
+        </Row>
+        <Row className='mt-2'>
+          <Col>
+            <div className='d-flex gap-1'>
+              {selectedCharacter.counters?.map((counter) => (
+                <Counter
+                  key={counter.name + selectedCharacterId}
+                  characters={characters}
+                  counterName={counter.name}
+                  selectedCharacterId={selectedCharacter.id}
+                />
+              ))}
+              <Counter
+                key={"uj" + selectedCharacterId}
+                characters={characters}
+                selectedCharacterId={selectedCharacter.id}
+              />
+            </div>
           </Col>
         </Row>
       </>
