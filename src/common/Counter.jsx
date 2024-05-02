@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { Button, Card, Form, InputGroup } from "react-bootstrap";
 import { db } from "../database/dataStore";
 import { throttle } from "lodash";
+import { calculateWoundLevel } from "./utils";
 
 function Counter({ characters, counterName, selectedCharacterId }) {
   const character = characters?.find((c) => c.id === selectedCharacterId) || null;
@@ -10,6 +11,10 @@ function Counter({ characters, counterName, selectedCharacterId }) {
   const [editName, setEditName] = useState("");
   const [editValue, setEditValue] = useState(
     character.counters?.find((cnt) => cnt.name === counterName)?.value || 0
+  );
+
+  const maxValue = useRef(
+    character.counters?.find((cnt) => cnt.name === counterName)?.max || undefined
   );
 
   useEffect(() => {
@@ -127,12 +132,15 @@ function Counter({ characters, counterName, selectedCharacterId }) {
             />
           </InputGroup>
         </div>
+        {counterName === "Test pont" && (
+          <small className='mb-1'>{calculateWoundLevel(maxValue.current, editValue)}</small>
+        )}
         <div className='d-flex gap-1'>
-          <Button variant='primary flex-grow-1' size='sm' onClick={(e) => addToEditValue(e, -1)}>
-            <i className='bi bi-chevron-down'></i>
-          </Button>
           <Button variant='primary flex-grow-1' size='sm' onClick={(e) => addToEditValue(e, 1)}>
             <i className='bi bi-chevron-up'></i>
+          </Button>
+          <Button variant='primary flex-grow-1' size='sm' onClick={(e) => addToEditValue(e, -1)}>
+            <i className='bi bi-chevron-down'></i>
           </Button>
         </div>
       </Card.Body>

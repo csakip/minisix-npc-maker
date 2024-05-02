@@ -138,3 +138,19 @@ export function getCalculatedValue(attrs, calculated) {
   }
   return;
 }
+
+const woundLevels = [
+  { percent: 10, value: "H. Sebesült" },
+  { percent: 20, value: "Magateh." },
+  { percent: 40, value: "Súlyos seb." },
+  { percent: 60, value: "Sebesült" },
+  { percent: 100, value: "Kábult" },
+];
+export function calculateWoundLevel(max, current) {
+  if (current >= max) return "";
+  if (current <= 0) return "Halott";
+  for (let i = 0; i < woundLevels.length; i++) {
+    const value = woundLevels[i];
+    if (current < Math.round((max * value.percent) / 100)) return value.value;
+  }
+}

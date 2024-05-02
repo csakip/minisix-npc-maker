@@ -35,7 +35,12 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
         value: { special: "test" },
       });
       const armourPoints = npc.attrs.find((a) => a.name === "Mega páncél");
-      if (bodyPoints) toSave.counters.push({ name: bodyPoints.name, value: bodyPoints.value });
+      if (bodyPoints)
+        toSave.counters.push({
+          name: bodyPoints.name,
+          value: bodyPoints.value,
+          max: bodyPoints.value,
+        });
       if (armourPoints)
         toSave.counters.push({ name: armourPoints.name, value: armourPoints.value });
       db.characters.put(toSave);
