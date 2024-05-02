@@ -38,7 +38,7 @@ const Initiatives = () => {
           <h5>{round}. kör</h5>
           <InitiativeList {...{ characters, selectedCharacterId, setSelectedCharacterId }} />
         </Col>
-        <Col xs='5'>
+        <Col xs='6'>
           <div className='scrollable-menu'>
             {selectedCharacterId && (
               <DetailsPane

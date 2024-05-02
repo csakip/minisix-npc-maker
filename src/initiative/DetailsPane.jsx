@@ -53,27 +53,13 @@ function DetailsPane({
     selectedCharacter && (
       <>
         <Row>
-          <Col>
+          <Col xs={7}>
             <h3>{selectedCharacter.name}</h3>
           </Col>
-          <Col className='text-end' xs={3}>
-            <div className='d-flex gap-2 flex-wrap justify-content-end'>
-              <Button onClick={() => setEditedCharacter(selectedCharacter)} size='sm'>
-                <i className='bi bi-pencil'></i>
-              </Button>
-              <Button
-                onClick={() => deleteCharacter(selectedCharacterId)}
-                size='sm'
-                variant='danger'>
-                <i className='bi bi-trash'></i>
-              </Button>
-            </div>
-          </Col>
-        </Row>
-        <Row>
+
           <Col>
             <InputGroup>
-              <InputGroup.Text>Kezdeményezés</InputGroup.Text>
+              <InputGroup.Text>Kezd.</InputGroup.Text>
               <Form.Control
                 value={selectedCharacter.initiative?.reduced ?? "-"}
                 onChange={(e) => setInitiative(selectedCharacter.id, e.target.value, characters)}
@@ -88,6 +74,19 @@ function DetailsPane({
                 </Button>
               </InputGroup.Text>
             </InputGroup>
+          </Col>
+          <Col className='text-end align-middle' xs={2}>
+            <div className='d-flex gap-2 flex-wrap justify-content-end'>
+              <Button onClick={() => setEditedCharacter(selectedCharacter)} size='sm'>
+                <i className='bi bi-pencil'></i>
+              </Button>
+              <Button
+                onClick={() => deleteCharacter(selectedCharacterId)}
+                size='sm'
+                variant='danger'>
+                <i className='bi bi-trash'></i>
+              </Button>
+            </div>
           </Col>
         </Row>
         {npc && (
@@ -118,7 +117,7 @@ function DetailsPane({
         </Row>
         <Row className='mt-2'>
           <Col>
-            <div className='d-flex gap-1'>
+            <div className='d-flex gap-1 flex-wrap'>
               {selectedCharacter.counters?.map((counter) => (
                 <Counter
                   key={counter.name + selectedCharacterId}

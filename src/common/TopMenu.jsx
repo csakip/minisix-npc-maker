@@ -26,11 +26,11 @@ export default function TopMenu(props) {
           <Navbar.Text>
             {isAuthorized ? (
               <a href='#' title='Kijelentkezés' onClick={() => db.cloud.logout()}>
-                <i className='bi bi-toggle2-on h5'></i>
+                <i className='bi bi-box-arrow-right h5'></i>
               </a>
             ) : (
               <a href='#' title='Bejelentkezés' onClick={() => db.cloud.login()}>
-                <i className='bi bi-toggle2-off h5'></i>
+                <i className='bi bi-box-arrow-in-right h5'></i>
               </a>
             )}
           </Navbar.Text>
