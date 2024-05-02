@@ -14,8 +14,14 @@ function Counter({ characters, counterName, selectedCharacterId }) {
 
   useEffect(() => {
     if (!counterName) return;
+    let value;
+    try {
+      value = parseInt(editValue) || 0;
+    } catch (e) {
+      value = editValue;
+    }
     character.counters = character.counters.map((cnt) =>
-      cnt.name === counterName ? { ...cnt, value: editValue } : cnt
+      cnt.name === counterName ? { ...cnt, value } : cnt
     );
     storeCounter(character.counters);
   }, [editValue]);
@@ -43,13 +49,24 @@ function Counter({ characters, counterName, selectedCharacterId }) {
   }
 
   function handleEditValueChange(e) {
-    let v;
-    try {
-      v = parseInt(e.target.value) || 0;
-    } catch (e) {
-      v = editValue;
+    // Keep only numbers and math operators
+    setEditValue(e.target.value.replace(/[^0-9+\-*/.()]/g, ""));
+  }
+
+  function handleEditValueKeyDown(e) {
+    if (e.keyCode === 13) {
+      parseValueAsMathFunction(e.target.value);
     }
-    setEditValue(v);
+  }
+
+  // Parse value as an math expression and execute it
+  function parseValueAsMathFunction(value) {
+    try {
+      const ret = Function(`return ${value}`)();
+      setEditValue(ret);
+    } catch (e) {
+      setEditValue(editValue);
+    }
   }
 
   // Add value to editValue or if ctrl is held, add or subtract 10*value
@@ -105,6 +122,8 @@ function Counter({ characters, counterName, selectedCharacterId }) {
               className='mb-1 text-center p-0 fs-5'
               value={editValue}
               onChange={handleEditValueChange}
+              onKeyDown={handleEditValueKeyDown}
+              onBlur={(e) => parseValueAsMathFunction(e.target.value)}
             />
           </InputGroup>
         </div>
