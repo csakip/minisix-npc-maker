@@ -147,7 +147,7 @@ const woundLevels = [
   { percent: 100, value: "Kábult" },
 ];
 export function calculateWoundLevel(max, current) {
-  if (current >= max) return "";
+  if (max === undefined || current >= max) return "";
   if (current <= 0) return "Halott";
   for (let i = 0; i < woundLevels.length; i++) {
     const value = woundLevels[i];
