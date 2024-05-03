@@ -171,9 +171,12 @@ function Npc() {
       }
     });
 
-    return `Tulajdonság: ${displayAsDiceCode(attrCost)} Képzettség: ${displayAsDiceCode(
-      Math.ceil(skillCost)
-    )}`;
+    return (
+      <div className='d-flex gap-3'>
+        <h5>Tulajdonság: {displayAsDiceCode(attrCost)}</h5>
+        <h5>Képzettség:{displayAsDiceCode(Math.ceil(skillCost))}</h5>
+      </div>
+    );
   }
 
   function copyToClipboard(e, target) {
@@ -305,9 +308,7 @@ function Npc() {
                     )}
                   </InputGroup>
                 </Col>
-                <Col>
-                  <h5>{calculateCost()}</h5>
-                </Col>
+                <Col className='align-content-center'>{calculateCost()}</Col>
                 <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
                   <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
                     <i className='bi bi-search'></i>
