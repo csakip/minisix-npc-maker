@@ -99,6 +99,12 @@ function Npc() {
     e.stopPropagation();
     // e.preventDefault();
 
+    // Middle button resets to 0
+    if (e.button === 1) {
+      setAttrs(attrs.filter((attr) => attr.name != name));
+      return;
+    }
+
     // Add or subtract 1 or 3 depending on the ctrl key
     const add = e.button === 0 ? (e.ctrlKey ? 3 * step : step) : e.ctrlKey ? -3 * step : -step;
 
