@@ -174,7 +174,7 @@ function Npc() {
     return (
       <div className='d-flex gap-3'>
         <h5>Tulajdonság: {displayAsDiceCode(attrCost)}</h5>
-        <h5>Képzettség:{displayAsDiceCode(Math.ceil(skillCost))}</h5>
+        <h5>Képzettség: {displayAsDiceCode(Math.ceil(skillCost))}</h5>
       </div>
     );
   }
