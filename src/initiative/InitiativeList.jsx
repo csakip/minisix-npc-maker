@@ -5,7 +5,7 @@ import ListGroup from "react-bootstrap/ListGroup";
 import Row from "react-bootstrap/Row";
 import { ReactSortable } from "react-sortablejs";
 import { rollInitiative, setInitiative, updateCharacters } from "../common/utils";
-import { useSimpleModal } from "../common/SimpleModal";
+import { useSimpleDialog } from "../common/SimpleDialog";
 
 const sortableOptions = {
   animation: 150,
@@ -16,7 +16,7 @@ const sortableOptions = {
 };
 
 function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterId }) {
-  const { openModal, closeModal, SimpleModal } = useSimpleModal();
+  const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
 
   function reorderCharacters(chars) {
     updateCharacters(chars.map((c, i) => ({ ...c, order: i })));
@@ -88,7 +88,7 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
           ))}
         </ReactSortable>
       </ListGroup>
-      <SimpleModal />
+      <SimpleDialog />
     </>
   );
 }

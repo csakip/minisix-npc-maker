@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 import { db } from "../database/dataStore";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
-import { useSimpleModal } from "./SimpleModal";
+import { useSimpleDialog } from "./SimpleDialog";
 import { fuzzyMatch } from "./utils";
 
 const SelectNpcDialog = ({
@@ -19,7 +19,7 @@ const SelectNpcDialog = ({
 }) => {
   const [filter, setFilter] = useState("");
   const [copies, setCopies] = useState(1);
-  const { openModal, closeModal, SimpleModal } = useSimpleModal();
+  const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
 
   const npcs = useLiveQuery(() => {
     if (filter === "") return db.npcs.orderBy("updated").toArray();
@@ -114,7 +114,7 @@ const SelectNpcDialog = ({
           </Button>
         </Modal.Footer>
       </Modal>
-      <SimpleModal />
+      <SimpleDialog />
     </>
   );
 };

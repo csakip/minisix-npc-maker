@@ -24,6 +24,7 @@ import {
   generateRandomDescription,
 } from "../common/utils";
 import NpcSidebar from "./NpcSidebar";
+import { useSimpleDialog } from "../common/SimpleDialog";
 
 const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
 
@@ -41,6 +42,8 @@ function Npc() {
   const [showSidebar, setShowSidebar] = useState(false);
 
   const localStoreTimerRef = useRef();
+
+  const { openModal, SimpleDialog } = useSimpleDialog();
 
   // Load character if id is set in query
   useEffect(() => {
@@ -79,7 +82,7 @@ function Npc() {
   }, [attrs, charName, charNotes, charId]);
 
   function attrButton(item, step = 1, className = "") {
-    const selected = findAttr(attrs, item.name)?.value > 0 ? "selected" : "";
+    const selected = findAttr(attrs, item.name)?.value ? "selected" : "";
     return (
       <ListGroup.Item
         key={item.name}
@@ -105,10 +108,10 @@ function Npc() {
     if (!a) attrs.push((a = { name: name, value: 0 }));
 
     // Add add to the value, with minimum of 0
-    a.value = a.value > 0 || add > 0 ? a.value + add : 0;
+    a.value = a.value + add;
 
     // remove if it has no value
-    const newAttrs = attrs.filter((attr) => attr.value > 0);
+    const newAttrs = attrs.filter((attr) => attr.value != 0);
     setAttrs(newAttrs.map((attr) => (attr.name === name ? a : attr)));
   }
 
@@ -209,8 +212,22 @@ function Npc() {
   }
 
   // Store to db
+  function confirmStoreNpc() {
+    if (charId) {
+      openModal({
+        title: "Felülírod?",
+        cancelButton: "Mégse",
+        okButton: "Igen",
+        body: "Biztosan rámented?",
+        onClose: (confirmed) => confirmed && storeNpc(false),
+      });
+    } else {
+      storeNpc(false);
+    }
+  }
+
   function storeNpc(saveAs = false) {
-    console.log(saveAs, charId);
+    console.log("Saving npc", saveAs, charId);
     const toSave = {
       id: saveAs ? uuid() : charId || uuid(),
       name: charName,
@@ -227,195 +244,200 @@ function Npc() {
   }
 
   return (
-    <Container fluid className='ps-1 npc-generator'>
-      <Row>
-        <div className='pe-0' style={{ width: "17rem" }}>
-          <div className='scrollable-menu position-relative'>
-            <div className='position-absolute top-0 end-0 mt-1' style={{ width: "2.3rem" }}>
-              <Button
-                title='Specializaciók'
-                className='position-fixed btn-sm px-2 py-0 z-1'
-                onClick={() => setShowSpec(!showSpec)}>
-                {showSpec ? (
-                  <i className='bi bi-chevron-contract'></i>
-                ) : (
-                  <i className='bi bi-chevron-expand'></i>
-                )}
-              </Button>
+    <>
+      <Container fluid className='ps-1 npc-generator'>
+        <Row>
+          <div className='pe-0' style={{ width: "17rem" }}>
+            <div className='scrollable-menu position-relative'>
+              <div className='position-absolute top-0 end-0 mt-1' style={{ width: "2.3rem" }}>
+                <Button
+                  title='Specializaciók'
+                  className='position-fixed btn-sm px-2 py-0 z-1'
+                  onClick={() => setShowSpec(!showSpec)}>
+                  {showSpec ? (
+                    <i className='bi bi-chevron-contract'></i>
+                  ) : (
+                    <i className='bi bi-chevron-expand'></i>
+                  )}
+                </Button>
+              </div>
+              <ListGroup className='list-group-root skill-tree'>
+                {skillTree.attributes.map((attribute) => (
+                  <React.Fragment key={attribute.name}>
+                    {attrButton(attribute)}
+                    {attribute.skills && (
+                      <ListGroup>
+                        {attribute.skills.map((skill) => (
+                          <React.Fragment key={skill.name}>
+                            {attrButton(skill)}
+                            {showSpec && skill.specs && (
+                              <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>
+                            )}
+                          </React.Fragment>
+                        ))}
+                      </ListGroup>
+                    )}
+                  </React.Fragment>
+                ))}
+              </ListGroup>
             </div>
-            <ListGroup className='list-group-root skill-tree'>
-              {skillTree.attributes.map((attribute) => (
-                <React.Fragment key={attribute.name}>
-                  {attrButton(attribute)}
-                  {attribute.skills && (
-                    <ListGroup>
-                      {attribute.skills.map((skill) => (
-                        <React.Fragment key={skill.name}>
-                          {attrButton(skill)}
-                          {showSpec && skill.specs && (
-                            <ListGroup>{skill.specs.map((spec) => attrButton(spec))}</ListGroup>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </ListGroup>
-                  )}
-                </React.Fragment>
-              ))}
-            </ListGroup>
           </div>
-        </div>
-        <Col>
-          <Container className='main-content' fluid>
-            <Row className='pt-2'>
-              <Col xs={6}>
-                <InputGroup className='mb-2'>
-                  <InputGroup.Text>Név</InputGroup.Text>
-                  <Form.Control value={charName} onChange={(e) => setCharName(e.target.value)} />
-                  {charId && (
-                    <Button
-                      title='Vágólapra'
-                      onClick={(e) => copyToClipboard(e, "url")}
-                      variant='secondary'>
-                      <i className='bi bi-link'></i>
-                    </Button>
-                  )}
-                </InputGroup>
-              </Col>
-              <Col>
-                <h5>{calculateCost()}</h5>
-              </Col>
-              <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
-                <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
-                  <i className='bi bi-search'></i>
-                </Button>
-                <Dropdown as={ButtonGroup}>
-                  <Button
-                    onClick={() => storeNpc()}
-                    title='Mentés'
-                    variant='warning'
-                    className='pe-1'>
-                    <i className='bi bi-floppy'></i>
+          <Col>
+            <Container className='main-content' fluid>
+              <Row className='pt-2'>
+                <Col xs={6}>
+                  <InputGroup className='mb-2'>
+                    <InputGroup.Text>Név</InputGroup.Text>
+                    <Form.Control value={charName} onChange={(e) => setCharName(e.target.value)} />
+                    {charId && (
+                      <Button
+                        title='Vágólapra'
+                        onClick={(e) => copyToClipboard(e, "url")}
+                        variant='secondary'>
+                        <i className='bi bi-link'></i>
+                      </Button>
+                    )}
+                  </InputGroup>
+                </Col>
+                <Col>
+                  <h5>{calculateCost()}</h5>
+                </Col>
+                <Col className='gap-2 d-flex align-items-baseline justify-content-end' xs={2}>
+                  <Button onClick={() => setShowSelectNpcDialog(true)} title='Kiválasztás'>
+                    <i className='bi bi-search'></i>
                   </Button>
-                  <Dropdown.Toggle split variant='warning' className='ps-1' />
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => storeNpc(true)}>Másolat mentése</Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-                <Button onClick={resetChar} title='Új' variant='danger'>
-                  <i className='bi bi-eraser'></i>
-                </Button>
-                <Button
-                  onClick={() => setShowSidebar(!showSidebar)}
-                  title='Menü'
-                  variant='secondary'>
-                  <i className='bi bi-list'></i>
-                </Button>
-              </Col>
-            </Row>
-            <Row>
-              <InputGroup>
-                <InputGroup.Text>Egyéb</InputGroup.Text>
-                <Form.Control
-                  as={TextareaAutosize}
-                  value={charNotes}
-                  onChange={(e) => setCharNotes(e.target.value)}
-                />
-              </InputGroup>
-            </Row>
-            <Row>
-              <Col>
-                <Button
-                  onClick={addRandomDescription}
-                  size='sm'
-                  variant='secondary'
-                  className='mt-2'>
-                  Véletlen leíró
-                </Button>
-              </Col>
-            </Row>
-            <ListGroup horizontal className='d-flex gap-2 mt-2'>
-              {skillTree.calculated.map((c) =>
-                attrButton({ name: c.name }, c.name === "Mega páncél" ? 10 : 1, "calculated")
-              )}
-            </ListGroup>
-            <Row className='pt-2'>
-              {skillTree.attributes
-                .filter((a) => !a.showAsSkill)
-                .map(
-                  (attribute) =>
-                    attrs && (
-                      <Col key={attribute.name}>
-                        {displayCharValue(attrs, attribute.name)}
-                        {attribute.skills && (
-                          <ListGroup className='py-1'>
-                            {attribute.skills.map((skill) => (
-                              <ListGroup.Item key={skill.name} className='border-0 py-0 ms-2 pe-0'>
-                                {displayCharValue(attrs, skill.name, attribute.name)}
-                                {skill.specs && (
-                                  <ListGroup className='py-0 ms-2'>
-                                    {skill.specs.map((spec) => (
-                                      <ListGroup.Item
-                                        key={spec.name}
-                                        className='border-0 py-0 ms-2 pe-0'>
-                                        {displayCharValue(
-                                          attrs,
-                                          spec.name,
-                                          attribute.name,
-                                          skill.name
-                                        )}
-                                      </ListGroup.Item>
-                                    ))}
-                                  </ListGroup>
-                                )}
-                              </ListGroup.Item>
-                            ))}
-                          </ListGroup>
-                        )}
-                      </Col>
-                    )
+                  <Dropdown as={ButtonGroup}>
+                    <Button
+                      onClick={() => confirmStoreNpc()}
+                      title='Mentés'
+                      variant='warning'
+                      className='pe-1'>
+                      <i className='bi bi-floppy'></i>
+                    </Button>
+                    <Dropdown.Toggle split variant='warning' className='ps-1' />
+                    <Dropdown.Menu>
+                      <Dropdown.Item onClick={() => storeNpc(true)}>Másolat mentése</Dropdown.Item>
+                    </Dropdown.Menu>
+                  </Dropdown>
+                  <Button onClick={resetChar} title='Új' variant='danger'>
+                    <i className='bi bi-eraser'></i>
+                  </Button>
+                  <Button
+                    onClick={() => setShowSidebar(!showSidebar)}
+                    title='Menü'
+                    variant='secondary'>
+                    <i className='bi bi-list'></i>
+                  </Button>
+                </Col>
+              </Row>
+              <Row>
+                <InputGroup>
+                  <InputGroup.Text>Egyéb</InputGroup.Text>
+                  <Form.Control
+                    as={TextareaAutosize}
+                    value={charNotes}
+                    onChange={(e) => setCharNotes(e.target.value)}
+                  />
+                </InputGroup>
+              </Row>
+              <Row>
+                <Col>
+                  <Button
+                    onClick={addRandomDescription}
+                    size='sm'
+                    variant='secondary'
+                    className='mt-2'>
+                    Véletlen leíró
+                  </Button>
+                </Col>
+              </Row>
+              <ListGroup horizontal className='d-flex gap-2 mt-2'>
+                {skillTree.calculated.map((c) =>
+                  attrButton({ name: c.name }, c.name === "Mega páncél" ? 10 : 1, "calculated")
                 )}
-              <Col xs={1}>
+              </ListGroup>
+              <Row className='pt-2'>
                 {skillTree.attributes
-                  .filter((a) => a.showAsSkill)
-                  .map((a) => (
-                    <div key={a.name}>{displayCharValue(attrs, a.name)}</div>
-                  ))}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
-                <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
-                <Button
-                  title='Vágólapra'
-                  onClick={(e) => copyToClipboard(e, "statBlock")}
-                  className='mt-2 btn-sm'
-                  variant='secondary'>
-                  <i className='bi bi-clipboard'></i>
-                </Button>
-              </Col>
-            </Row>
-          </Container>
-        </Col>
-      </Row>
-      <SelectNpcDialog
-        selectedCharacterId={charId}
-        setSelectedCharacter={setSelectedCharacter}
-        open={showSelectNpcDialog}
-        setOpen={setShowSelectNpcDialog}
-      />
-      <NpcSidebar
-        show={showSidebar}
-        setShow={setShowSidebar}
-        charName={charName}
-        setCharName={setCharName}
-        charId={charId}
-        setCharId={setCharId}
-        charNotes={charNotes}
-        setCharNotes={setCharNotes}
-        attrs={attrs}
-        setAttrs={setAttrs}
-      />
-    </Container>
+                  .filter((a) => !a.showAsSkill)
+                  .map(
+                    (attribute) =>
+                      attrs && (
+                        <Col key={attribute.name}>
+                          {displayCharValue(attrs, attribute.name)}
+                          {attribute.skills && (
+                            <ListGroup className='py-1'>
+                              {attribute.skills.map((skill) => (
+                                <ListGroup.Item
+                                  key={skill.name}
+                                  className='border-0 py-0 ms-2 pe-0'>
+                                  {displayCharValue(attrs, skill.name, attribute.name)}
+                                  {skill.specs && (
+                                    <ListGroup className='py-0 ms-2'>
+                                      {skill.specs.map((spec) => (
+                                        <ListGroup.Item
+                                          key={spec.name}
+                                          className='border-0 py-0 ms-2 pe-0'>
+                                          {displayCharValue(
+                                            attrs,
+                                            spec.name,
+                                            attribute.name,
+                                            skill.name
+                                          )}
+                                        </ListGroup.Item>
+                                      ))}
+                                    </ListGroup>
+                                  )}
+                                </ListGroup.Item>
+                              ))}
+                            </ListGroup>
+                          )}
+                        </Col>
+                      )
+                  )}
+                <Col xs={1}>
+                  {skillTree.attributes
+                    .filter((a) => a.showAsSkill)
+                    .map((a) => (
+                      <div key={a.name}>{displayCharValue(attrs, a.name)}</div>
+                    ))}
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
+                  <Button
+                    title='Vágólapra'
+                    onClick={(e) => copyToClipboard(e, "statBlock")}
+                    className='mt-2 btn-sm'
+                    variant='secondary'>
+                    <i className='bi bi-clipboard'></i>
+                  </Button>
+                </Col>
+              </Row>
+            </Container>
+          </Col>
+        </Row>
+        <SelectNpcDialog
+          selectedCharacterId={charId}
+          setSelectedCharacter={setSelectedCharacter}
+          open={showSelectNpcDialog}
+          setOpen={setShowSelectNpcDialog}
+        />
+        <NpcSidebar
+          show={showSidebar}
+          setShow={setShowSidebar}
+          charName={charName}
+          setCharName={setCharName}
+          charId={charId}
+          setCharId={setCharId}
+          charNotes={charNotes}
+          setCharNotes={setCharNotes}
+          attrs={attrs}
+          setAttrs={setAttrs}
+        />
+      </Container>
+      <SimpleDialog />
+    </>
   );
 }
 

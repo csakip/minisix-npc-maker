@@ -3,7 +3,7 @@ import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
 import { useEffect, useRef, useState } from "react";
 
-export function useSimpleModal() {
+export function useSimpleDialog() {
   const [state, setState] = useState({
     open: false,
     title: "",
@@ -41,7 +41,7 @@ export function useSimpleModal() {
     state.onClose && state.onClose(result);
   }
 
-  function SimpleModal() {
+  function SimpleDialog() {
     const { open, title, body, okButton, cancelButton, input, defaultInputText } = state;
     const [inputText, setInputText] = useState(defaultInputText || "");
     const inputRef = useRef(null);
@@ -99,6 +99,6 @@ export function useSimpleModal() {
   return {
     openModal,
     closeModal,
-    SimpleModal,
+    SimpleDialog,
   };
 }

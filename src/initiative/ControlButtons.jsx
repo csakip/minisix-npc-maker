@@ -9,12 +9,12 @@ import {
 } from "../common/utils";
 import { db } from "../database/dataStore";
 import { format, roll } from "../dice";
-import { useSimpleModal } from "../common/SimpleModal";
+import { useSimpleDialog } from "../common/SimpleDialog";
 import { ButtonGroup } from "react-bootstrap";
 
 function ControlButtons({ setEditedCharacter, characters, newRound }) {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
-  const { openModal, closeModal, SimpleModal } = useSimpleModal();
+  const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
 
   function setSelectedNpc(npc, copies) {
     for (let i = 0; i < copies; i++) {
@@ -125,7 +125,7 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
         setOpen={setShowSelectNpcDialog}
         showCopies={true}
       />
-      <SimpleModal />
+      <SimpleDialog />
     </>
   );
 }
