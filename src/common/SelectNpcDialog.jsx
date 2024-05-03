@@ -8,6 +8,7 @@ import { db } from "../database/dataStore";
 import { useLiveQuery } from "dexie-react-hooks";
 import { useState } from "react";
 import { useSimpleModal } from "./SimpleModal";
+import { fuzzyMatch } from "./utils";
 
 const SelectNpcDialog = ({
   selectedCharacterId,
@@ -22,7 +23,7 @@ const SelectNpcDialog = ({
 
   const npcs = useLiveQuery(() => {
     if (filter === "") return db.npcs.orderBy("updated").toArray();
-    return db.npcs.filter((npc) => npc.name.toLowerCase().includes(filter.toLowerCase())).toArray();
+    return db.npcs.filter((npc) => fuzzyMatch(filter, npc.name)).toArray();
   }, [filter]);
 
   function formatDate(timestamp) {

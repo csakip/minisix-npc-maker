@@ -154,3 +154,19 @@ export function calculateWoundLevel(max, current) {
     if (current < Math.round((max * value.percent) / 100)) return value.value;
   }
 }
+
+function escapeRegExp(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+export function fuzzyMatch(pattern, str) {
+  pattern =
+    ".*" +
+    pattern
+      .toLowerCase()
+      .split("")
+      .map((l) => `${escapeRegExp(l)}.*`)
+      .join("");
+  const re = new RegExp(pattern);
+  return re.test(str.toLowerCase());
+}
