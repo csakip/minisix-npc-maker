@@ -38,7 +38,7 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
               key={character.id}
               className={selectedCharacterId === character.id ? "selected p-0" : "p-0"}>
               <Row onMouseDown={() => setSelectedCharacterId(character.id)} className='p-2'>
-                <Col xs='1' className='pe-0'>
+                <Col xs='1' className='pe-0' style={{ width: "10%" }}>
                   {character.type === "npc" ? (
                     <Button
                       size='sm'
