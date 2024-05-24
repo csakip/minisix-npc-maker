@@ -77,7 +77,7 @@ const Initiatives = () => {
         </Col>
         <Col>
           <h5>
-            {characters.length > 0 && (
+            {characters?.length > 0 && (
               <>
                 <Button size='sm' className='me-3 py-0' variant='info' onClick={stepWhosTurn}>
                   <i className='bi bi-arrow-down'></i>
