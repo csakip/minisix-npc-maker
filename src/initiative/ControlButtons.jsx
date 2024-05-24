@@ -1,12 +1,7 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import SelectNpcDialog from "../common/SelectNpcDialog";
-import {
-  getCalculatedValue,
-  rollInitiative,
-  sortCharacters,
-  updateCharacters,
-} from "../common/utils";
+import { getCalculatedValue, rollInitiative, sortCharacters } from "../common/utils";
 import { db } from "../database/dataStore";
 import { format, roll } from "../dice";
 import { useSimpleDialog } from "../common/SimpleDialog";
@@ -48,23 +43,6 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
   }
 
   function startNewRound(increment = 1) {
-    updateCharacters(
-      characters.map((character) => {
-        // if (character.roll) character.initiative = roll(parseDice(character.roll));
-        // if a tag has a length, reduce it. if it reaches 0, remove it
-        if (character.tags) {
-          character.tags = character.tags
-            .map((t) => {
-              if (t.length) {
-                return { ...t, length: t.length - increment };
-              }
-              return t;
-            })
-            .filter((t) => t.length === undefined || t.length > 0);
-        }
-        return character;
-      })
-    );
     newRound(increment);
   }
 

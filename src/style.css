@@ -194,4 +194,5 @@ button i {
   position: absolute;
   right: 25px;
   color: var(--bs-info);
+  pointer-events: none;
 }

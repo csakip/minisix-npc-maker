@@ -11,6 +11,7 @@ import DetailsPane from "./DetailsPane";
 import InitiativeList from "./InitiativeList";
 import { useDiceRoller } from "../common/DiceRoller";
 import { Button } from "react-bootstrap";
+import { updateCharacters } from "../common/utils";
 
 const Initiatives = () => {
   const [whoseTurn, setWhoseTurn] = useLocalStorageState("whoseTurn", {
@@ -28,6 +29,24 @@ const Initiatives = () => {
 
   function newRound(value) {
     const newValue = round + value || 1;
+    if (value > 0) {
+      updateCharacters(
+        characters.map((character) => {
+          // if a tag has a length, reduce it. if it reaches 0, remove it
+          if (character.tags) {
+            character.tags = character.tags
+              .map((t) => {
+                if (t.length) {
+                  return { ...t, length: t.length - value };
+                }
+                return t;
+              })
+              .filter((t) => t.length === undefined || t.length > 0);
+          }
+          return character;
+        })
+      );
+    }
     setRound(newValue);
     localStorage.setItem("minisix-npc-generator-round", newValue);
     setWhoseTurn(0);
@@ -58,10 +77,14 @@ const Initiatives = () => {
         </Col>
         <Col>
           <h5>
-            <Button size='sm' className='me-3 py-0' variant='info' onClick={stepWhosTurn}>
-              <i className='bi bi-arrow-down'></i>
-            </Button>
-            {round}. kör{" "}
+            {characters.length > 0 && (
+              <>
+                <Button size='sm' className='me-3 py-0' variant='info' onClick={stepWhosTurn}>
+                  <i className='bi bi-arrow-down'></i>
+                </Button>
+                {round}. kör
+              </>
+            )}
           </h5>
           <InitiativeList
             {...{ characters, selectedCharacterId, setSelectedCharacterId, whoseTurn }}
