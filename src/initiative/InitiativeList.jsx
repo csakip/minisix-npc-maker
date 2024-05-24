@@ -73,10 +73,8 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
                     </Button>
                   )}
                 </Col>
-                <Col xs='2'>
-                  <span className='character-name'>{character.name}</span>
-                </Col>
                 <Col>
+                  <span className='character-name me-3'>{character.name}</span>
                   {character.tags?.map((tag) => (
                     <Badge key={tag.label} className='me-1'>
                       {tag.label} {tag.length}

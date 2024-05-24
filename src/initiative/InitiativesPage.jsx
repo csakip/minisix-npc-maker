@@ -8,6 +8,7 @@ import AddCharacterDialog from "./AddCharacterDialog";
 import ControlButtons from "./ControlButtons";
 import DetailsPane from "./DetailsPane";
 import InitiativeList from "./InitiativeList";
+import { useDiceRoller } from "../common/DiceRoller";
 
 const Initiatives = () => {
   const [editedCharacter, setEditedCharacter] = useState();
@@ -15,6 +16,8 @@ const Initiatives = () => {
   const [round, setRound] = useState(
     parseInt(localStorage.getItem("minisix-npc-generator-round") ?? "1") || 1
   );
+
+  const { DiceRoller, rollDice } = useDiceRoller();
 
   const characters = useLiveQuery(() => db.characters.orderBy("order").toArray());
 
@@ -47,6 +50,7 @@ const Initiatives = () => {
                   setSelectedCharacterId,
                   setEditedCharacter,
                   characters,
+                  rollDice,
                 }}
               />
             )}
@@ -57,6 +61,7 @@ const Initiatives = () => {
         editedCharacter={editedCharacter}
         setEditedCharacter={setEditedCharacter}
       />
+      <DiceRoller />
     </Container>
   );
 };

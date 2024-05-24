@@ -17,6 +17,7 @@ function DetailsPane({
   setSelectedCharacterId,
   setEditedCharacter,
   characters,
+  rollDice,
 }) {
   const [npc, setNpc] = useState();
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
@@ -92,7 +93,12 @@ function DetailsPane({
         {npc && (
           <Row>
             <Col className='pt-2'>
-              <CharacterSheet attrs={npc.attrs} charNotes={npc.notes} formatted={true} />
+              <CharacterSheet
+                attrs={npc.attrs}
+                charNotes={npc.notes}
+                formatted={true}
+                rollDice={rollDice}
+              />
             </Col>
           </Row>
         )}

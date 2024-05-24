@@ -2,9 +2,15 @@ import { cloneDeep } from "lodash";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
-import { displayCharValue, findAttr, getCalculatedValue } from "./utils";
+import {
+  displayAsDiceCode,
+  displayCharValue,
+  findAttr,
+  findValue,
+  getCalculatedValue,
+} from "./utils";
 
-function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = false }) {
+function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = false, rollDice }) {
   function displaySkills() {
     const filteredSkillTree = cloneDeep(skillTree);
 
@@ -73,17 +79,50 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
               .filter((a) => findAttr(attrs, a.name))
               .map((a) => (
                 <Col key={a.name}>
-                  <div className='text-nowrap'>{displayCharValue(attrs, a.name)}</div>
+                  <div
+                    className='text-nowrap cursor-pointer'
+                    onClick={() =>
+                      rollDice &&
+                      rollDice(
+                        findValue(attrs, a.name),
+                        a.name + ": " + displayAsDiceCode(findValue(attrs, a.name))
+                      )
+                    }>
+                    {displayCharValue(attrs, a.name)}
+                  </div>
                   <div>
                     {a.skills?.map((s) => (
-                      <div className='ms-2 text-nowrap' key={s.name}>
+                      <div
+                        className='ms-2 text-nowrap cursor-pointer'
+                        key={s.name}
+                        onClick={() =>
+                          rollDice &&
+                          rollDice(
+                            findValue(attrs, s.name, a.name),
+                            s.name + ": " + displayAsDiceCode(findValue(attrs, s.name, a.name))
+                          )
+                        }>
                         {displayCharValue(attrs, s.name, a.name)}
                         <div>
-                          {s.specs?.map((sp) => (
-                            <div className='ms-2 text-nowrap' key={sp.name}>
-                              {displayCharValue(attrs, sp.name, a.name)}
-                            </div>
-                          ))}
+                          {s.specs
+                            ?.filter((sp) => findAttr(attrs, sp.name))
+                            .map((sp) => (
+                              <div
+                                className='ms-2 text-nowrap cursor-pointer'
+                                key={sp.name}
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  rollDice &&
+                                    rollDice(
+                                      findValue(attrs, sp.name, a.name),
+                                      sp.name +
+                                        ": " +
+                                        displayAsDiceCode(findValue(attrs, sp.name, a.name))
+                                    );
+                                }}>
+                                {displayCharValue(attrs, sp.name, a.name)}
+                              </div>
+                            ))}
                         </div>
                       </div>
                     ))}
