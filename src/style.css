@@ -189,3 +189,9 @@ button i {
   box-shadow: inset 0 2px #f8a8a8, inset 0 -2px #bb4949, inset 2px 0 #e68686, inset -2px 0 #bb4949,
     1px 3px 2px 1px #0003;
 }
+
+.initiative-arrow {
+  position: absolute;
+  right: 25px;
+  color: var(--bs-info);
+}

@@ -15,7 +15,7 @@ const sortableOptions = {
   group: "shared",
 };
 
-function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterId }) {
+function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterId, whoseTurn }) {
   const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
 
   function reorderCharacters(chars) {
@@ -33,11 +33,16 @@ function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterI
     <>
       <ListGroup>
         <ReactSortable list={characters || []} setList={reorderCharacters} {...sortableOptions}>
-          {characters?.map((character) => (
+          {characters?.map((character, idx) => (
             <ListGroup.Item
               key={character.id}
               className={selectedCharacterId === character.id ? "selected p-0" : "p-0"}>
               <Row onMouseDown={() => setSelectedCharacterId(character.id)} className='p-2'>
+                {whoseTurn === idx && (
+                  <div className='initiative-arrow'>
+                    <i className='bi bi-caret-right-fill'></i>
+                  </div>
+                )}
                 <Col xs='1' className='pe-0' style={{ width: "10%" }}>
                   {character.type === "npc" ? (
                     <Button

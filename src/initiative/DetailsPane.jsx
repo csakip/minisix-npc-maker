@@ -18,6 +18,7 @@ function DetailsPane({
   setEditedCharacter,
   characters,
   rollDice,
+  setWhoseTurnToCharacter,
 }) {
   const [npc, setNpc] = useState();
   const selectedCharacter = characters?.find((c) => c.id === selectedCharacterId) || null;
@@ -78,6 +79,13 @@ function DetailsPane({
           </Col>
           <Col className='text-end align-middle' xs={2}>
             <div className='d-flex gap-2 flex-wrap justify-content-end'>
+              <Button
+                title='Kezdeményezés ide'
+                onClick={() => setWhoseTurnToCharacter(selectedCharacter)}
+                size='sm'
+                variant='info'>
+                <i className='bi bi-chevron-right'></i>
+              </Button>
               <Button onClick={() => setEditedCharacter(selectedCharacter)} size='sm'>
                 <i className='bi bi-pencil'></i>
               </Button>
