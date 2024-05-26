@@ -10,7 +10,7 @@ import {
   Row,
 } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import "bootstrap-icons/font/bootstrap-icons.min.css";
 import SelectNpcDialog from "../common/SelectNpcDialog";
 import { db } from "../database/dataStore";
@@ -25,23 +25,24 @@ import {
 } from "../common/utils";
 import NpcSidebar from "./NpcSidebar";
 import { useSimpleDialog } from "../common/SimpleDialog";
-
-const localStored = JSON.parse(localStorage.getItem("minisix-npc-generator"));
+import useLocalStorageState from "use-local-storage-state";
+import { debounce } from "lodash";
 
 function Npc() {
-  // get from local storage
+  const [currentNpc, setCurrentNpc] = useLocalStorageState("minisix-npc-generator-currentnpc", {
+    defaultValue: {},
+  });
+
   const [attrs, setAttrs] = useState(
-    localStored?.attributes ||
+    currentNpc?.attrs ||
       skillTree.attributes.filter((a) => !a.showAsSkill).map((a) => ({ name: a.name, value: 6 }))
   );
-  const [charName, setCharName] = useState(localStored?.charName || "");
-  const [charNotes, setCharNotes] = useState(localStored?.charNotes || "");
-  const [charId, setCharId] = useState(localStored?.id);
+  const [charName, setCharName] = useState(currentNpc?.charName || "");
+  const [charNotes, setCharNotes] = useState(currentNpc?.charNotes || "");
+  const [charId, setCharId] = useState(currentNpc?.id);
   const [showSpec, setShowSpec] = useState(false);
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
-
-  const localStoreTimerRef = useRef();
 
   const { openModal, SimpleDialog } = useSimpleDialog();
 
@@ -67,18 +68,17 @@ function Npc() {
     setFromSearchParams();
   }, []);
 
-  // Save attrs to local storage with throttle
-  useEffect(() => {
-    if (localStoreTimerRef.current) {
-      clearTimeout(localStoreTimerRef.current);
-    }
+  const storeCurrentNpc = useCallback(
+    debounce(
+      (attrs, charName, charNotes, charId) => setCurrentNpc({ attrs, charName, charNotes, charId }),
+      1000
+    ),
+    []
+  );
 
-    localStoreTimerRef.current = setTimeout(() => {
-      localStorage.setItem(
-        "minisix-npc-generator",
-        JSON.stringify({ charName, id: charId, charNotes, attributes: attrs })
-      );
-    }, 1000);
+  // Save attrs to local storage with debounce
+  useEffect(() => {
+    storeCurrentNpc(attrs, charName, charNotes, charId);
   }, [attrs, charName, charNotes, charId]);
 
   function attrButton(item, step = 1, className = "") {
