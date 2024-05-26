@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from "react";
 import reactTextareaAutosize from "react-textarea-autosize";
 import { debounce } from "lodash";
 import Counter from "../common/Counter";
+import FormCheck from "react-bootstrap/FormCheck";
 
 function DetailsPane({
   selectedCharacterId,
@@ -78,7 +79,16 @@ function DetailsPane({
             </InputGroup>
           </Col>
           <Col className='text-end align-middle' xs={2}>
-            <div className='d-flex gap-2 flex-wrap justify-content-end'>
+            <div className='d-flex gap-2 flex-wrap justify-content-end align-items-center'>
+              <FormCheck
+                title='Új harcnál nem törlendő'
+                checked={!!selectedCharacter.dontDelete}
+                onChange={(e) =>
+                  db.characters
+                    .where({ id: selectedCharacter.id })
+                    .modify({ dontDelete: e.target.checked })
+                }
+              />
               <Button
                 title='Kezdeményezés ide'
                 onClick={() => setWhoseTurnToCharacter(selectedCharacter)}

@@ -86,9 +86,15 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
                 if (ret) {
                   newRound();
                   db.characters.bulkDelete(
-                    characters.filter((c) => c.type === "npc").map((c) => c.id)
+                    characters
+                      .filter(
+                        (c) =>
+                          (c.dontDelete === undefined && c.type === "npc") || c.dontDelete === false
+                      )
+                      .map((c) => c.id)
                   );
                   db.characters.toCollection().modify({ initiative: undefined });
+                  rollInitiative(undefined, characters);
                 }
                 closeModal();
               },

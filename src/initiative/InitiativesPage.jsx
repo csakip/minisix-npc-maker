@@ -14,14 +14,14 @@ import { Button } from "react-bootstrap";
 import { updateCharacters } from "../common/utils";
 
 const Initiatives = () => {
-  const [whoseTurn, setWhoseTurn] = useLocalStorageState("whoseTurn", {
+  const [whoseTurn, setWhoseTurn] = useLocalStorageState("minisix-npc-generator-whoseTurn", {
     defaultValue: 0,
   });
   const [editedCharacter, setEditedCharacter] = useState();
   const [selectedCharacterId, setSelectedCharacterId] = useState();
-  const [round, setRound] = useState(
-    parseInt(localStorage.getItem("minisix-npc-generator-round") ?? "1") || 1
-  );
+  const [round, setRound] = useLocalStorageState("minisix-npc-generator-round", {
+    defaultValue: 1,
+  });
 
   const { DiceRoller, rollDice } = useDiceRoller();
 
@@ -48,7 +48,6 @@ const Initiatives = () => {
       );
     }
     setRound(newValue);
-    localStorage.setItem("minisix-npc-generator-round", newValue);
     setWhoseTurn(0);
   }
 

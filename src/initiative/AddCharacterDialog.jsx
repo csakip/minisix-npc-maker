@@ -14,6 +14,7 @@ const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
           e.preventDefault();
           editedCharacter.type = editedCharacter.roll ? "npc" : "pc";
           editedCharacter.order = editedCharacter.order || 100000;
+          editedCharacter.dontDelete = editedCharacter.type === "pc";
           db.characters.put(editedCharacter, editedCharacter.id);
           setEditedCharacter(undefined);
         }}>
