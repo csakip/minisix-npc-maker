@@ -55,8 +55,10 @@ const Initiatives = () => {
     if (whoseTurn >= characters.length - 1) {
       newRound(1);
       setWhoseTurn(0);
+      setSelectedCharacterId(characters[0].id);
     } else {
       setWhoseTurn(whoseTurn + 1);
+      setSelectedCharacterId(characters[whoseTurn + 1].id);
     }
   }
 
@@ -72,6 +74,7 @@ const Initiatives = () => {
             setEditedCharacter={setEditedCharacter}
             characters={characters}
             newRound={newRound}
+            setSelectedCharacterId={setSelectedCharacterId}
           />
         </Col>
         <Col>
@@ -109,6 +112,7 @@ const Initiatives = () => {
       <AddCharacterDialog
         editedCharacter={editedCharacter}
         setEditedCharacter={setEditedCharacter}
+        setSelectedCharacterId={setSelectedCharacterId}
       />
       <DiceRoller />
     </Container>

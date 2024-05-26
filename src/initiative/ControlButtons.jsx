@@ -7,7 +7,7 @@ import { format, roll } from "../dice";
 import { useSimpleDialog } from "../common/SimpleDialog";
 import { ButtonGroup } from "react-bootstrap";
 
-function ControlButtons({ setEditedCharacter, characters, newRound }) {
+function ControlButtons({ setEditedCharacter, characters, newRound, setSelectedCharacterId }) {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
 
@@ -38,7 +38,7 @@ function ControlButtons({ setEditedCharacter, characters, newRound }) {
         });
       if (armourPoints)
         toSave.counters.push({ name: armourPoints.name, value: armourPoints.value });
-      db.characters.put(toSave);
+      db.characters.put(toSave).then((ret) => setSelectedCharacterId(ret));
     }
   }
 

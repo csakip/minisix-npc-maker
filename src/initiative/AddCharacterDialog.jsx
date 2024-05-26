@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import { parseDice, roll } from "../dice";
 import { db } from "../database/dataStore";
 
-const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
+const AddCharacterDialog = ({ editedCharacter, setEditedCharacter, setSelectedCharacterId }) => {
   return (
     <Modal show={editedCharacter} onHide={() => setEditedCharacter(undefined)}>
       <Form
@@ -15,7 +15,9 @@ const AddCharacterDialog = ({ editedCharacter, setEditedCharacter }) => {
           editedCharacter.type = editedCharacter.roll ? "npc" : "pc";
           editedCharacter.order = editedCharacter.order || 100000;
           editedCharacter.dontDelete = editedCharacter.type === "pc";
-          db.characters.put(editedCharacter, editedCharacter.id);
+          db.characters
+            .put(editedCharacter, editedCharacter.id)
+            .then((ret) => setSelectedCharacterId(ret));
           setEditedCharacter(undefined);
         }}>
         <Modal.Header closeButton>
