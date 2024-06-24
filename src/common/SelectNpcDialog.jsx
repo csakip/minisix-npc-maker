@@ -6,7 +6,7 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import { db } from "../database/dataStore";
 import { useLiveQuery } from "dexie-react-hooks";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSimpleDialog } from "./SimpleDialog";
 import { fuzzyMatch } from "./utils";
 
@@ -20,11 +20,33 @@ const SelectNpcDialog = ({
   const [filter, setFilter] = useState("");
   const [copies, setCopies] = useState(1);
   const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
+  const [showArchived, setShowArchived] = useState(false);
+
+  useEffect(() => {
+    if (open) setShowArchived(false);
+  }, [open]);
 
   const npcs = useLiveQuery(() => {
-    if (filter === "") return db.npcs.orderBy("updated").toArray();
-    return db.npcs.filter((npc) => fuzzyMatch(filter, npc.name)).toArray();
-  }, [filter]);
+    if (filter === "")
+      return db.npcs
+        .orderBy("updated")
+        .filter((npc) =>
+          showArchived
+            ? (npc.tags || []).includes("archived")
+            : !(npc.tags || []).includes("archived")
+        )
+        .toArray();
+    return db.npcs
+      .orderBy("updated")
+      .filter(
+        (npc) =>
+          fuzzyMatch(filter, npc.name) &&
+          (showArchived
+            ? (npc.tags || []).includes("archived")
+            : !(npc.tags || []).includes("archived"))
+      )
+      .toArray();
+  }, [filter, showArchived]);
 
   function formatDate(timestamp) {
     return new Date(timestamp).toLocaleString("hu-HU");
@@ -45,7 +67,7 @@ const SelectNpcDialog = ({
         <Modal.Body>
           <>
             <Row>
-              <Col>
+              <Col className='align-self-center'>
                 <Form.Control
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
@@ -65,6 +87,15 @@ const SelectNpcDialog = ({
                   />
                 </Col>
               )}
+              {!showCopies && (
+                <Col xs={1} className='text-center'>
+                  Archív
+                  <Form.Check
+                    value={showArchived}
+                    onChange={() => setShowArchived(!showArchived)}
+                  />
+                </Col>
+              )}
             </Row>
             {npcs?.length === 0 && <h4 className='text-center'>Nincs találat</h4>}
             <ListGroup>
@@ -81,27 +112,45 @@ const SelectNpcDialog = ({
                     <Col className='text-end' xs={5}>
                       {formatDate(npc.updated)}
                     </Col>
-                    <Col xs={1}>
-                      <Button
-                        variant='danger'
-                        className='float-end'
-                        onClick={(e) => {
-                          e.preventDefault();
-                          openModal({
-                            title: "Végleges törlés!",
-                            body: `Biztosan törlöd: ${npc.name}?`,
-                            okButton: "Törlés",
-                            cancelButton: "Mégse",
-                            onClose: (ret) => {
-                              if (ret) db.npcs.delete(npc.id);
-                              closeModal();
-                            },
-                          });
-                        }}
-                        size='sm'>
-                        <i className='bi bi-trash'></i>
-                      </Button>
-                    </Col>
+                    {!showCopies && (
+                      <Col xs={2} className='d-flex gap-1 justify-content-end'>
+                        <Button
+                          title='Archiválás'
+                          variant='secondary'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const isArchive = (npc.tags || []).includes("archived");
+
+                            db.npcs.update(npc.id, {
+                              tags: isArchive
+                                ? npc.tags.filter((tag) => tag !== "archived")
+                                : [...(npc.tags || []), "archived"],
+                            });
+                          }}
+                          size='sm'>
+                          <i className='bi bi-archive'></i>
+                        </Button>
+                        <Button
+                          variant='danger'
+                          onClick={(e) => {
+                            e.preventDefault();
+                            openModal({
+                              title: "Végleges törlés!",
+                              body: `Biztosan törlöd: ${npc.name}?`,
+                              okButton: "Törlés",
+                              cancelButton: "Mégse",
+                              onClose: (ret) => {
+                                if (ret) db.npcs.delete(npc.id);
+                                closeModal();
+                              },
+                            });
+                          }}
+                          size='sm'>
+                          <i className='bi bi-trash'></i>
+                        </Button>
+                      </Col>
+                    )}
                   </Row>
                 </ListGroup.Item>
               ))}
