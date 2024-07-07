@@ -63,6 +63,7 @@ export function displayCharValue(attrs, name, add1, add2) {
 }
 
 export function displayAsDiceCode(value) {
+  if (value < 0) value = 0;
   // Get the number before the d
   const before = Math.floor(value / 3);
   // Get the number after the d
@@ -86,16 +87,18 @@ export function getCalculatedValue(attrs, calculated) {
   if (Array.isArray(value)) {
     return {
       name,
-      value:
+      value: Math.max(
+        0,
         value.map((value) => findAttr(attrs, value)?.value || 0).reduce((a, b) => a + b, 0) +
-        (findAttr(attrs, name)?.value || 0),
+          (findAttr(attrs, name)?.value || 0)
+      ),
       highlighted: calculated.highlighted,
     };
   }
 
   // If value is a number, use the attribute, and add value to it
   if (isNumber(value)) {
-    const sum = value + (findAttr(attrs, name)?.value || 0);
+    const sum = Math.max(0, value + (findAttr(attrs, name)?.value || 0));
     if (!sum) return undefined;
     return { name: name, value: sum, highlighted: calculated.highlighted };
   }
@@ -108,7 +111,7 @@ export function getCalculatedValue(attrs, calculated) {
       (findAttr(attrs, a.name)?.value || 0) > (findAttr(attrs, b.name)?.value || 0) ? a : b
     );
     const highestTestSkillValue =
-      findAttr(attrs, "Test").value + findAttr(attrs, highestTestSkill.name)?.value || 0;
+      (findAttr(attrs, "Test")?.value || 0) + (findAttr(attrs, highestTestSkill.name)?.value || 0);
     const sum =
       Math.floor(highestTestSkillValue / 3) * 4 +
       (highestTestSkillValue % 3) +
