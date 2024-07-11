@@ -1,4 +1,4 @@
-import { ListGroup } from "react-bootstrap";
+import { InputGroup, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
@@ -67,30 +67,35 @@ const SelectNpcDialog = ({
         <Modal.Body>
           <>
             <Row>
-              <Col className='align-self-center'>
+              <Col>
                 <Form.Control
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                   placeholder='Keresés'
                   className='mb-3'
+                  size='sm'
                 />
               </Col>
               {showCopies && (
                 <Col xs={2}>
-                  <Form.Control
-                    value={copies}
-                    onChange={(e) =>
-                      setCopies(isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value))
-                    }
-                    title='Darabszám'
-                    className='mb-3'
-                  />
+                  <InputGroup size='sm'>
+                    <InputGroup.Text>Db</InputGroup.Text>
+                    <Form.Control
+                      value={copies}
+                      onChange={(e) =>
+                        setCopies(isNaN(parseInt(e.target.value)) ? 1 : parseInt(e.target.value))
+                      }
+                      className='text-center'
+                      title='Darabszám'
+                    />
+                  </InputGroup>
                 </Col>
               )}
               {!showCopies && (
-                <Col xs={1} className='text-center'>
-                  Archív
+                <Col xs={2}>
                   <Form.Check
+                    label='Archív'
+                    reverse
                     value={showArchived}
                     onChange={() => setShowArchived(!showArchived)}
                   />
