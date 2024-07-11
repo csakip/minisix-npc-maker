@@ -17,7 +17,7 @@ export function useDiceRoller() {
           setNotifications((notifications) =>
             notifications.filter((n) => n.id !== newNotification.id)
           ),
-        5000
+        10000
       );
     },
     [setNotifications]
