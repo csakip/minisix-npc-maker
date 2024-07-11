@@ -1,6 +1,6 @@
 import { cloneDeep } from "lodash";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
 import {
   displayAsDiceCode,
@@ -9,8 +9,16 @@ import {
   findValue,
   getCalculatedValue,
 } from "./utils";
+import spellsList from "../assets/spells.json";
 
-function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = false, rollDice }) {
+function CharacterSheet({
+  attrs = [],
+  charName,
+  charNotes = "",
+  formatted = false,
+  rollDice,
+  spells = [],
+}) {
   function displaySkills() {
     const filteredSkillTree = cloneDeep(skillTree);
 
@@ -63,6 +71,30 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
     .forEach((a) => {
       if (findAttr(attrs, a.name)) psiMagic.push(displayCharValue(attrs, a.name));
     });
+
+  function renderTooltip(props, spell) {
+    return (
+      <Popover {...props}>
+        <Popover.Header as='h3'>
+          {spell.name} ({spell.PPE})
+        </Popover.Header>
+        <Popover.Body>
+          <b>Duration:</b> {spell.duration}
+          <br />
+          <b>Effect:</b> {spell.effect}
+        </Popover.Body>
+      </Popover>
+      // <Tooltip {...props}>
+      //   {spell.name}
+      //   <br />
+      //   {spell.PPE}
+      //   <br />
+      //   {spell.duration}
+      //   <br />
+      //   {spell.effect}
+      // </Tooltip>
+    );
+  }
 
   return (
     <div id='char-display'>
@@ -174,6 +206,24 @@ function CharacterSheet({ attrs = [], charName, charNotes = "", formatted = fals
           </div>
         </>
       )}
+      <div className='d-flex column-gap-2 flex-wrap'>
+        {Object.keys(spellsList).map((level) => {
+          return spellsList[level].map((spell) => {
+            if (spells.includes(spell.name)) {
+              return (
+                <OverlayTrigger
+                  key={spell.name}
+                  placement='top'
+                  overlay={(e) => renderTooltip(e, spell)}>
+                  <a className='text-nowrap cursor-pointer'>
+                    {spell.name} ({spell.PPE})
+                  </a>
+                </OverlayTrigger>
+              );
+            }
+          });
+        })}
+      </div>
     </div>
   );
 }

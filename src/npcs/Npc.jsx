@@ -27,6 +27,7 @@ import NpcSidebar from "./NpcSidebar";
 import { useSimpleDialog } from "../common/SimpleDialog";
 import useLocalStorageState from "use-local-storage-state";
 import { debounce } from "lodash";
+import SpellDialog from "../common/SpellDialog";
 
 function Npc() {
   const [currentNpc, setCurrentNpc] = useLocalStorageState("minisix-npc-generator-currentnpc", {
@@ -39,10 +40,12 @@ function Npc() {
   );
   const [charName, setCharName] = useState(currentNpc?.charName || "");
   const [charNotes, setCharNotes] = useState(currentNpc?.charNotes || "");
-  const [charId, setCharId] = useState(currentNpc?.id);
+  const [charId, setCharId] = useState(currentNpc?.id ?? currentNpc?.charId);
   const [showSpec, setShowSpec] = useState(false);
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
+  const [spellsDialogOpen, setSpellsDialogOpen] = useState(false);
+  const [spells, setSpells] = useState(currentNpc?.spells || []);
 
   const { openModal, SimpleDialog } = useSimpleDialog();
 
@@ -70,7 +73,8 @@ function Npc() {
 
   const storeCurrentNpc = useCallback(
     debounce(
-      (attrs, charName, charNotes, charId) => setCurrentNpc({ attrs, charName, charNotes, charId }),
+      (attrs, charName, charNotes, charId, spells) =>
+        setCurrentNpc({ attrs, charName, charNotes, id: charId, spells }),
       1000
     ),
     []
@@ -78,8 +82,8 @@ function Npc() {
 
   // Save attrs to local storage with debounce
   useEffect(() => {
-    storeCurrentNpc(attrs, charName, charNotes, charId);
-  }, [attrs, charName, charNotes, charId]);
+    storeCurrentNpc(attrs, charName, charNotes, charId, spells);
+  }, [attrs, charName, charNotes, charId, spells]);
 
   function attrButton(item, step = 1, className = "") {
     const selected = findAttr(attrs, item.name)?.value ? "selected" : "";
@@ -214,10 +218,12 @@ function Npc() {
   }
 
   function setSelectedCharacter(character) {
+    console.log("setSelectedCharacter", character);
     setAttrs(character.attrs);
     setCharName(character.name);
     setCharNotes(character.notes);
     setCharId(character.id);
+    setSpells(character.spells || []);
   }
 
   // Store to db
@@ -243,6 +249,7 @@ function Npc() {
       notes: charNotes,
       attrs: attrs,
       updated: Date.now(),
+      spells: spells,
     };
     db.npcs.put(toSave, toSave.id).then((ret) => setCharId(ret));
   }
@@ -348,13 +355,20 @@ function Npc() {
                 </InputGroup>
               </Row>
               <Row>
-                <Col>
+                <Col className='d-flex gap-2'>
                   <Button
                     onClick={addRandomDescription}
                     size='sm'
                     variant='secondary'
                     className='mt-2'>
                     Véletlen leíró
+                  </Button>
+                  <Button
+                    onClick={() => setSpellsDialogOpen(true)}
+                    size='sm'
+                    variant='secondary'
+                    className='mt-2'>
+                    Varázslatok
                   </Button>
                 </Col>
               </Row>
@@ -411,7 +425,16 @@ function Npc() {
               </Row>
               <Row>
                 <Col>
-                  <CharacterSheet attrs={attrs} charName={charName} charNotes={charNotes} />
+                  <CharacterSheet
+                    attrs={attrs}
+                    charName={charName}
+                    charNotes={charNotes}
+                    spells={spells}
+                  />
+                </Col>
+              </Row>
+              <Row>
+                <Col>
                   <Button
                     title='Vágólapra'
                     onClick={(e) => copyToClipboard(e, "statBlock")}
@@ -429,6 +452,12 @@ function Npc() {
           setSelectedCharacter={setSelectedCharacter}
           open={showSelectNpcDialog}
           setOpen={setShowSelectNpcDialog}
+        />
+        <SpellDialog
+          open={spellsDialogOpen}
+          setOpen={setSpellsDialogOpen}
+          characterSpells={spells}
+          callback={setSpells}
         />
         <NpcSidebar
           show={showSidebar}

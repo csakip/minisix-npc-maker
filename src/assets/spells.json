@@ -1,0 +1,2480 @@
+{
+  "1": [
+    {
+      "name": "Blinding Flash",
+      "range": "10 ft.",
+      "duration": "Instant",
+      "PPE": "1",
+      "effect": "-5 strike, -10 par/dodge",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "Cloud of Smoke",
+      "range": "90 ft",
+      "duration": "4 melees PLE",
+      "PPE": "2",
+      "effect": "-5 strike, parry, dodge",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "Death Trance",
+      "range": "self",
+      "duration": "10 melees PLE",
+      "PPE": "1",
+      "effect": "Illusion of death",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "Globe of Daylight",
+      "range": "30 ft",
+      "duration": "12 melees PLE",
+      "PPE": "2",
+      "effect": "Sphere of Daylight",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "See Aura",
+      "range": "100 ft",
+      "duration": "1 melee",
+      "PPE": "6",
+      "effect": "Sense an object's aura",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "See the Invisible",
+      "range": "200ft",
+      "duration": "4 melees PLE",
+      "PPE": "4",
+      "effect": "See invisible objects",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sense Evil",
+      "range": "90 ft",
+      "duration": "8 melees PLE",
+      "PPE": "2",
+      "effect": "Sense Supernatural Evil",
+      "page": "168",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sense Magic",
+      "range": "120 ft",
+      "duration": "8 melees PLE",
+      "PPE": "4",
+      "effect": "Sense the presence of Magic",
+      "page": "168-169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Thunderclap",
+      "range": "Target",
+      "duration": "Instant",
+      "PPE": "4",
+      "effect": "+5 INT, +1 Strike, parry, dodge",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Lantern Light",
+      "range": "10 ft",
+      "duration": "30 minutes PLE",
+      "PPE": "1",
+      "effect": "Magical ball of low level light",
+      "page": "130",
+      "book": "FoM"
+    }
+  ],
+  "2": [
+    {
+      "name": "Befuddle",
+      "range": "100ft",
+      "duration": "8 melees PLE",
+      "PPE": "6",
+      "effect": "Confuses Target",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Chameleon",
+      "range": "Touch",
+      "duration": "18 melees PLE",
+      "PPE": "6",
+      "effect": "Change Target's color to hide",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Climb",
+      "range": "40ft",
+      "duration": "20 melees PLE",
+      "PPE": "3",
+      "effect": "Enables Target to Climb up Stuff",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Concealment",
+      "range": "40ft",
+      "duration": "20 melees PLE",
+      "PPE": "6",
+      "effect": "Conceal small objects",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Detect Concealment",
+      "range": "30ft",
+      "duration": "Instant",
+      "PPE": "6",
+      "effect": "Negates Concealment Spell",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Extinguish Fire",
+      "range": "20ft area",
+      "duration": "4 melees PLE",
+      "PPE": "4",
+      "effect": "Extinguishes Fire in a 20ft radius",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fear",
+      "range": "20ft area",
+      "duration": "4 melees PLE",
+      "PPE": "5",
+      "effect": "Gives target a Horror factor of 16",
+      "page": "169",
+      "book": "Rifts"
+    },
+    {
+      "name": "Heavy Breathing",
+      "range": "60ft",
+      "duration": "5 melees PLE",
+      "PPE": "5",
+      "effect": "60% chance of firghtening target",
+      "page": "169-170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Levitation",
+      "range": "60ft",
+      "duration": "12 melees PLE",
+      "PPE": "5",
+      "effect": "Only move up and down",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Mystic Alarm",
+      "range": "12ft",
+      "duration": "1 year PLE",
+      "PPE": "5",
+      "effect": "Alerts Spell caster of diturbance",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Turn Dead",
+      "range": "60ft",
+      "duration": "Instant",
+      "PPE": "6",
+      "effect": "repels 1D6 animated dead PLE",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Aura of Power",
+      "range": "Touch",
+      "duration": "1 minute PLE",
+      "PPE": "4",
+      "effect": "Gives target a more powerful aura",
+      "page": "130",
+      "book": "FoM"
+    },
+    {
+      "name": "Cleanse",
+      "range": "10ft",
+      "duration": "Instant",
+      "PPE": "6",
+      "effect": "Removes dirt from targets surface",
+      "page": "130-131",
+      "book": "FoM"
+    },
+    {
+      "name": "Cloak of Darkness",
+      "range": "5ft area",
+      "duration": "16 melees PLE",
+      "PPE": "6",
+      "effect": "Hides Spell Caster",
+      "page": "131",
+      "book": "FoM"
+    },
+    {
+      "name": "Manipulate Objects",
+      "range": "50ft",
+      "duration": "8 melees PLE",
+      "PPE": "2",
+      "effect": "Used as an invisible 3rd hand",
+      "page": "131",
+      "book": "FoM"
+    },
+    {
+      "name": "Shatter",
+      "range": "20ft",
+      "duration": "Instant",
+      "PPE": "5",
+      "effect": "Shatters non-organic brittle substances",
+      "page": "131",
+      "book": "FoM"
+    },
+    {
+      "name": "Throwing Stones",
+      "range": "200ft",
+      "duration": "2 melees",
+      "PPE": "5",
+      "effect": "1D6+1 MD PLE",
+      "page": "131",
+      "book": "FoM"
+    }
+  ],
+  "3": [
+    {
+      "name": "Armor of Ithan",
+      "range": "Touch",
+      "duration": "4 melees PLE",
+      "PPE": "10",
+      "effect": "+10 MDC Armor PLE",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Breathe Without Air",
+      "range": "Self",
+      "duration": "12 melees PLE",
+      "PPE": "12",
+      "effect": "Target breathes in vacuum or water",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Energy Bolt",
+      "range": "150ft",
+      "duration": "Instantly",
+      "PPE": "5",
+      "effect": "4D6 SDC Damage",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fingers of Wind",
+      "range": "90ft",
+      "duration": "3 melees PLE",
+      "PPE": "5",
+      "effect": "Use\u00a0 wind to manipulate small items",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Float in Air",
+      "range": "Self",
+      "duration": "10 melees PLE",
+      "PPE": "5",
+      "effect": "Allows Target to float on air",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fuel Flame",
+      "range": "100ft",
+      "duration": "Instant",
+      "PPE": "5",
+      "effect": "Doubles size of existing fire",
+      "page": "170",
+      "book": "Rifts"
+    },
+    {
+      "name": "Ignite Fire",
+      "range": "40ft",
+      "duration": "Instant",
+      "PPE": "6",
+      "effect": "Causes Spontaneous Combustion",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Impervious to Fire",
+      "range": "Self",
+      "duration": "20 melees PLE",
+      "PPE": "5",
+      "effect": "Renders Target impervious to fire",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Impervious to Poison",
+      "range": "Self",
+      "duration": "20 melees PLE",
+      "PPE": "5",
+      "effect": "Renders target impervious to poisons",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Invisibility: Simple",
+      "range": "Self",
+      "duration": "12 melees PLE",
+      "PPE": "6",
+      "effect": "basic level of invisibility",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Negate Poison/Toxin",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "5",
+      "effect": "destroys poison, toxins inside target",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Paralysis: Lesser",
+      "range": "60ft",
+      "duration": "4 melees PLE",
+      "PPE": "5",
+      "effect": "Imobilizes part of target",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Resist Fire",
+      "range": "Touch",
+      "duration": "20 melees PLE",
+      "PPE": "6",
+      "effect": "Resists the damage effects of fire",
+      "page": "171",
+      "book": "Rifts"
+    },
+    {
+      "name": "Telekinesis",
+      "range": "60ft",
+      "duration": "4 melees PLE",
+      "PPE": "8",
+      "effect": "Telekinetic Powers",
+      "page": "171-172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Create Wood",
+      "range": "10ft",
+      "duration": "Permanent",
+      "PPE": "10/20",
+      "effect": "Creates wood for Burning/Building",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Life Source",
+      "range": "Self",
+      "duration": "Instant",
+      "PPE": "2",
+      "effect": "Converts Casters SDC/HPs into PPE",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Light Healing",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "6",
+      "effect": "Speeds the targets healing process",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Light Target",
+      "range": "10ft",
+      "duration": "8 melees PLE",
+      "PPE": "6",
+      "effect": "Makes Target stand out in crowd",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Magic Shield",
+      "range": "Touch",
+      "duration": "8 melees PLE",
+      "PPE": "6",
+      "effect": "+60 MDC, +1 Parry",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Mystic Fulcrum",
+      "range": "Touch",
+      "duration": "10 minutes PLE",
+      "PPE": "5",
+      "effect": "Lift heavy weights with magic lever",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Orb of Cold",
+      "range": "200ft",
+      "duration": "1 melee",
+      "PPE": "6",
+      "effect": "1D4 minutes numbness to target",
+      "page": "132",
+      "book": "FoM"
+    },
+    {
+      "name": "Wave of Frost",
+      "range": "200ft",
+      "duration": "4 melees PLE",
+      "PPE": "6",
+      "effect": "Creates Frost to damage vegetation",
+      "page": "132-133",
+      "book": "FoM"
+    }
+  ],
+  "4": [
+    {
+      "name": "Astral Projection",
+      "range": "Self",
+      "duration": "5 minutes PLE",
+      "PPE": "10",
+      "effect": "sends the caster's soul to the astral plane",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Blind",
+      "range": "10ft",
+      "duration": "4 melees PLE",
+      "PPE": "6",
+      "effect": "-5 strike, -10 par/dodge, blinded",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Carpet of Adhesion",
+      "range": "30ft PLE",
+      "duration": "10 melees PLE",
+      "PPE": "10",
+      "effect": "Victim is stuck to the carpet",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Charismatic Aura",
+      "range": "60ft area",
+      "duration": "6 melees PLE",
+      "PPE": "10",
+      "effect": "+8 to PB temporarily",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Cure Minor Disorders",
+      "range": "10ft",
+      "duration": "Instant",
+      "PPE": "10",
+      "effect": "cures minor ailments such as headaches",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Energy Field",
+      "range": "60ft",
+      "duration": "4 melees PLE",
+      "PPE": "10",
+      "effect": "+ 60MDC, Armour Rating 4",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fool's Gold",
+      "range": "5ft",
+      "duration": "20 melees PLE",
+      "PPE": "10",
+      "effect": "Makes target appear to be gold",
+      "page": "172",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fire Bolt",
+      "range": "100ft PLE",
+      "duration": "Instant",
+      "PPE": "7",
+      "effect": "4D6 MDC damage",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Ley Line Transmission",
+      "range": "Ley line length",
+      "duration": "Instant",
+      "PPE": "30",
+      "effect": "Send a verbal or audio message via ley line",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Magic Net",
+      "range": "60ft",
+      "duration": "2 melees PLE",
+      "PPE": "7",
+      "effect": "Snares 1-6 human sized targets",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Multiple Image",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "7",
+      "effect": "Creates Multiple Images of Mage",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Repel Animals",
+      "range": "30ft",
+      "duration": "Instant",
+      "PPE": "7",
+      "effect": "Animals leave the area around the mage",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Seal",
+      "range": "100ft",
+      "duration": "8 melees PLE",
+      "PPE": "7",
+      "effect": "Can't open inanimate object",
+      "page": "173",
+      "book": "Rifts"
+    },
+    {
+      "name": "Shadow Meld",
+      "range": "Self",
+      "duration": "8 melees PLE",
+      "PPE": "10",
+      "effect": "Hide inside a shadowed area",
+      "page": "173-174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Swim as a Fish",
+      "range": "Self",
+      "duration": "20 melees PLE",
+      "PPE": "6",
+      "effect": "Swim at 96% proficiency",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Trance",
+      "range": "Touch",
+      "duration": "20 melees PLE",
+      "PPE": "10",
+      "effect": "Places target into zombie trance",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Chromatic Protection",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "10",
+      "effect": "Blinds enemies attacking effected target",
+      "page": "133",
+      "book": "FoM"
+    },
+    {
+      "name": "Deflect",
+      "range": "Self",
+      "duration": "1 melee PLE",
+      "PPE": "10",
+      "effect": "Deflects projectiles, +4 parry",
+      "page": "133",
+      "book": "FoM"
+    },
+    {
+      "name": "Electric Arc",
+      "range": "30ft PLE",
+      "duration": "1 melee",
+      "PPE": "8",
+      "effect": "2D6 MDC Damage, +2 Strike",
+      "page": "133",
+      "book": "FoM"
+    },
+    {
+      "name": "Fire Blast",
+      "range": "50 ft",
+      "duration": "Instant",
+      "PPE": "8",
+      "effect": "3D6 MDC Damage",
+      "page": "133",
+      "book": "FoM"
+    },
+    {
+      "name": "Fist of Fury",
+      "range": "Self",
+      "duration": "1 melee PLE",
+      "PPE": "10",
+      "effect": "1D6 Damage, Normal Punch",
+      "page": "133-134",
+      "book": "FoM"
+    },
+    {
+      "name": "Reflection",
+      "range": "20ft",
+      "duration": "8 melees PLE",
+      "PPE": "7",
+      "effect": "Creates a reflecting in mirrors",
+      "page": "134",
+      "book": "FoM"
+    },
+    {
+      "name": "Ricochet Strike",
+      "range": "Weapon",
+      "duration": "1 melee",
+      "PPE": "12",
+      "effect": "Throwing weapons bounce off 1-3 targets",
+      "page": "134",
+      "book": "FoM"
+    },
+    {
+      "name": "Watchguard",
+      "range": "6ft PLE",
+      "duration": "1 hour PLE",
+      "PPE": "10",
+      "effect": "Warns caster of hostile persons in area",
+      "page": "134",
+      "book": "FoM"
+    },
+    {
+      "name": "Weight of Duty",
+      "range": "200ft",
+      "duration": "4 melees PLE",
+      "PPE": "10",
+      "effect": "Suffers major penalties from depression",
+      "page": "134",
+      "book": "FoM"
+    }
+  ],
+  "5": [
+    {
+      "name": "Calling",
+      "range": "2 mile PLE",
+      "duration": "20 melees PLE",
+      "PPE": "8",
+      "effect": "Telepathic \"come here\" message",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Circle of Flame",
+      "range": "10ft radius",
+      "duration": "8 melees PLE",
+      "PPE": "10",
+      "effect": "6D6 SDC Circle of Flame around caster",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Domination",
+      "range": "4ft",
+      "duration": "15 minutes PLE",
+      "PPE": "10",
+      "effect": "Imposes Will over target",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Energy Disruption",
+      "range": "60ft",
+      "duration": "12 melees PLE",
+      "PPE": "12",
+      "effect": "Temporarily cuts off electric current",
+      "page": "174",
+      "book": "Rifts"
+    },
+    {
+      "name": "Escape",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "8",
+      "effect": "Allows caster to escape from simple bonds",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Eyes of Thoth",
+      "range": "Touch",
+      "duration": "10 minutes PLE",
+      "PPE": "8",
+      "effect": "Caster can read & understand any language",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fly",
+      "range": "Touch",
+      "duration": "24 melees PLE",
+      "PPE": "15",
+      "effect": "Can make any object fly, no metal/plastic",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Heal Wounds",
+      "range": "3ft",
+      "duration": "Instant",
+      "PPE": "10",
+      "effect": "+3D6 SDC, +1D6 HPS",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Horrific Illusion",
+      "range": "30ft",
+      "duration": "8 melees PLE",
+      "PPE": "10",
+      "effect": "Creates a Horror Factor 14 illusion",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sleep",
+      "range": "1 ft",
+      "duration": "10 minutes PLE",
+      "PPE": "10",
+      "effect": "Turns food substances into sleeping potions",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Superhuman Strength",
+      "range": "Touch",
+      "duration": "2 melees PLE",
+      "PPE": "10",
+      "effect": "PS to 30, PE to 24, +30 SDC",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Superhuman Speed",
+      "range": "Touch",
+      "duration": "4 melees PLE",
+      "PPE": "10",
+      "effect": "Speed to 44, +2 Parry, + 6 Dodge",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Swim As Fish (super)",
+      "range": "Self",
+      "duration": "40 melees PLE",
+      "PPE": "12",
+      "effect": "Swim Skill at 98%, No fatigue or distance",
+      "page": "175",
+      "book": "Rifts"
+    },
+    {
+      "name": "Aura of Death",
+      "range": "Self",
+      "duration": "2 melees PLE",
+      "PPE": "12",
+      "effect": "Hides the casters' life aura",
+      "page": "134-135",
+      "book": "FoM"
+    },
+    {
+      "name": "Armor Bizzare",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "15",
+      "effect": "+15 MDC PLE, Horror Factor of 9",
+      "page": "135",
+      "book": "FoM"
+    },
+    {
+      "name": "Death Curse",
+      "range": "100 miles PLE",
+      "duration": "Permanent",
+      "PPE": "NA",
+      "effect": "Caster Uses last of Life force to cast curse",
+      "page": "135-136",
+      "book": "FoM"
+    },
+    {
+      "name": "Distant Voice",
+      "range": "2000ft PLE",
+      "duration": "20 melees PLE",
+      "PPE": "10",
+      "effect": "Talk to visible target at great distances",
+      "page": "136",
+      "book": "FoM"
+    },
+    {
+      "name": "Featherlight",
+      "range": "10ft",
+      "duration": "10 minutes PLE",
+      "PPE": "10",
+      "effect": "Reduce inanimate objects weight to feather",
+      "page": "136",
+      "book": "FoM"
+    },
+    {
+      "name": "Horror",
+      "range": "Touch",
+      "duration": "20 melees PLE",
+      "PPE": "10",
+      "effect": "Same as Fear spell, effects an object",
+      "page": "136",
+      "book": "FoM"
+    },
+    {
+      "name": "House of Glass",
+      "range": "100ft",
+      "duration": "4 melees PLE",
+      "PPE": "12",
+      "effect": "Unleashes damage taken back upon attacker",
+      "page": "136-137",
+      "book": "FoM"
+    },
+    {
+      "name": "Implosion Neutralizer",
+      "range": "50ft",
+      "duration": "Depends",
+      "PPE": "12",
+      "effect": "Reduces small explosives damage by 1/2",
+      "page": "137",
+      "book": "FoM"
+    },
+    {
+      "name": "Influence the Beast",
+      "range": "30ft",
+      "duration": "4 melees PLE",
+      "PPE": "12",
+      "effect": "Mind control small amimals",
+      "page": "137",
+      "book": "FoM"
+    },
+    {
+      "name": "Instill Knowledge",
+      "range": "Touch",
+      "duration": "30 minutes PLE",
+      "PPE": "15",
+      "effect": "Caster gives target 1 known skill at -1 level",
+      "page": "137",
+      "book": "FoM"
+    },
+    {
+      "name": "Lifeblast",
+      "range": "30ft PLE",
+      "duration": "Depends",
+      "PPE": "15",
+      "effect": "Life power has many uses(see book)",
+      "page": "137-138",
+      "book": "FoM"
+    },
+    {
+      "name": "Mend the Broken",
+      "range": "Touch",
+      "duration": "Instant/Perman.",
+      "PPE": "10+",
+      "effect": "Repairs inanimate objects",
+      "page": "138",
+      "book": "FoM"
+    },
+    {
+      "name": "Mental Blast",
+      "range": "100ft",
+      "duration": "Instant",
+      "PPE": "15",
+      "effect": "5D6 HPs or 5D6 MDC",
+      "page": "138",
+      "book": "FoM"
+    },
+    {
+      "name": "Superhuman Endurance",
+      "range": "Self",
+      "duration": "2 hours",
+      "PPE": "12",
+      "effect": "No Fatigue Minuses",
+      "page": "138",
+      "book": "FoM"
+    },
+    {
+      "name": "Sustain",
+      "range": "Self",
+      "duration": "24 hours PLE",
+      "PPE": "12",
+      "effect": "Allows target to deny sustenance for days",
+      "page": "138",
+      "book": "FoM"
+    }
+  ],
+  "6": [
+    {
+      "name": "Apparition",
+      "range": "30ft",
+      "duration": "4 melees PLE",
+      "PPE": "20",
+      "effect": "Creates realistic illusionary creature",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Call Lightning",
+      "range": "300ft",
+      "duration": "Instant",
+      "PPE": "15",
+      "effect": "1D6 MDC (PLE) Lightning Bolt",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Compulsion",
+      "range": "60ft",
+      "duration": "24 hours",
+      "PPE": "20",
+      "effect": "Implants a hidden desire inside targets mind",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Cure Illness",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "15",
+      "effect": "Cures minor diseases such as flu & fever",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fire Ball",
+      "range": "90ft",
+      "duration": "Instant",
+      "PPE": "10",
+      "effect": "1D4 MDC (PLE) Fire Ball",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Impervious to Energy",
+      "range": "Self",
+      "duration": "8 melees PLE",
+      "PPE": "20",
+      "effect": "Renders target impervious to energy (fire incl.)",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Magic Pigeon",
+      "range": "Global",
+      "duration": "2 months PLE",
+      "PPE": "20",
+      "effect": "Creates mystic messenger pigeon",
+      "page": "176",
+      "book": "Rifts"
+    },
+    {
+      "name": "Mask of Deceit",
+      "range": "Self",
+      "duration": "10 minutes PLE",
+      "PPE": "15",
+      "effect": "Changes caster's facial appearance",
+      "page": "176-177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Memory Bank",
+      "range": "Touch",
+      "duration": "3 months PLE",
+      "PPE": "12",
+      "effect": "Implant small block of info into targets mind",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Reduce Self",
+      "range": "Self",
+      "duration": "10 melees PLE",
+      "PPE": "20",
+      "effect": "Shrinks caster to 6 inches tall",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Teleport: Lesser",
+      "range": "5 miles PLE",
+      "duration": "2 melees",
+      "PPE": "15",
+      "effect": "Transport non-living substances(50lbs max)",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Time Slip",
+      "range": "Self",
+      "duration": "1/2 melee",
+      "PPE": "20",
+      "effect": "Caster moves forward in time 7 seconds",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Tongues",
+      "range": "Touch",
+      "duration": "12 melees PLE",
+      "PPE": "12",
+      "effect": "Target can speak any language at 98%",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Words of Truth",
+      "range": "5ft",
+      "duration": "4 melees PLE",
+      "PPE": "15",
+      "effect": "Target is compelled to tell the truth",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Barrage",
+      "range": "100ft",
+      "duration": "1/2 melee",
+      "PPE": "15",
+      "effect": "Target is hammered by 3, 2 MDC strikes",
+      "page": "138-139",
+      "book": "FoM"
+    },
+    {
+      "name": "Create Water",
+      "range": "10ft",
+      "duration": "Permanent",
+      "PPE": "15",
+      "effect": "Caster can create 1/2 gallon of water PLE",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Crushing Fist",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "12",
+      "effect": "Punch does 2D6 MDC",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Energize Spell",
+      "range": "Touch",
+      "duration": "NA",
+      "PPE": "12",
+      "effect": "Extends duration of casted spell",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Fire Blossom",
+      "range": "Touch",
+      "duration": "1 month PLE",
+      "PPE": "20",
+      "effect": "Small, hand held flame, used to light other obj.",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Fortify Against Disease",
+      "range": "Touch",
+      "duration": "2 hours PLE",
+      "PPE": "15",
+      "effect": "Strengthens target's body against disease",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Frequency Jamming",
+      "range": "100ft PLE",
+      "duration": "2 melees PLE",
+      "PPE": "15",
+      "effect": "Interferes with radio communications",
+      "page": "139",
+      "book": "FoM"
+    },
+    {
+      "name": "Frostblade",
+      "range": "3ft",
+      "duration": "4 melees PLE",
+      "PPE": "15",
+      "effect": "Changes metal objects to 4D6 MDC weapons",
+      "page": "139-140",
+      "book": "FoM"
+    },
+    {
+      "name": "Ice",
+      "range": "50ft PLE",
+      "duration": "5 minutes PLE",
+      "PPE": "15",
+      "effect": "Caster transforms magic to ice",
+      "page": "140",
+      "book": "FoM"
+    },
+    {
+      "name": "Illusion Booster",
+      "range": "Area",
+      "duration": "2x original Illusion",
+      "PPE": "15",
+      "effect": "Doubles Duration time of Apparition or Illusion",
+      "page": "140",
+      "book": "FoM"
+    },
+    {
+      "name": "Illusory Wall",
+      "range": "1000ft",
+      "duration": "30 minutes PLE",
+      "PPE": "15",
+      "effect": "Creates an illusionary wall",
+      "page": "140",
+      "book": "FoM"
+    },
+    {
+      "name": "Power Bolt",
+      "range": "1600ft",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "5D6 +2 PLE Damage",
+      "page": "140",
+      "book": "FoM"
+    },
+    {
+      "name": "Targeted Deflection",
+      "range": "500ft",
+      "duration": "1 melee PLE",
+      "PPE": "15",
+      "effect": "Deflects Energy Attacks",
+      "page": "140-141",
+      "book": "FoM"
+    },
+    {
+      "name": "Sheltering Force",
+      "range": "Self",
+      "duration": "1 hour PLE",
+      "PPE": "20",
+      "effect": "Magical tent that can accommodate 1-6 people",
+      "page": "141",
+      "book": "FoM"
+    }
+  ],
+  "7": [
+    {
+      "name": "Constrain Being",
+      "range": "30ft",
+      "duration": "8 melees PLE",
+      "PPE": "20",
+      "effect": "Forces target to obey limited commends",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Agony",
+      "range": "5ft PLE",
+      "duration": "4 melees",
+      "PPE": "20",
+      "effect": "Target suffers pain minuses (No Damage taken)",
+      "page": "177",
+      "book": "Rifts"
+    },
+    {
+      "name": "Animate & Control Dead",
+      "range": "400ft",
+      "duration": "5 minutes PLE",
+      "PPE": "20",
+      "effect": "Animates the remains of recently dead",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Dispel Magic Barriers",
+      "range": "100ft",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "Negates any magic barrier",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fly as the Eagle",
+      "range": "Self",
+      "duration": "20 minutes PLE",
+      "PPE": "25",
+      "effect": "Target flies up to a speed of 50 mph",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Globe of Silence",
+      "range": "90ft",
+      "duration": "6 melees PLE",
+      "PPE": "20",
+      "effect": "Creates a globe where no sound can escape",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Invisibility (Super)",
+      "range": "Touch",
+      "duration": "12 melees PLE",
+      "PPE": "20",
+      "effect": "Target becomes completely invisible",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Life Drain",
+      "range": "30ft",
+      "duration": "2 melees PLE",
+      "PPE": "25",
+      "effect": "Weakens target's stats by 1/2",
+      "page": "178",
+      "book": "Rifts"
+    },
+    {
+      "name": "Metamorphosis: Animal",
+      "range": "Self",
+      "duration": "20 minutes PLE",
+      "PPE": "25",
+      "effect": "Target shifts into an animal of equal size(max)",
+      "page": "179",
+      "book": "Rifts"
+    },
+    {
+      "name": "Purification",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "Purifies water and food",
+      "page": "179",
+      "book": "Rifts"
+    },
+    {
+      "name": "Wind Rush",
+      "range": "120ft",
+      "duration": "1 melee",
+      "PPE": "20",
+      "effect": "Launches a 60mph wind gush at a target",
+      "page": "179",
+      "book": "Rifts"
+    },
+    {
+      "name": "Ballistic Fire",
+      "range": "1000ft",
+      "duration": "Instant",
+      "PPE": "25",
+      "effect": "1D6 MDC per Missile, 1 missile PLE",
+      "page": "141",
+      "book": "FoM"
+    },
+    {
+      "name": "Fire Gout",
+      "range": "30ft PLE",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "Flame thrower blast that does 6D6 MDC +1 PLE",
+      "page": "141-142",
+      "book": "FoM"
+    },
+    {
+      "name": "Heal Self",
+      "range": "Self",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "+3D6 SDC, +1D6 HPs, Closes open wounds",
+      "page": "142",
+      "book": "FoM"
+    },
+    {
+      "name": "Lightblade",
+      "range": "Area",
+      "duration": "4 melees PLE",
+      "PPE": "20",
+      "effect": "1D4x10 MDC +1 PLE, +1 strike",
+      "page": "142",
+      "book": "FoM"
+    },
+    {
+      "name": "Mental Shock",
+      "range": "200ft",
+      "duration": "Depends",
+      "PPE": "30",
+      "effect": "Short term amnesia effects target",
+      "page": "142",
+      "book": "FoM"
+    },
+    {
+      "name": "Negate Mechanics",
+      "range": "1 Mech.",
+      "duration": "1 melee",
+      "PPE": "20",
+      "effect": "Temp. disables one part of a machine",
+      "page": "142",
+      "book": "FoM"
+    },
+    {
+      "name": "Sonic Blast",
+      "range": "20ft",
+      "duration": "Instant",
+      "PPE": "25",
+      "effect": "4D6 MDC Damage, Releases a Sonic Boom",
+      "page": "142",
+      "book": "FoM"
+    },
+    {
+      "name": "Spinning Blades",
+      "range": "Varies",
+      "duration": "1 melee PLE",
+      "PPE": "20",
+      "effect": "Flings small bladed weapon for 1D6 MDC dam.",
+      "page": "142-143",
+      "book": "FoM"
+    },
+    {
+      "name": "Sub-Particle Acceleration",
+      "range": "100ft PLE",
+      "duration": "Instant",
+      "PPE": "20",
+      "effect": "Particle Beam blast does 1D6+1MDC",
+      "page": "143",
+      "book": "FoM"
+    }
+  ],
+  "8": [
+    {
+      "name": "Commune with Spirits",
+      "range": "Self",
+      "duration": "20 melees PLE",
+      "PPE": "25",
+      "effect": "Caster can communicate with spirits",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Exorcism",
+      "range": "30ft",
+      "duration": "6 months",
+      "PPE": "30",
+      "effect": "Destroys possession of a target by a demon",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Eyes of the Wolf",
+      "range": "Touch",
+      "duration": "20 melees PLE",
+      "PPE": "25",
+      "effect": "Nightvision-60ft, See the invisible-75%.....",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Hallucination",
+      "range": "Touch",
+      "duration": "12 melees PLE",
+      "PPE": "30",
+      "effect": "One target experiences a hallucination",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Locate",
+      "range": "15 miles PLE",
+      "duration": "Instant",
+      "PPE": "30",
+      "effect": "General location of a target at 41%, 89% ritual",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Luck Curse",
+      "range": "Touch",
+      "duration": "24 hrs. PLE",
+      "PPE": "40",
+      "effect": "Reduces a targets combat bonuses to 0",
+      "page": "180",
+      "book": "Rifts"
+    },
+    {
+      "name": "Metamorphosis: Human",
+      "range": "Touch",
+      "duration": "20 minutes PLE",
+      "PPE": "40",
+      "effect": "Change into a Human form of equal size",
+      "page": "180-181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Minor Curse",
+      "range": "Touch",
+      "duration": "24 hrs. PLE",
+      "PPE": "35",
+      "effect": "Inflicts a minor curse on a target",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Negate Magic",
+      "range": "60ft",
+      "duration": "Instant",
+      "PPE": "30",
+      "effect": "Negate most common magic, save vs magic 12",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Oracle",
+      "range": "Self",
+      "duration": "4 melees",
+      "PPE": "30",
+      "effect": "Magical Clarvioence",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sickness",
+      "range": "20ft",
+      "duration": "12 hrs. PLE",
+      "PPE": "50",
+      "effect": "Gives target symptoms of a specific disease",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Spoil",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "30",
+      "effect": "Spoils food and water",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Stone to Flesh",
+      "range": "12ft",
+      "duration": "Instant/Perm",
+      "PPE": "30",
+      "effect": "Reverses effects of being turned to stone",
+      "page": "181",
+      "book": "Rifts"
+    },
+    {
+      "name": "Wisps of Confusion",
+      "range": "90ft",
+      "duration": "5 melees PLE",
+      "PPE": "40",
+      "effect": "Causes 1-8 people/creatures to become confused",
+      "page": "182",
+      "book": "Rifts"
+    },
+    {
+      "name": "Fire Globe",
+      "range": "200ft",
+      "duration": "1D4 Minutes",
+      "PPE": "40",
+      "effect": "Tossed at a target. Does 5D6 MDC",
+      "page": "143",
+      "book": "FoM"
+    },
+    {
+      "name": "Force Bonds",
+      "range": "Touch",
+      "duration": "30 minutes PLE",
+      "PPE": "25",
+      "effect": "Transforms SDC bonds into 100 MDC bonds",
+      "page": "143",
+      "book": "FoM"
+    },
+    {
+      "name": "Greater Healing",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "30",
+      "effect": "+2D4x10 SDC and 6D6 HPs or 1D4 MDC",
+      "page": "143",
+      "book": "FoM"
+    },
+    {
+      "name": "Invincible Armor",
+      "range": "Touch",
+      "duration": "12 melees PLE",
+      "PPE": "30",
+      "effect": "+25MDC PLE, regenerates dam at 1D6 per rd.",
+      "page": "144",
+      "book": "FoM"
+    },
+    {
+      "name": "Lifeward",
+      "range": "Touch",
+      "duration": "4 melees PLE",
+      "PPE": "40",
+      "effect": "Turns MDC damage into SDC damage taken",
+      "page": "144",
+      "book": "FoM"
+    },
+    {
+      "name": "Lightning Arc",
+      "range": "100ft PLE",
+      "duration": "1 melee PLE",
+      "PPE": "30",
+      "effect": "4D6 dam +2 MDC PLE",
+      "page": "144",
+      "book": "FoM"
+    },
+    {
+      "name": "Magical Adrenal Rush",
+      "range": "Touch",
+      "duration": "1 melee PLE",
+      "PPE": "45",
+      "effect": "Raises a lot of Combat stats for a limited time",
+      "page": "144",
+      "book": "FoM"
+    },
+    {
+      "name": "Power Weapon",
+      "range": "Touch",
+      "duration": "2 melees PLE",
+      "PPE": "35",
+      "effect": "Turns an SDC melee weapon into an MDC one",
+      "page": "144",
+      "book": "FoM"
+    },
+    {
+      "name": "Shockwave",
+      "range": "10ft PLE",
+      "duration": "Instant",
+      "PPE": "35",
+      "effect": "1D4 MDC PLE + Knockdown damage",
+      "page": "144-145",
+      "book": "FoM"
+    },
+    {
+      "name": "Sorcerous Fury",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "70",
+      "effect": "2D4x10 MDC damage",
+      "page": "145",
+      "book": "FoM"
+    },
+    {
+      "name": "Wall of Wind",
+      "range": "100ft",
+      "duration": "20 melees PLE",
+      "PPE": "40",
+      "effect": "Wall of wind encircles the mage, doing 2D4 MD",
+      "page": "145",
+      "book": "FoM"
+    },
+    {
+      "name": "World Bizarre",
+      "range": "200ft",
+      "duration": "1 melee PLE",
+      "PPE": "40",
+      "effect": "Creates a horrifying illusion around an area",
+      "page": "145",
+      "book": "FoM"
+    },
+    {
+      "name": "Winged Flight",
+      "range": "Touch",
+      "duration": "20 minutes PLE",
+      "PPE": "35",
+      "effect": "5xPS = Max flying speed",
+      "page": "146",
+      "book": "FoM"
+    }
+  ],
+  "9": [
+    {
+      "name": "Curse: Phobia",
+      "range": "20ft",
+      "duration": "24 hrs. PLE",
+      "PPE": "40",
+      "effect": "Implants target with a phobia (see insanity tables)",
+      "page": "182",
+      "book": "Rifts"
+    },
+    {
+      "name": "Familiar Link",
+      "range": "Touch",
+      "duration": "Indefinite",
+      "PPE": "55",
+      "effect": "Cater can mentally link with an animal (level 3)",
+      "page": "182",
+      "book": "Rifts"
+    },
+    {
+      "name": "Metamorphosis: Insect",
+      "range": "Self",
+      "duration": "20 minutes PLE",
+      "PPE": "60",
+      "effect": "Caster can shift into an insect form",
+      "page": "182",
+      "book": "Rifts"
+    },
+    {
+      "name": "Mute",
+      "range": "30ft",
+      "duration": "20 melees PLE",
+      "PPE": "50",
+      "effect": "Temporarily incapacitates target's ability to talk",
+      "page": "182",
+      "book": "Rifts"
+    },
+    {
+      "name": "Protection Circle: Simple",
+      "range": "Circle Radius",
+      "duration": "24 hours",
+      "PPE": "45",
+      "effect": "Used to ward off lesser supernatural beings",
+      "page": "182-183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon/Control Canines",
+      "range": "Varies",
+      "duration": "5 hours PLE",
+      "PPE": "50",
+      "effect": "Call 1D4 canines (+1PLE) to caster",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Speed of the Snail",
+      "range": "60ft",
+      "duration": "2 melees PLE",
+      "PPE": "50",
+      "effect": "Reduces targets speed, actions, par, dodge by 2/3",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Transferal",
+      "range": "10ft",
+      "duration": "1 hr. PLE",
+      "PPE": "50",
+      "effect": "Caster can transfer it's essence to another being",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Water to Wine",
+      "range": "12ft",
+      "duration": "Instant/Perm.",
+      "PPE": "40",
+      "effect": "Transform water into fine wine",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Aura of Doom",
+      "range": "200ft",
+      "duration": "8 melees PLE",
+      "PPE": "40",
+      "effect": "Target is overwhelmed with feelings of doom",
+      "page": "146",
+      "book": "FoM"
+    },
+    {
+      "name": "Beat Insurmountable Odds",
+      "range": "Touch",
+      "duration": "1 action",
+      "PPE": "70",
+      "effect": "Caster to beat 1 specific action (see book)",
+      "page": "146-147",
+      "book": "FoM"
+    },
+    {
+      "name": "Create Steel",
+      "range": "10ft",
+      "duration": "Permanent",
+      "PPE": "68",
+      "effect": "Molds used metal scraps into usable steel",
+      "page": "147",
+      "book": "FoM"
+    },
+    {
+      "name": "D-Step",
+      "range": "3ft",
+      "duration": "1 melee PLE",
+      "PPE": "50",
+      "effect": "Allows target to step out of existence",
+      "page": "147",
+      "book": "FoM"
+    },
+    {
+      "name": "Desiccate the Supernatural",
+      "range": "50ft",
+      "duration": "Instant",
+      "PPE": "50",
+      "effect": "3D6x10 MDC to supernatural beings",
+      "page": "147-148",
+      "book": "FoM"
+    },
+    {
+      "name": "Dragon Fire",
+      "range": "100ft",
+      "duration": "1 melee PLE",
+      "PPE": "40",
+      "effect": "1D4x10 MDC (2 shots per melee)",
+      "page": "148",
+      "book": "FoM"
+    },
+    {
+      "name": "Illusion Manipulation",
+      "range": "500ft PLE",
+      "duration": "30 minutes PLE",
+      "PPE": "25/60",
+      "effect": "Allows other illusion spells to react realistically",
+      "page": "148",
+      "book": "FoM"
+    },
+    {
+      "name": "Phantom Mount",
+      "range": "40ft",
+      "duration": "10 minutes PLE",
+      "PPE": "45",
+      "effect": "Creates a translucent warhorse (book has stats)",
+      "page": "148",
+      "book": "FoM"
+    },
+    {
+      "name": "Purge Self",
+      "range": "self",
+      "duration": "Instant",
+      "PPE": "70",
+      "effect": "Rids body of disease, bio-wizard symbioses, +",
+      "page": "148",
+      "book": "FoM"
+    },
+    {
+      "name": "Realm of Chaos",
+      "range": "100ft",
+      "duration": "4 melees PLE",
+      "PPE": "70",
+      "effect": "Sends all withing range to Realm of Chaos",
+      "page": "148-149",
+      "book": "FoM"
+    },
+    {
+      "name": "Tame Beast",
+      "range": "10ft",
+      "duration": "1D4 hrs. of train.",
+      "PPE": "60",
+      "effect": "Bonds 1 animal PLE to the caster",
+      "page": "149",
+      "book": "FoM"
+    },
+    {
+      "name": "Wall of Defense",
+      "range": "100ft",
+      "duration": "1 melee PLE",
+      "PPE": "55",
+      "effect": "Holds back any incomming attacks",
+      "page": "149",
+      "book": "FoM"
+    }
+  ],
+  "10": [
+    {
+      "name": "Basnishment",
+      "range": "100ft",
+      "duration": "2 weeks PLE",
+      "PPE": "65",
+      "effect": "Forces 1 lesser Supernatural to leave area PLE",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Control/Enslave Entity",
+      "range": "30ft",
+      "duration": "48 hrs. PLE",
+      "PPE": "80",
+      "effect": "Control 2 entities PLE",
+      "page": "183",
+      "book": "Rifts"
+    },
+    {
+      "name": "Metamorphosis: Superior",
+      "range": "Self",
+      "duration": "20 minutes PLE",
+      "PPE": "100",
+      "effect": "Transform into any living creature form of = size",
+      "page": "183-184",
+      "book": "Rifts"
+    },
+    {
+      "name": "Mystic Portal",
+      "range": "20ft",
+      "duration": "4 melees PLE",
+      "PPE": "60",
+      "effect": "Allows caster to teleport and pas through solids",
+      "page": "184",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sum/Control Rodents",
+      "range": "600ft",
+      "duration": "5 hrs. PLE",
+      "PPE": "70",
+      "effect": "summon 30 rodents PLE",
+      "page": "184",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon Shadow Beast",
+      "range": "Immediate",
+      "duration": "Mission Comp.",
+      "PPE": "140",
+      "effect": "Summons a Shadow Beast (see book for stats)",
+      "page": "184",
+      "book": "Rifts"
+    },
+    {
+      "name": "Wards",
+      "range": "Varies",
+      "duration": "Varies",
+      "PPE": "60",
+      "effect": "Spells used to protect an object or person",
+      "page": "184-185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Armorbane",
+      "range": "300ft",
+      "duration": "Instant",
+      "PPE": "100",
+      "effect": "Anti-Armor magic impairs MDC by 10%",
+      "page": "149",
+      "book": "FoM"
+    },
+    {
+      "name": "Deathward",
+      "range": "30ft",
+      "duration": "Instant",
+      "PPE": "70",
+      "effect": "2D6 +1D6 PLE,\u00a0 HPs or MDC",
+      "page": "149-150",
+      "book": "FoM"
+    },
+    {
+      "name": "Enemy Mind",
+      "range": "100ft",
+      "duration": "4 melees PLE",
+      "PPE": "100",
+      "effect": "Mind control spell that turns enemies into allies",
+      "page": "150",
+      "book": "FoM"
+    },
+    {
+      "name": "Giant",
+      "range": "Touch",
+      "duration": "1 melee PLE",
+      "PPE": "80",
+      "effect": "caster is +10ft to height (see book)",
+      "page": "150",
+      "book": "FoM"
+    },
+    {
+      "name": "Illusory Forest",
+      "range": "500ft",
+      "duration": "30 minutes PLE",
+      "PPE": "45/90",
+      "effect": "Allows the caster to create an illusionary forest",
+      "page": "150-151",
+      "book": "FoM"
+    },
+    {
+      "name": "Magic Warrior",
+      "range": "100ft",
+      "duration": "2 melees PLE",
+      "PPE": "60",
+      "effect": "Creates a magic warrior (See book for stats)",
+      "page": "151",
+      "book": "FoM"
+    },
+    {
+      "name": "Meteor",
+      "range": "200ft PLE",
+      "duration": "Instant",
+      "PPE": "75",
+      "effect": "+4 strike, 1D6x10 MDC + 2MDC PLE",
+      "page": "151",
+      "book": "FoM"
+    },
+    {
+      "name": "Plane Skip",
+      "range": "Self",
+      "duration": "Instant",
+      "PPE": "65",
+      "effect": "an uncontrolled dimensional jump",
+      "page": "151",
+      "book": "FoM"
+    },
+    {
+      "name": "Purge Other",
+      "range": "Touch",
+      "duration": "Instant",
+      "PPE": "100",
+      "effect": "performs cleansing purge on 1 outside target",
+      "page": "151",
+      "book": "FoM"
+    },
+    {
+      "name": "Reality Flux",
+      "range": "Touch",
+      "duration": "1 melee PLE",
+      "PPE": "75",
+      "effect": "Changes 1 weapon from MDC to SDC damage",
+      "page": "151-152",
+      "book": "FoM"
+    },
+    {
+      "name": "Restore Limb",
+      "range": "Touch",
+      "duration": "Germinate",
+      "PPE": "80",
+      "effect": "Restores a severed limb",
+      "page": "152",
+      "book": "FoM"
+    },
+    {
+      "name": "Speed Weapon",
+      "range": "Touch",
+      "duration": "1 melee PLE",
+      "PPE": "100",
+      "effect": "2x actions when using enchanted weapon",
+      "page": "152",
+      "book": "FoM"
+    },
+    {
+      "name": "Super-Healing",
+      "range": "1 other char.",
+      "duration": "Instant",
+      "PPE": "70",
+      "effect": "Restores 4D6 MDC to MDC creatures",
+      "page": "152",
+      "book": "FoM"
+    },
+    {
+      "name": "Wall of Not",
+      "range": "100ft",
+      "duration": "20 melees PLE",
+      "PPE": "70",
+      "effect": "Makes a 15ft\u00a0 (PLE) wall invisible",
+      "page": "152",
+      "book": "FoM"
+    },
+    {
+      "name": "Warped Space",
+      "range": "150ft",
+      "duration": "1 melee",
+      "PPE": "90",
+      "effect": "1/2 actions and combat bonus, -75% speed",
+      "page": "152",
+      "book": "FoM"
+    }
+  ],
+  "11": [
+    {
+      "name": "Anti-Magic Cloud",
+      "range": "100ft PLE",
+      "duration": "20 melees PLE",
+      "PPE": "140",
+      "effect": "Cloud negates all magic",
+      "page": "185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Create Mummy",
+      "range": "Touch",
+      "duration": "Until destroyed",
+      "PPE": "160",
+      "effect": "Ritual magic that creates a mummy (see book)",
+      "page": "185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Create Magic Scroll",
+      "range": "Touch",
+      "duration": "As per scroll",
+      "PPE": "100",
+      "effect": "Places PPE and 1 magic spell onto a sheet of paper",
+      "page": "185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Remove Curse",
+      "range": "10ft",
+      "duration": "Instant",
+      "PPE": "140",
+      "effect": "Removes a curse from target, +5 save vs. magic",
+      "page": "185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon Fog",
+      "range": "10 miles PLE",
+      "duration": "1 hr. PLE",
+      "PPE": "140",
+      "effect": "Generates a thick fog. +20% to prowl",
+      "page": "185",
+      "book": "Rifts"
+    },
+    {
+      "name": "Astral Hole",
+      "range": "Self",
+      "duration": "1 melee PLE",
+      "PPE": "120",
+      "effect": "A small portal that follows the caster (see book)",
+      "page": "152-153",
+      "book": "FoM"
+    },
+    {
+      "name": "Bottomless Pit",
+      "range": "50ft",
+      "duration": "8 melees PLE",
+      "PPE": "100",
+      "effect": "Sends target into a black limbo for duration",
+      "page": "153",
+      "book": "FoM"
+    },
+    {
+      "name": "Curse of the World Bizzare",
+      "range": "50ft",
+      "duration": "1D4 days PLE",
+      "PPE": "100",
+      "effect": "Target's world appears to be like the World Bizzare",
+      "page": "153",
+      "book": "FoM"
+    },
+    {
+      "name": "Disharmonize",
+      "range": "100ft",
+      "duration": "20 melees PLE",
+      "PPE": "150",
+      "effect": "Confuses a group of targets, -1/2 actions, 0 INT",
+      "page": "153",
+      "book": "FoM"
+    },
+    {
+      "name": "Energy Sphere",
+      "range": "100ft",
+      "duration": "2 days PLE",
+      "PPE": "120",
+      "effect": "Blue sphere that acts as a PPE container",
+      "page": "153-154",
+      "book": "FoM"
+    },
+    {
+      "name": "Firequake",
+      "range": "500ft",
+      "duration": "Varies",
+      "PPE": "160",
+      "effect": "Creates an earthquake and fire effect, 5D6 MDC",
+      "page": "154",
+      "book": "FoM"
+    },
+    {
+      "name": "Id Alter Ego",
+      "range": "Self",
+      "duration": "12 melees PLE",
+      "PPE": "130",
+      "effect": "Creates an exact duplicate of target/reverse align.",
+      "page": "154",
+      "book": "FoM"
+    },
+    {
+      "name": "Illusory Terrain",
+      "range": "500ft",
+      "duration": "30 minutes PLE",
+      "PPE": "55/120",
+      "effect": "Create any Illusionary landscape, effects 3000ft PLE",
+      "page": "154",
+      "book": "FoM"
+    },
+    {
+      "name": "Mindshatter",
+      "range": "Touch",
+      "duration": "24 hrs. +",
+      "PPE": "130",
+      "effect": "Spell places target into trance like state",
+      "page": "154-155",
+      "book": "FoM"
+    },
+    {
+      "name": "Re-Open Gateway",
+      "range": "10ft",
+      "duration": "1 melee PLE",
+      "PPE": "180",
+      "effect": "Re-Opens an existing dimensional portal",
+      "page": "155",
+      "book": "FoM"
+    },
+    {
+      "name": "See in Magic Darkness",
+      "range": "Self",
+      "duration": "4 melees PLE",
+      "PPE": "125",
+      "effect": "Target sees clearly in any form of darkness",
+      "page": "155",
+      "book": "FoM"
+    }
+  ],
+  "12": [
+    {
+      "name": "Amulet",
+      "range": "Holder",
+      "duration": "Infinite",
+      "PPE": "290 +",
+      "effect": "Depends on the spell infused in Amulet",
+      "page": "186",
+      "book": "Rifts"
+    },
+    {
+      "name": "Calm Storms",
+      "range": "1 Mile PLE",
+      "duration": "1 hr. PLE",
+      "PPE": "200",
+      "effect": "Reduce the effects of a natural storm",
+      "page": "186-187",
+      "book": "Rifts"
+    },
+    {
+      "name": "Create Zombie",
+      "range": "Touch",
+      "duration": "Destroyed",
+      "PPE": "250",
+      "effect": "Creates a functioning zombie/undead",
+      "page": "187",
+      "book": "Rifts"
+    },
+    {
+      "name": "Metamorphosis: Mist",
+      "range": "Self",
+      "duration": "20 minutes PLE",
+      "PPE": "250",
+      "effect": "Caster turns to mist",
+      "page": "187",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon/Control Entity",
+      "range": "NA",
+      "duration": "24 hr.s PLE",
+      "PPE": "250",
+      "effect": "Controls an alien entity from another dimension",
+      "page": "187",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon/Control Rain",
+      "range": "1 mile PLE",
+      "duration": "1 hr PLE",
+      "PPE": "200",
+      "effect": "Creates a rain storm that effects 1 mile radius PLE",
+      "page": "187",
+      "book": "Rifts"
+    },
+    {
+      "name": "Time Hole",
+      "range": "Self",
+      "duration": "Weeks",
+      "PPE": "210",
+      "effect": "Sends the caster to a small dimension of his own",
+      "page": "187-188",
+      "book": "Rifts"
+    },
+    {
+      "name": "Ensorcel",
+      "range": "Touch",
+      "duration": "20 minutes PLE",
+      "PPE": "400",
+      "effect": "Only the caster can control a targets mind",
+      "page": "155",
+      "book": "FoM"
+    },
+    {
+      "name": "Heavy Air",
+      "range": "300ft PLE",
+      "duration": "10 minutes PLE",
+      "PPE": "200",
+      "effect": "fatigue 2x normal rate, -4 INT, -20% skills",
+      "page": "155",
+      "book": "FoM"
+    },
+    {
+      "name": "Ironwood",
+      "range": "Touch",
+      "duration": "Permanent",
+      "PPE": "50 +",
+      "effect": "Transforms SDC wood to MDC",
+      "page": "155",
+      "book": "FoM"
+    },
+    {
+      "name": "Null Sphere",
+      "range": "10ft PLE",
+      "duration": "20 melees PLE",
+      "PPE": "220",
+      "effect": "nulls forces inside the sphere, 100 MDC PLE",
+      "page": "155-156",
+      "book": "FoM"
+    },
+    {
+      "name": "Soultwist",
+      "range": "100ft",
+      "duration": "Instant",
+      "PPE": "170",
+      "effect": "6D6 MDC/HPs damage, damages emotions",
+      "page": "156",
+      "book": "FoM"
+    },
+    {
+      "name": "Wall of the Weird",
+      "range": "200ft",
+      "duration": "20 melee PLE",
+      "PPE": "180",
+      "effect": "40MDC armor PLE, 4D6 MDC damage",
+      "page": "156",
+      "book": "FoM"
+    }
+  ],
+  "13": [
+    {
+      "name": "Create Golem",
+      "range": "Touch",
+      "duration": "Destroyed",
+      "PPE": "700-1000",
+      "effect": "Creates magic Golem. (see book for stats)",
+      "page": "188",
+      "book": "Rifts"
+    },
+    {
+      "name": "Protection Circle:Super",
+      "range": "Radius",
+      "duration": "24 hrs",
+      "PPE": "250",
+      "effect": "Keeps all supernatural beings away from target",
+      "page": "188",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon/Control Storm",
+      "range": "10 miles",
+      "duration": "1 hr. PLE",
+      "PPE": "300",
+      "effect": "Creates massive rain and lighting storm",
+      "page": "188-189",
+      "book": "Rifts"
+    },
+    {
+      "name": "Summon Lesser Being",
+      "range": "NA",
+      "duration": "24 hrs. PLE",
+      "PPE": "425",
+      "effect": "Summons a supernatural being (lesser)",
+      "page": "189",
+      "book": "Rifts"
+    },
+    {
+      "name": "Sanctum",
+      "range": "30x30ft",
+      "duration": "Infinite",
+      "PPE": "390",
+      "effect": "Enchants a 30x30 area, protecting mage",
+      "page": "189",
+      "book": "Rifts"
+    },
+    {
+      "name": "Talisman",
+      "range": "varies",
+      "duration": "Destroyed",
+      "PPE": "500",
+      "effect": "Object casts 1 spell 3 times. Store 50 PPE",
+      "page": "189",
+      "book": "Rifts"
+    },
+    {
+      "name": "Collapse",
+      "range": "100ft+10 PLE",
+      "duration": "1D4+1 melees",
+      "PPE": "70-400",
+      "effect": "Spell destroys buildings and structures",
+      "page": "156-157",
+      "book": "FoM"
+    },
+    {
+      "name": "Restore Life",
+      "range": "Touch",
+      "duration": "Permanent",
+      "PPE": "275",
+      "effect": "Resurrects recently dead(4hrs PLE) back to life",
+      "page": "157",
+      "book": "FoM"
+    },
+    {
+      "name": "Shadow Wall",
+      "range": "100ft PLE",
+      "duration": "20 melees PLE",
+      "PPE": "400",
+      "effect": "Pitch black wall of energy (see book)",
+      "page": "157",
+      "book": "FoM"
+    },
+    {
+      "name": "Swap Places",
+      "range": "50ft PLE",
+      "duration": "4 melees PLE",
+      "PPE": "300",
+      "effect": "Swap places with another target",
+      "page": "157-158",
+      "book": "FoM"
+    }
+  ],
+  "14": [
+    {
+      "name": "Close Rift",
+      "range": "100 ft",
+      "duration": "Instant",
+      "PPE": "200",
+      "effect": "Closes an Open rift. -2 from permanent PPE base",
+      "page": "189",
+      "book": "Rifts"
+    },
+    {
+      "name": "Id Barrier",
+      "range": "200ft +100 PLE",
+      "duration": "12 melees PLE",
+      "PPE": "600",
+      "effect": "Barrier generates a HF of 14",
+      "page": "189-190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Impenetrable Wall of Force",
+      "range": "100ft",
+      "duration": "5 melees PLE",
+      "PPE": "600",
+      "effect": "No magic, weapon, or person can break through",
+      "page": "190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Restoration",
+      "range": "Touch",
+      "duration": "Instant/Perm",
+      "PPE": "650",
+      "effect": "Healing spell that restored everything to target",
+      "page": "190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Annihilate",
+      "range": "500 ft PLE",
+      "duration": "Instant",
+      "PPE": "600",
+      "effect": "2D4x100 MDC\u00a0 to primary target, 4D6x10 MD to others",
+      "page": "158",
+      "book": "FoM"
+    },
+    {
+      "name": "Sum/Con Sea Serpents",
+      "range": "6,000 ft",
+      "duration": "12 hrs. PPE",
+      "PPE": "350",
+      "effect": "Summons 1D4 PLE Sea Serpents",
+      "page": "158",
+      "book": "FoM"
+    }
+  ],
+  "15": [
+    {
+      "name": "Dimensional Portal",
+      "range": "3ft",
+      "duration": "2 melees PPE",
+      "PPE": "1,000",
+      "effect": "Opens a 2-way protal to another dimension",
+      "page": "190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Teleport:super",
+      "range": "300 miles PLE",
+      "duration": "Instant",
+      "PPE": "600",
+      "effect": "Teleports target 300 miles away PLE",
+      "page": "190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Transformation",
+      "range": "Touch",
+      "duration": "3 days PLE",
+      "PPE": "2,000",
+      "effect": "Transforms mortal target into demonic monster",
+      "page": "190",
+      "book": "Rifts"
+    },
+    {
+      "name": "Circle of Travel",
+      "range": "800 miles PLE",
+      "duration": "Infinite",
+      "PPE": "300",
+      "effect": "Creates a circle that takes target 1 place to another",
+      "page": "158-159",
+      "book": "FoM"
+    },
+    {
+      "name": "Enchant Weapon: Minor",
+      "range": "Touch",
+      "duration": "1 month PLE",
+      "PPE": "400-1,000",
+      "effect": "Lesser rune magic enchantment of melee weapons",
+      "page": "159",
+      "book": "FoM"
+    },
+    {
+      "name": "Summon Ally",
+      "range": "1,000 Miles",
+      "duration": "Instant",
+      "PPE": "600",
+      "effect": "Summons 1 ally of the caster. 20 minute ritual needed",
+      "page": "159",
+      "book": "FoM"
+    },
+    {
+      "name": "Void",
+      "range": "200 ft",
+      "duration": "1 week PLE",
+      "PPE": "700",
+      "effect": "Target is trapped in dark pocket dimension",
+      "page": "159",
+      "book": "FoM"
+    }
+  ]
+}

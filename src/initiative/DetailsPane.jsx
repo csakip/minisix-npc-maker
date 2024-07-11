@@ -116,6 +116,7 @@ function DetailsPane({
                 charNotes={npc.notes}
                 formatted={true}
                 rollDice={rollDice}
+                spells={npc.spells}
               />
             </Col>
           </Row>
