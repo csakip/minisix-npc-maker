@@ -120,8 +120,8 @@ const PsiDialog = ({ open, setOpen, characterPsis, callback }) => {
                   <Table striped hover id={"table_" + type}>
                     <thead>
                       <tr>
-                        <th>Name</th>
-                        <th className='text-center'>Cost</th>
+                        <th>Név</th>
+                        <th className='text-center'>Pszi pont</th>
                       </tr>
                     </thead>
                     <tbody>

@@ -3,6 +3,8 @@ import React from "react";
 import { Col, OverlayTrigger, Popover, Row } from "react-bootstrap";
 import skillTree from "../assets/skillTree.json";
 import {
+  convertRange,
+  convertSpellDuration,
   displayAsDiceCode,
   displayCharValue,
   findAttr,
@@ -74,28 +76,33 @@ function CharacterSheet({
       if (findAttr(attrs, a.name)) psiMagic.push(displayCharValue(attrs, a.name));
     });
 
-  function renderSpellTooltip(props, spell) {
+  function renderSpellTooltip(props, spell, level) {
     return (
       <Popover {...props}>
         <Popover.Header as='h3'>
           {spell.name} ({spell.PPE})
         </Popover.Header>
         <Popover.Body>
-          <b>Duration:</b> {spell.duration}
+          <b>Szint:</b> {level}
           <br />
-          <b>Effect:</b> {spell.effect}
+          <b>Hatótáv:</b> {convertRange(spell.range)}
+          <br />
+          <b>Időtartam:</b> {convertSpellDuration(spell.duration)}
+          <br />
+          <b>Hatás:</b> {spell.effect}
         </Popover.Body>
       </Popover>
     );
   }
-  function renderPsiTooltip(props, psi) {
+  function renderPsiTooltip(props, psi, type) {
     return (
       <Popover {...props}>
         <Popover.Header as='h3'>
           {psi.name} ({psi.cost})
         </Popover.Header>
-        {/* <Popover.Body>
-        </Popover.Body> */}
+        <Popover.Body>
+          <b>Típus:</b> {type}
+        </Popover.Body>
       </Popover>
     );
   }
@@ -218,8 +225,8 @@ function CharacterSheet({
                 <OverlayTrigger
                   key={psi.name}
                   placement='top'
-                  overlay={(e) => renderPsiTooltip(e, psi)}>
-                  <span className='text-nowrap cursor-pointer'>
+                  overlay={(e) => renderPsiTooltip(e, psi, type)}>
+                  <span className='text-nowrap'>
                     {psi.name} ({psi.cost})
                   </span>
                 </OverlayTrigger>
@@ -236,7 +243,7 @@ function CharacterSheet({
                 <OverlayTrigger
                   key={spell.name}
                   placement='top'
-                  overlay={(e) => renderSpellTooltip(e, spell)}>
+                  overlay={(e) => renderSpellTooltip(e, spell, level)}>
                   <span className='text-nowrap cursor-pointer'>
                     {spell.name} ({spell.PPE})
                   </span>

@@ -369,18 +369,18 @@ function Npc() {
                     Véletlen leíró
                   </Button>
                   <Button
-                    onClick={() => setSpellsDialogOpen(true)}
-                    size='sm'
-                    variant='secondary'
-                    className='mt-2'>
-                    Varázslatok
-                  </Button>
-                  <Button
                     onClick={() => setPsiDialogOpen(true)}
                     size='sm'
                     variant='secondary'
                     className='mt-2'>
                     Pszi
+                  </Button>
+                  <Button
+                    onClick={() => setSpellsDialogOpen(true)}
+                    size='sm'
+                    variant='secondary'
+                    className='mt-2'>
+                    Varázslatok
                   </Button>
                 </Col>
               </Row>

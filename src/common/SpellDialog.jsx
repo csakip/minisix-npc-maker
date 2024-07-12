@@ -5,7 +5,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import { Fragment, useEffect, useState } from "react";
-import { fuzzyMatch } from "./utils";
+import { convertRange, convertSpellDuration, fuzzyMatch } from "./utils";
 import spellsList from "../assets/spells.json";
 
 const SpellDialog = ({ open, setOpen, characterSpells, callback }) => {
@@ -130,16 +130,16 @@ const SpellDialog = ({ open, setOpen, characterSpells, callback }) => {
               style={{ height: "70vh" }}>
               {Object.keys(spells).map((level) => (
                 <Fragment key={level}>
-                  <h5 id={"level_" + level}>Level {level}</h5>
+                  <h5 id={"level_" + level}>{level}. szint</h5>
                   <Table striped hover id={"table_" + level}>
                     <thead>
                       <tr>
-                        <th>Spell name</th>
-                        <th className='text-center'>PPE</th>
-                        <th>Range</th>
-                        <th>Duration</th>
-                        <th>Effect</th>
-                        <th>Book</th>
+                        <th>Varázslat</th>
+                        <th className='text-center'>Mana</th>
+                        <th>Hatótáv</th>
+                        <th>Időtartam</th>
+                        <th>Hatás</th>
+                        <th>Könyv</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -158,8 +158,8 @@ const SpellDialog = ({ open, setOpen, characterSpells, callback }) => {
                             }}>
                             <td className={cls}>{spell.name}</td>
                             <td className={cls + " text-center"}>{spell.PPE}</td>
-                            <td className={cls}>{spell.range}</td>
-                            <td className={cls}>{spell.duration}</td>
+                            <td className={cls}>{convertRange(spell.range)}</td>
+                            <td className={cls}>{convertSpellDuration(spell.duration)}</td>
                             <td className={cls}>{spell.effect}</td>
                             <td className={cls}>
                               {spell.book} {spell.page}

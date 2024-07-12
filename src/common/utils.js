@@ -179,3 +179,24 @@ export function fuzzyMatch(pattern, str) {
   const re = new RegExp(pattern);
   return re.test(str.toLowerCase());
 }
+
+export function convertRange(range) {
+  if (range.indexOf("ft") > -1) {
+    const feet = parseInt(range.replace("ft", ""));
+    if (!isNaN(feet)) {
+      const meters = Math.round(feet * 0.3048);
+      return meters + "m" + (range.indexOf("area") > -1 ? " körben" : "");
+    }
+  }
+  return range;
+}
+
+export function convertSpellDuration(duration) {
+  if (duration.indexOf("melees PLE") > -1) {
+    const meelees = parseInt(duration.replace("melees PLE", ""));
+    if (!isNaN(meelees)) {
+      return `${meelees * 3} KPSZ (${meelees * 15}s)`;
+    }
+  }
+  return duration;
+}

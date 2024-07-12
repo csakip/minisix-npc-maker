@@ -279,7 +279,7 @@
       "range": "90ft",
       "duration": "3 melees PLE",
       "PPE": "5",
-      "effect": "Use\u00a0 wind to manipulate small items",
+      "effect": "Uses wind to manipulate small items",
       "page": "170",
       "book": "Rifts"
     },
@@ -1877,7 +1877,7 @@
       "range": "30ft",
       "duration": "Instant",
       "PPE": "70",
-      "effect": "2D6 +1D6 PLE,\u00a0 HPs or MDC",
+      "effect": "2D6 +1D6 PLE, HPs or MDC",
       "page": "149-150",
       "book": "FoM"
     },
@@ -1985,7 +1985,7 @@
       "range": "100ft",
       "duration": "20 melees PLE",
       "PPE": "70",
-      "effect": "Makes a 15ft\u00a0 (PLE) wall invisible",
+      "effect": "Makes a 15ft (PLE) wall invisible",
       "page": "152",
       "book": "FoM"
     },
@@ -2398,7 +2398,7 @@
       "range": "500 ft PLE",
       "duration": "Instant",
       "PPE": "600",
-      "effect": "2D4x100 MDC\u00a0 to primary target, 4D6x10 MD to others",
+      "effect": "2D4x100 MDC to primary target, 4D6x10 MD to others",
       "page": "158",
       "book": "FoM"
     },
