@@ -10,6 +10,7 @@ import {
   getCalculatedValue,
 } from "./utils";
 import spellsList from "../assets/spells.json";
+import psiList from "../assets/psi.json";
 
 function CharacterSheet({
   attrs = [],
@@ -18,6 +19,7 @@ function CharacterSheet({
   formatted = false,
   rollDice,
   spells = [],
+  psis = [],
 }) {
   function displaySkills() {
     const filteredSkillTree = cloneDeep(skillTree);
@@ -72,7 +74,7 @@ function CharacterSheet({
       if (findAttr(attrs, a.name)) psiMagic.push(displayCharValue(attrs, a.name));
     });
 
-  function renderTooltip(props, spell) {
+  function renderSpellTooltip(props, spell) {
     return (
       <Popover {...props}>
         <Popover.Header as='h3'>
@@ -84,15 +86,17 @@ function CharacterSheet({
           <b>Effect:</b> {spell.effect}
         </Popover.Body>
       </Popover>
-      // <Tooltip {...props}>
-      //   {spell.name}
-      //   <br />
-      //   {spell.PPE}
-      //   <br />
-      //   {spell.duration}
-      //   <br />
-      //   {spell.effect}
-      // </Tooltip>
+    );
+  }
+  function renderPsiTooltip(props, psi) {
+    return (
+      <Popover {...props}>
+        <Popover.Header as='h3'>
+          {psi.name} ({psi.cost})
+        </Popover.Header>
+        {/* <Popover.Body>
+        </Popover.Body> */}
+      </Popover>
     );
   }
 
@@ -207,6 +211,24 @@ function CharacterSheet({
         </>
       )}
       <div className='d-flex column-gap-2 flex-wrap'>
+        {Object.keys(psiList).map((type) => {
+          return psiList[type].map((psi) => {
+            if (psis.includes(psi.name)) {
+              return (
+                <OverlayTrigger
+                  key={psi.name}
+                  placement='top'
+                  overlay={(e) => renderPsiTooltip(e, psi)}>
+                  <span className='text-nowrap cursor-pointer'>
+                    {psi.name} ({psi.cost})
+                  </span>
+                </OverlayTrigger>
+              );
+            }
+          });
+        })}
+      </div>
+      <div className='d-flex column-gap-2 flex-wrap'>
         {Object.keys(spellsList).map((level) => {
           return spellsList[level].map((spell) => {
             if (spells.includes(spell.name)) {
@@ -214,10 +236,10 @@ function CharacterSheet({
                 <OverlayTrigger
                   key={spell.name}
                   placement='top'
-                  overlay={(e) => renderTooltip(e, spell)}>
-                  <a className='text-nowrap cursor-pointer'>
+                  overlay={(e) => renderSpellTooltip(e, spell)}>
+                  <span className='text-nowrap cursor-pointer'>
                     {spell.name} ({spell.PPE})
-                  </a>
+                  </span>
                 </OverlayTrigger>
               );
             }

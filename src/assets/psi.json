@@ -1,5 +1,5 @@
 {
-  "HEALING PSIONIC ABILITIES": [
+  "HEALING": [
     { "name": "Bio-Regeneration (Self)", "cost": 6 },
     { "name": "Deaden Pain", "cost": 4 },
     { "name": "Detect Psionics", "cost": 6 },
@@ -16,7 +16,7 @@
     { "name": "Stop Bleeding", "cost": 4 },
     { "name": "Supress Fear", "cost": 8 }
   ],
-  "PHYSICAL PSIONIC ABILITIES": [
+  "PHYSICAL": [
     { "name": "Alter Aura", "cost": 2 },
     { "name": "Deaden Senses", "cost": 4 },
     { "name": "Death Trance", "cost": 1 },
@@ -39,7 +39,7 @@
     { "name": "Telekinetic Punch", "cost": 6 },
     { "name": "Telekinetic Push", "cost": 4 }
   ],
-  "SENSITIVE PSIONIC ABILITIES": [
+  "SENSITIVE": [
     { "name": "Astral Projection", "cost": 8 },
     { "name": "Clairvoyance", "cost": 4 },
     { "name": "Commune With Spirits", "cost": 6 },
@@ -65,7 +65,7 @@
     { "name": "Telepathy", "cost": 4 },
     { "name": "Total Recall", "cost": 2 }
   ],
-  "SUPER PSIONIC ABILITIES": [
+  "SUPER": [
     { "name": "Bio-Manipulation", "cost": 10 },
     { "name": "Bio-Regeneration (Super)", "cost": 20 },
     { "name": "Electrokinesis", "cost": "varies" },

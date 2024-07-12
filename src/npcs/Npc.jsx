@@ -28,6 +28,7 @@ import { useSimpleDialog } from "../common/SimpleDialog";
 import useLocalStorageState from "use-local-storage-state";
 import { debounce } from "lodash";
 import SpellDialog from "../common/SpellDialog";
+import PsiDialog from "../common/PsiDialog";
 
 function Npc() {
   const [currentNpc, setCurrentNpc] = useLocalStorageState("minisix-npc-generator-currentnpc", {
@@ -45,7 +46,9 @@ function Npc() {
   const [showSelectNpcDialog, setShowSelectNpcDialog] = useState(false);
   const [showSidebar, setShowSidebar] = useState(false);
   const [spellsDialogOpen, setSpellsDialogOpen] = useState(false);
+  const [psiDialogOpen, setPsiDialogOpen] = useState(false);
   const [spells, setSpells] = useState(currentNpc?.spells || []);
+  const [psis, setPsis] = useState(currentNpc?.psis || []);
 
   const { openModal, SimpleDialog } = useSimpleDialog();
 
@@ -73,8 +76,8 @@ function Npc() {
 
   const storeCurrentNpc = useCallback(
     debounce(
-      (attrs, charName, charNotes, charId, spells) =>
-        setCurrentNpc({ attrs, charName, charNotes, id: charId, spells }),
+      (attrs, charName, charNotes, charId, spells, psis) =>
+        setCurrentNpc({ attrs, charName, charNotes, id: charId, spells, psis }),
       1000
     ),
     []
@@ -82,8 +85,8 @@ function Npc() {
 
   // Save attrs to local storage with debounce
   useEffect(() => {
-    storeCurrentNpc(attrs, charName, charNotes, charId, spells);
-  }, [attrs, charName, charNotes, charId, spells]);
+    storeCurrentNpc(attrs, charName, charNotes, charId, spells, psis);
+  }, [attrs, charName, charNotes, charId, spells, psis]);
 
   function attrButton(item, step = 1, className = "") {
     const selected = findAttr(attrs, item.name)?.value ? "selected" : "";
@@ -224,6 +227,7 @@ function Npc() {
     setCharNotes(character.notes);
     setCharId(character.id);
     setSpells(character.spells || []);
+    setPsis(character.psis || []);
   }
 
   // Store to db
@@ -250,6 +254,7 @@ function Npc() {
       attrs: attrs,
       updated: Date.now(),
       spells: spells,
+      psis: psis,
     };
     db.npcs.put(toSave, toSave.id).then((ret) => setCharId(ret));
   }
@@ -370,6 +375,13 @@ function Npc() {
                     className='mt-2'>
                     Varázslatok
                   </Button>
+                  <Button
+                    onClick={() => setPsiDialogOpen(true)}
+                    size='sm'
+                    variant='secondary'
+                    className='mt-2'>
+                    Pszi
+                  </Button>
                 </Col>
               </Row>
               <ListGroup horizontal className='d-flex gap-2 mt-2'>
@@ -430,6 +442,7 @@ function Npc() {
                     charName={charName}
                     charNotes={charNotes}
                     spells={spells}
+                    psis={psis}
                   />
                 </Col>
               </Row>
@@ -458,6 +471,12 @@ function Npc() {
           setOpen={setSpellsDialogOpen}
           characterSpells={spells}
           callback={setSpells}
+        />
+        <PsiDialog
+          open={psiDialogOpen}
+          setOpen={setPsiDialogOpen}
+          characterPsis={psis}
+          callback={setPsis}
         />
         <NpcSidebar
           show={showSidebar}

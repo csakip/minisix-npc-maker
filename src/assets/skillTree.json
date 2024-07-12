@@ -382,7 +382,7 @@
     { "name": "Pszi ellenállás", "value": { "special": "pszi" } },
     { "name": "Mágikus erő", "value": { "special": "magic" } },
     { "name": "Test pont", "value": { "special": "test" } },
-    { "name": "Mozgás", "value": 1 },
+    { "name": "Mozgás", "value": 10 },
     { "name": "Mega páncél", "value": 0 }
   ]
 }
