@@ -110,27 +110,29 @@ function Counter({ characters, counterName, selectedCharacterId }) {
   ) : (
     <Card style={{ width: "min-content" }}>
       <Card.Body className='p-2 d-flex flex-column justify-content-between'>
-        <h6 className='text-nowrap'>
-          {counterName}
-          <Button
-            size='sm'
-            style={{ backgroundColor: "transparent" }}
-            className='p-0 opacity-50 border-0 position-absolute end-0 top-0'
-            title='Számláló törlése'
-            onClick={deleteCounter}>
-            <i className='bi bi-x'></i>
-          </Button>
-        </h6>
         <div>
-          <InputGroup>
-            <Form.Control
-              className='mb-1 text-center p-0 fs-5'
-              value={editValue}
-              onChange={handleEditValueChange}
-              onKeyDown={handleEditValueKeyDown}
-              onBlur={(e) => parseValueAsMathFunction(e.target.value)}
-            />
-          </InputGroup>
+          <h6 className='text-nowrap'>
+            {counterName}
+            <Button
+              size='sm'
+              style={{ backgroundColor: "transparent" }}
+              className='p-0 opacity-50 border-0 position-absolute end-0 top-0'
+              title='Számláló törlése'
+              onClick={deleteCounter}>
+              <i className='bi bi-x'></i>
+            </Button>
+          </h6>
+          <div>
+            <InputGroup>
+              <Form.Control
+                className='mb-1 text-center p-0 fs-5'
+                value={editValue}
+                onChange={handleEditValueChange}
+                onKeyDown={handleEditValueKeyDown}
+                onBlur={(e) => parseValueAsMathFunction(e.target.value)}
+              />
+            </InputGroup>
+          </div>
         </div>
         {counterName === "Test pont" && (
           <small className='mb-1'>{calculateWoundLevel(maxValue.current, editValue)}</small>
