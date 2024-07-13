@@ -77,14 +77,15 @@ button i {
   color: var(--selected-color);
 }
 
-.list-group-item:hover {
+#skill-tree .list-group-item:hover {
   background-color: #fff2;
   cursor: pointer;
 }
 
-.list-group-item:active {
+#skill-tree .list-group-item:active {
   background-color: #fff4;
 }
+
 .list-group-item.calculated {
   background-color: #fff2;
   padding: 0.25rem 0.5rem;

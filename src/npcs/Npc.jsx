@@ -269,7 +269,7 @@ function Npc() {
       <Container fluid className='ps-1 npc-generator'>
         <Row>
           <div className='pe-0' style={{ width: "17rem" }}>
-            <div className='scrollable-menu position-relative'>
+            <div id='skill-tree' className='scrollable-menu position-relative'>
               <div className='position-absolute top-0 end-0 mt-1' style={{ width: "2.3rem" }}>
                 <Button
                   title='Specializaciók'
