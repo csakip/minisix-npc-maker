@@ -145,6 +145,23 @@ export function getCalculatedValue(attrs, calculated) {
       highlighted: calculated.highlighted,
     };
   }
+
+  if (isObject(value) && value.special === "manapoints") {
+    const manapoints = findAttr(attrs, "Mana pont")?.value || 0;
+    if (!manapoints) return undefined;
+    return {
+      name: name,
+      value: manapoints,
+    };
+  }
+  if (isObject(value) && value.special === "psipoints") {
+    const psipoints = findAttr(attrs, "Pszi pont")?.value || 0;
+    if (!psipoints) return undefined;
+    return {
+      name: name,
+      value: psipoints,
+    };
+  }
   return;
 }
 

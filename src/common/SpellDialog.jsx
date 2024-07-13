@@ -15,7 +15,6 @@ const SpellDialog = ({ open, setOpen, characterSpells, callback }) => {
   const [selectedSpells, setSelectedSpells] = useState(characterSpells || []);
 
   useEffect(() => {
-    console.log("open", open, characterSpells);
     setSelectedSpells(characterSpells);
   }, [open]);
 

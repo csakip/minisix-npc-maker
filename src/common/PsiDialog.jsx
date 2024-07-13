@@ -14,7 +14,6 @@ const PsiDialog = ({ open, setOpen, characterPsis, callback }) => {
   const [selectedPsis, setSelectedPsis] = useState(characterPsis || []);
 
   useEffect(() => {
-    console.log("open", open, characterPsis);
     setSelectedPsis(characterPsis);
   }, [open]);
 

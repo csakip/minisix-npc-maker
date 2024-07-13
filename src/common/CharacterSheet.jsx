@@ -13,6 +13,7 @@ import {
 } from "./utils";
 import spellsList from "../assets/spells.json";
 import psiList from "../assets/psi.json";
+import SeparatedList from "./SeparatedList";
 
 function CharacterSheet({
   attrs = [],
@@ -63,7 +64,11 @@ function CharacterSheet({
       });
     });
 
-    return attrsStrArray.join(", ") + "\n" + skillsStrArray.join(", ");
+    return (
+      <>
+        <b>{attrsStrArray.join(", ")}</b>, {skillsStrArray.join(", ")}
+      </>
+    );
   }
 
   const calculatedValues = skillTree.calculated
@@ -76,14 +81,14 @@ function CharacterSheet({
       if (findAttr(attrs, a.name)) psiMagic.push(displayCharValue(attrs, a.name));
     });
 
-  function renderSpellTooltip(props, spell, level) {
+  function renderSpellTooltip(props, spell) {
     return (
       <Popover {...props}>
         <Popover.Header as='h3'>
           {spell.name} ({spell.PPE})
         </Popover.Header>
         <Popover.Body>
-          <b>Szint:</b> {level}
+          <b>Szint:</b> {spell.level}
           <br />
           <b>Hatótáv:</b> {convertRange(spell.range)}
           <br />
@@ -94,18 +99,37 @@ function CharacterSheet({
       </Popover>
     );
   }
-  function renderPsiTooltip(props, psi, type) {
+  function renderPsiTooltip(props, psi) {
     return (
       <Popover {...props}>
         <Popover.Header as='h3'>
           {psi.name} ({psi.cost})
         </Popover.Header>
         <Popover.Body>
-          <b>Típus:</b> {type}
+          <b>Típus:</b> {psi.type}
         </Popover.Body>
       </Popover>
     );
   }
+  const spellFlatList = Object.keys(spellsList).flatMap((level) => {
+    return spellsList[level]
+      .map((spell) => {
+        if (spells.includes(spell.name)) {
+          return { ...spell, level };
+        }
+      })
+      .filter((spell) => spell);
+  });
+
+  const psiFlatList = Object.keys(psiList).flatMap((type) => {
+    return psiList[type]
+      .map((psi) => {
+        if (psis.includes(psi.name)) {
+          return { ...psi, type };
+        }
+      })
+      .filter((psi) => psi);
+  });
 
   return (
     <div id='char-display'>
@@ -174,85 +198,87 @@ function CharacterSheet({
               ))}
           </Row>
           {psiMagic.length > 0 && <div>{psiMagic.join(", ")}</div>}
-          <span>
-            {calculatedValues.map((v, idx) => (
-              <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
-                {v.name}: {v.value}
-                {calculatedValues.length - 1 !== idx && ", "}
-              </span>
-            ))}
-          </span>
-          <br className='mb-2' />
-          {charNotes.split("\n").map((n, idx) => (
-            <React.Fragment key={idx}>
-              {n}
-              <br />
-            </React.Fragment>
+          {calculatedValues.map((v, idx) => (
+            <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
+              {v.name}: {v.value}
+              {calculatedValues.length - 1 !== idx && ", "}
+            </span>
           ))}
+          {charNotes.length > 0 && (
+            <>
+              <br className='mb-2' />
+              {charNotes.split("\n").map((n, idx) => (
+                <React.Fragment key={idx}>
+                  {n}
+                  <br />
+                </React.Fragment>
+              ))}
+            </>
+          )}
         </>
       ) : (
         <>
           {charName && (
-            <div className='d-none'>
-              <b>{charName}</b>:{" "}
-            </div>
+            <span className='d-none'>
+              <b>{charName}</b>
+            </span>
           )}
           <div className='d-none'>{displaySkills()}</div>
-          <span>
-            {calculatedValues.map((v, idx) => (
-              <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
-                {v.name}: {v.value}
-                {calculatedValues.length - 1 !== idx && ", "}
-              </span>
-            ))}
-          </span>
-          <br className='mb-2 d-none' />
-          <div className='mb-2 d-none'>
-            {charNotes.split("\n").map((n, idx) => (
-              <React.Fragment key={idx}>
-                {n}
-                <br />
-              </React.Fragment>
-            ))}
-          </div>
+          {calculatedValues.map((v, idx) => (
+            <span key={idx} className={`me-1 ${v.highlighted ? "tc-selected" : ""}`}>
+              {v.name}: {v.value}
+              {calculatedValues.length - 1 !== idx && ", "}
+            </span>
+          ))}
+          {charNotes.length > 0 && (
+            <>
+              <br className='mb-2 d-none' />
+              <div className='mb-2 d-none'>
+                {charNotes.split("\n").map((n, idx) => (
+                  <React.Fragment key={idx}>
+                    {n}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </div>
+            </>
+          )}
         </>
       )}
-      <div className='d-flex column-gap-2 flex-wrap'>
-        {Object.keys(psiList).map((type) => {
-          return psiList[type].map((psi) => {
-            if (psis.includes(psi.name)) {
-              return (
-                <OverlayTrigger
-                  key={psi.name}
-                  placement='top'
-                  overlay={(e) => renderPsiTooltip(e, psi, type)}>
-                  <span className='text-nowrap'>
-                    {psi.name} ({psi.cost})
-                  </span>
-                </OverlayTrigger>
-              );
-            }
-          });
-        })}
-      </div>
-      <div className='d-flex column-gap-2 flex-wrap'>
-        {Object.keys(spellsList).map((level) => {
-          return spellsList[level].map((spell) => {
-            if (spells.includes(spell.name)) {
-              return (
-                <OverlayTrigger
-                  key={spell.name}
-                  placement='top'
-                  overlay={(e) => renderSpellTooltip(e, spell, level)}>
-                  <span className='text-nowrap cursor-pointer'>
-                    {spell.name} ({spell.PPE})
-                  </span>
-                </OverlayTrigger>
-              );
-            }
-          });
-        })}
-      </div>
+      {psiFlatList.length > 0 && (
+        <div className='d-flex flex-wrap'>
+          <b>Pszi:&nbsp;</b>
+          <SeparatedList>
+            {psiFlatList.map((psi) => (
+              <OverlayTrigger
+                key={psi.name}
+                placement='top'
+                overlay={(e) => renderPsiTooltip(e, psi)}>
+                <span className='text-nowrap cursor-pointer'>
+                  {psi.name} ({psi.cost})
+                </span>
+              </OverlayTrigger>
+            ))}
+          </SeparatedList>
+        </div>
+      )}
+      {spellFlatList.length > 0 && (
+        <div className='d-flex flex-wrap'>
+          <b>Varázslatok:&nbsp;</b>
+          <SeparatedList>
+            {spellFlatList.map((spell) => (
+              <OverlayTrigger
+                key={spell.name}
+                placement='top'
+                overlay={(e) => renderSpellTooltip(e, spell)}>
+                <span className='text-nowrap cursor-pointer'>
+                  {spell.name} ({spell.PPE})
+                </span>
+              </OverlayTrigger>
+            ))}
+          </SeparatedList>
+        </div>
+      )}
     </div>
   );
 }

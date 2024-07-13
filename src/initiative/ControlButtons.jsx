@@ -25,19 +25,28 @@ function ControlButtons({ setEditedCharacter, characters, newRound, setSelectedC
         charNotes: "",
         counters: [],
       };
+
       const bodyPoints = getCalculatedValue(npc.attrs, {
         name: "Test pont",
         value: { special: "test" },
       });
-      const armourPoints = npc.attrs.find((a) => a.name === "Mega páncél");
       if (bodyPoints)
         toSave.counters.push({
           name: bodyPoints.name,
           value: bodyPoints.value,
           max: bodyPoints.value,
         });
+
+      const armourPoints = npc.attrs.find((a) => a.name === "Mega páncél");
       if (armourPoints)
         toSave.counters.push({ name: armourPoints.name, value: armourPoints.value });
+
+      const manaPoints = npc.attrs.find((a) => a.name === "Mana pont");
+      if (manaPoints) toSave.counters.push({ name: manaPoints.name, value: manaPoints.value });
+
+      const psiPoints = npc.attrs.find((a) => a.name === "Pszi pont");
+      if (psiPoints) toSave.counters.push({ name: psiPoints.name, value: psiPoints.value });
+
       db.characters.put(toSave).then((ret) => setSelectedCharacterId(ret));
     }
   }
