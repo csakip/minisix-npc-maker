@@ -85,6 +85,7 @@ const SelectNpcDialog = ({
       });
     }
     if (changes.length > 0) db.npcs.bulkUpdate(changes);
+    setMultiSelect(false);
   }
 
   function removeTagFromSelecteds(tag) {
@@ -125,7 +126,7 @@ const SelectNpcDialog = ({
 
   return (
     <>
-      <Modal show={open} onHide={close} size='xl'>
+      <Modal show={open} onHide={close} dialogClassName='modal-90w'>
         <Modal.Header closeButton>
           <Modal.Title>Njk lista</Modal.Title>
         </Modal.Header>
@@ -211,10 +212,10 @@ const SelectNpcDialog = ({
                         <input type='checkbox' checked={multiselected.includes(npc.id)} readOnly />
                       </Col>
                     )}
+                    <Col>{npc.name}</Col>
                     <Col>
-                      {npc.name}{" "}
                       {npc.tags?.map((tag) => (
-                        <Badge key={tag} className='me-1'>
+                        <Badge key={tag} className='me-1' bg='secondary'>
                           {tag === "archived" ? "Archiv" : tag}
                         </Badge>
                       ))}
