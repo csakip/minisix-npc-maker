@@ -157,6 +157,8 @@ function Npc() {
     setCharName("");
     setCharNotes("");
     setCharId(undefined);
+    setSpells([]);
+    setPsis([]);
     setAttrs(
       skillTree.attributes.filter((a) => !a.showAsSkill).map((a) => ({ name: a.name, value: 6 }))
     );

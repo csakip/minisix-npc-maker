@@ -1,4 +1,4 @@
-import { InputGroup, ListGroup } from "react-bootstrap";
+import { Badge, InputGroup, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
@@ -20,33 +20,50 @@ const SelectNpcDialog = ({
   const [filter, setFilter] = useState("");
   const [copies, setCopies] = useState(1);
   const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
-  const [showArchived, setShowArchived] = useState(false);
+  const [tags, setTags] = useState(new Set(["archived"]));
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [multiSelect, setMultiSelect] = useState(false);
+  const [multiselected, setMultiselected] = useState([]);
 
   useEffect(() => {
-    if (open) setShowArchived(false);
+    if (open) {
+      setSelectedTags(selectedTags.filter((t) => t !== "archived"));
+      setMultiSelect(false);
+      setMultiselected([]);
+    }
   }, [open]);
 
-  const npcs = useLiveQuery(() => {
-    if (filter === "")
-      return db.npcs
+  const npcs = useLiveQuery(
+    () =>
+      db.npcs
         .orderBy("updated")
-        .filter((npc) =>
-          showArchived
-            ? (npc.tags || []).includes("archived")
-            : !(npc.tags || []).includes("archived")
+        .filter(
+          (npc) =>
+            (filter == "" || fuzzyMatch(filter, npc.name)) &&
+            (selectedTags.length === 0 ||
+              selectedTags.every((t) => (npc.tags || []).includes(t))) &&
+            (selectedTags.includes("archived")
+              ? npc.tags?.includes("archived")
+              : !npc.tags?.includes("archived"))
         )
-        .toArray();
-    return db.npcs
-      .orderBy("updated")
-      .filter(
-        (npc) =>
-          fuzzyMatch(filter, npc.name) &&
-          (showArchived
-            ? (npc.tags || []).includes("archived")
-            : !(npc.tags || []).includes("archived"))
-      )
-      .toArray();
-  }, [filter, showArchived]);
+        .toArray(),
+    [filter, selectedTags]
+  );
+
+  useEffect(() => {
+    if (!npcs) return;
+    const readTags = new Set([
+      "archived",
+      ...npcs
+        .map((npc) => npc.tags)
+        .flat()
+        .filter((t) => t),
+    ]);
+    setTags(readTags);
+    selectedTags.forEach((t) => {
+      if (!readTags.has(t)) setSelectedTags(selectedTags.filter((s) => s !== t));
+    });
+  }, [npcs]);
 
   function formatDate(timestamp) {
     return new Date(timestamp).toLocaleString("hu-HU");
@@ -58,9 +75,57 @@ const SelectNpcDialog = ({
     setOpen(false);
   }
 
+  function addTagToSelecteds(tag) {
+    const changes = [];
+    if (tag && multiselected.length > 0) {
+      npcs.forEach((npc) => {
+        if (multiselected.includes(npc.id) && !npc.tags?.includes(tag)) {
+          changes.push({ key: npc.id, changes: { tags: [...(npc.tags || []), tag] } });
+        }
+      });
+    }
+    if (changes.length > 0) db.npcs.bulkUpdate(changes);
+  }
+
+  function removeTagFromSelecteds(tag) {
+    const changes = [];
+    if (tag && multiselected.length > 0) {
+      npcs.forEach((npc) => {
+        if (multiselected.includes(npc.id) && npc.tags?.includes(tag)) {
+          changes.push({
+            key: npc.id,
+            changes: { tags: (npc.tags || []).filter((t) => t !== tag) },
+          });
+        }
+      });
+    }
+    if (changes.length > 0) db.npcs.bulkUpdate(changes);
+  }
+
+  function tagClicked(tag) {
+    if (tag === "Archív") tag = "archived";
+    if (multiSelect) {
+      // Add-remove from all selected npcs
+      if (multiselected.length === 0) return;
+      const everySelectedHasTag = multiselected.every((id) =>
+        npcs.find((npc) => npc.id === id).tags?.includes(tag)
+      );
+      if (everySelectedHasTag) {
+        removeTagFromSelecteds(tag);
+      } else {
+        addTagToSelecteds(tag);
+      }
+      setMultiSelect(false);
+    } else {
+      setSelectedTags(
+        selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
+      );
+    }
+  }
+
   return (
     <>
-      <Modal show={open} onHide={close} size='lg'>
+      <Modal show={open} onHide={close} size='xl'>
         <Modal.Header closeButton>
           <Modal.Title>Njk lista</Modal.Title>
         </Modal.Header>
@@ -72,7 +137,7 @@ const SelectNpcDialog = ({
                   value={filter}
                   onChange={(e) => setFilter(e.target.value)}
                   placeholder='Keresés'
-                  className='mb-3'
+                  className='mb-2'
                   size='sm'
                 />
               </Col>
@@ -91,16 +156,36 @@ const SelectNpcDialog = ({
                   </InputGroup>
                 </Col>
               )}
-              {!showCopies && (
-                <Col xs={2}>
-                  <Form.Check
-                    label='Archív'
-                    reverse
-                    value={showArchived}
-                    onChange={() => setShowArchived(!showArchived)}
-                  />
-                </Col>
-              )}
+            </Row>
+            <Row>
+              <Col className='d-flex gap-1 mb-2'>
+                <>
+                  {[...tags]?.map((tag) => (
+                    <Button
+                      key={tag}
+                      size='sm'
+                      className='me-1 cursor-pointer py-0'
+                      variant={selectedTags.includes(tag) ? "primary" : "outline-secondary"}
+                      onClick={() => tagClicked(tag)}>
+                      {tag === "archived" ? "Archiv" : tag}
+                    </Button>
+                  ))}
+                  {multiSelect && (
+                    <Button
+                      size='sm'
+                      className='me-1 cursor-pointer py-0'
+                      onClick={() =>
+                        openModal({
+                          title: "Új címke",
+                          input: "Címke",
+                          onClose: addTagToSelecteds,
+                        })
+                      }>
+                      <i className='bi bi-plus-lg'></i>
+                    </Button>
+                  )}
+                </>
+              </Col>
             </Row>
             {npcs?.length === 0 && <h4 className='text-center'>Nincs találat</h4>}
             <ListGroup>
@@ -109,33 +194,36 @@ const SelectNpcDialog = ({
                   className={npc.id === selectedCharacterId ? "list-group-item-info" : ""}
                   key={npc.id}
                   onClick={() => {
-                    setSelectedCharacter(npc, parseInt(copies));
-                    close();
+                    if (multiSelect) {
+                      setMultiselected(
+                        multiselected.includes(npc.id)
+                          ? multiselected.filter((id) => id !== npc.id)
+                          : [...multiselected, npc.id]
+                      );
+                    } else {
+                      setSelectedCharacter(npc, parseInt(copies));
+                      close();
+                    }
                   }}>
                   <Row>
-                    <Col>{npc.name}</Col>
+                    {multiSelect && (
+                      <Col xs={1}>
+                        <input type='checkbox' checked={multiselected.includes(npc.id)} readOnly />
+                      </Col>
+                    )}
+                    <Col>
+                      {npc.name}{" "}
+                      {npc.tags?.map((tag) => (
+                        <Badge key={tag} className='me-1'>
+                          {tag === "archived" ? "Archiv" : tag}
+                        </Badge>
+                      ))}
+                    </Col>
                     <Col className='text-end' xs={5}>
                       {formatDate(npc.updated)}
                     </Col>
                     {!showCopies && (
                       <Col xs={2} className='d-flex gap-1 justify-content-end'>
-                        <Button
-                          title='Archiválás'
-                          variant='secondary'
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            const isArchive = (npc.tags || []).includes("archived");
-
-                            db.npcs.update(npc.id, {
-                              tags: isArchive
-                                ? npc.tags.filter((tag) => tag !== "archived")
-                                : [...(npc.tags || []), "archived"],
-                            });
-                          }}
-                          size='sm'>
-                          <i className='bi bi-archive'></i>
-                        </Button>
                         <Button
                           variant='danger'
                           onClick={(e) => {
@@ -163,9 +251,26 @@ const SelectNpcDialog = ({
           </>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant='secondary' onClick={close} className='float-start'>
-            Bezár
-          </Button>
+          <Row className='d-flex gap-1 flex-fill flex-nowrap'>
+            <Col className='flex-fill'>
+              {!showCopies && (
+                <Form.Check
+                  id='multiSelect'
+                  label='Kijelölés'
+                  onChange={() => {
+                    setMultiSelect(!multiSelect);
+                    setMultiselected([]);
+                  }}
+                  checked={multiSelect}
+                />
+              )}
+            </Col>
+            <Col>
+              <Button variant='secondary' onClick={close} className='float-start'>
+                Bezár
+              </Button>
+            </Col>
+          </Row>
         </Modal.Footer>
       </Modal>
       <SimpleDialog />
