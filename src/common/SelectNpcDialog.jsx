@@ -1,4 +1,4 @@
-import { Badge, InputGroup, ListGroup } from "react-bootstrap";
+import { Badge, CloseButton, InputGroup, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
@@ -22,12 +22,14 @@ const SelectNpcDialog = ({
   const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
   const [tags, setTags] = useState(new Set(["archived"]));
   const [selectedTags, setSelectedTags] = useState([]);
+  const [excludedTags, setExcludedTags] = useState(["archived"]);
   const [multiSelect, setMultiSelect] = useState(false);
   const [multiselected, setMultiselected] = useState([]);
 
   useEffect(() => {
     if (open) {
       setSelectedTags(selectedTags.filter((t) => t !== "archived"));
+      setExcludedTags(["archived"]);
       setMultiSelect(false);
       setMultiselected([]);
     }
@@ -37,17 +39,23 @@ const SelectNpcDialog = ({
     () =>
       db.npcs
         .orderBy("updated")
-        .filter(
-          (npc) =>
-            (filter == "" || fuzzyMatch(filter, npc.name)) &&
-            (selectedTags.length === 0 ||
-              selectedTags.every((t) => (npc.tags || []).includes(t))) &&
-            (selectedTags.includes("archived")
-              ? npc.tags?.includes("archived")
-              : !npc.tags?.includes("archived"))
-        )
+        .filter((npc) => {
+          const textFilterMatch = filter === "" || fuzzyMatch(filter, npc.name);
+
+          let selectedFilterMatch = true;
+          if (selectedTags.length) {
+            selectedFilterMatch = selectedTags.every((t) => (npc.tags || []).includes(t));
+          }
+
+          let excludedFilterMatch = true;
+          if (excludedTags.length) {
+            excludedFilterMatch = !excludedTags.some((t) => (npc.tags || []).includes(t));
+          }
+
+          return textFilterMatch && selectedFilterMatch && excludedFilterMatch;
+        })
         .toArray(),
-    [filter, selectedTags]
+    [filter, selectedTags, excludedTags]
   );
 
   useEffect(() => {
@@ -118,9 +126,23 @@ const SelectNpcDialog = ({
       }
       setMultiSelect(false);
     } else {
-      setSelectedTags(
-        selectedTags.includes(tag) ? selectedTags.filter((t) => t !== tag) : [...selectedTags, tag]
-      );
+      // Archive is a 2 state tag
+      if (tag === "archived") {
+        if (selectedTags.includes("archived")) {
+          setSelectedTags(selectedTags.filter((t) => t !== "archived"));
+          setExcludedTags([...excludedTags, "archived"]);
+        } else {
+          setSelectedTags([...selectedTags, "archived"]);
+          setExcludedTags(excludedTags.filter((t) => t !== "archived"));
+        }
+      } else if (selectedTags.includes(tag)) {
+        setSelectedTags(selectedTags.filter((t) => t !== tag));
+        setExcludedTags([...excludedTags, tag]);
+      } else if (excludedTags.includes(tag)) {
+        setExcludedTags(excludedTags.filter((t) => t !== tag));
+      } else {
+        setSelectedTags([...selectedTags, tag]);
+      }
     }
   }
 
@@ -133,19 +155,23 @@ const SelectNpcDialog = ({
         <Modal.Body>
           <>
             <Row>
-              <Col>
-                <Form.Control
-                  value={filter}
-                  onChange={(e) => setFilter(e.target.value)}
-                  placeholder='Keresés'
-                  className='mb-2'
-                  size='sm'
-                />
+              <Col xs={3}>
+                <InputGroup size='sm' className='mb-2'>
+                  <Form.Control
+                    value={filter}
+                    onChange={(e) => setFilter(e.target.value)}
+                    placeholder='Keresés'
+                    size='sm'
+                  />
+                  <Button size='sm' onClick={() => setFilter("")} variant='outline-secondary'>
+                    <i className='bi bi-x-lg'></i>
+                  </Button>
+                </InputGroup>
               </Col>
               {showCopies && (
-                <Col xs={2}>
+                <Col xs={{ span: 1, offset: 8 }}>
                   <InputGroup size='sm'>
-                    <InputGroup.Text>Db</InputGroup.Text>
+                    <InputGroup.Text>Mennyit?</InputGroup.Text>
                     <Form.Control
                       value={copies}
                       onChange={(e) =>
@@ -166,11 +192,29 @@ const SelectNpcDialog = ({
                       key={tag}
                       size='sm'
                       className='me-1 cursor-pointer py-0'
-                      variant={selectedTags.includes(tag) ? "primary" : "outline-secondary"}
+                      variant={
+                        selectedTags.includes(tag)
+                          ? "primary"
+                          : excludedTags.includes(tag)
+                          ? "danger"
+                          : "secondary"
+                      }
                       onClick={() => tagClicked(tag)}>
                       {tag === "archived" ? "Archiv" : tag}
                     </Button>
                   ))}
+                  {[...excludedTags]
+                    ?.filter((tag) => ![...tags].includes(tag))
+                    .map((tag) => (
+                      <Button
+                        key={tag}
+                        size='sm'
+                        className='me-1 cursor-pointer py-0'
+                        variant='danger'
+                        onClick={() => tagClicked(tag)}>
+                        {tag === "archived" ? "Archiv" : tag}
+                      </Button>
+                    ))}
                   {multiSelect && (
                     <Button
                       size='sm'

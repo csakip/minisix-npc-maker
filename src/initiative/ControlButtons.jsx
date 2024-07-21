@@ -84,7 +84,7 @@ function ControlButtons({ setEditedCharacter, characters, newRound, setSelectedC
         </Button>
         <Button
           size='sm'
-          variant='danger'
+          variant='info'
           onClick={() => {
             openModal({
               open: true,
