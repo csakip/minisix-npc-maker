@@ -8,6 +8,7 @@ import { useState } from "react";
 import { generateRandomDescription, updateCharacters } from "../common/utils";
 
 const tags = [
+  { label: "Több cselekedet", defaultLength: 1, notes: "Többet cselekszik a körben." },
   { label: "Kábult", defaultLength: 2, notes: "-1d mindenre ebben és köv körben." },
   { label: "Sebesült", defaultLength: undefined, notes: "-1d mindenre." },
   { label: "Súlyos seb.", defaultLength: undefined, notes: "-2d mindenre." },
@@ -57,18 +58,50 @@ function Tags({ characters, selectedCharacter }) {
     });
   }
 
-  function toggleTag(tag) {
+  function tagMouseDown(e, tag) {
+    e.preventDefault();
     const hadThisTag = selectedCharacter.tags?.find((t) => t.label === tag.label);
-    let newTags;
-    if (!hadThisTag) {
-      newTags = [...(selectedCharacter.tags ?? []), { label: tag.label, length: tag.defaultLength, notes: tag.notes }];
-    } else {
-      newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
+    let newTags,
+      update = false;
+    if (!hadThisTag && e.button === 0) {
+      newTags = [
+        ...(selectedCharacter.tags ?? []),
+        { label: tag.label, length: tag.defaultLength, notes: tag.notes },
+      ];
+      update = true;
     }
 
-    updateCharacters(
-      characters.map((character) => (character.id === selectedCharacter.id ? { ...character, tags: newTags } : character))
-    );
+    if (hadThisTag && e.button === 0) {
+      if (hadThisTag.length !== undefined) {
+        hadThisTag.length++;
+      } else {
+        hadThisTag.length = 1;
+      }
+      newTags = selectedCharacter.tags;
+      update = true;
+    }
+
+    if (hadThisTag && e.button === 2) {
+      if (hadThisTag.length > 1) {
+        hadThisTag.length--;
+        newTags = selectedCharacter.tags;
+      } else {
+        newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
+      }
+      update = true;
+    }
+
+    if (hadThisTag && e.button === 1) {
+      newTags = selectedCharacter.tags?.filter((t) => t.label !== tag.label) ?? [];
+      update = true;
+    }
+
+    if (update)
+      updateCharacters(
+        characters.map((character) =>
+          character.id === selectedCharacter.id ? { ...character, tags: newTags } : character
+        )
+      );
   }
 
   return (
@@ -79,9 +112,13 @@ function Tags({ characters, selectedCharacter }) {
             {tags?.map((tag) => (
               <Button
                 size='sm'
-                variant={selectedCharacter.tags?.some((t) => t.label === tag.label) ? "primary" : "outline-secondary"}
+                variant={
+                  selectedCharacter.tags?.some((t) => t.label === tag.label)
+                    ? "primary"
+                    : "outline-secondary"
+                }
                 key={tag.label}
-                onClick={() => toggleTag(tag)}>
+                onMouseDown={(e) => tagMouseDown(e, tag)}>
                 {tag.label}
               </Button>
             ))}
@@ -90,9 +127,13 @@ function Tags({ characters, selectedCharacter }) {
               .map((tag) => (
                 <Button
                   size='sm'
-                  variant={selectedCharacter.tags?.some((t) => t.label === tag.label) ? "primary" : "outline-secondary"}
+                  variant={
+                    selectedCharacter.tags?.some((t) => t.label === tag.label)
+                      ? "primary"
+                      : "outline-secondary"
+                  }
                   key={tag.label}
-                  onClick={() => toggleTag(tag)}>
+                  onMouseDown={(e) => tagMouseDown(e, tag)}>
                   {tag.label}
                 </Button>
               ))}
@@ -127,7 +168,11 @@ function Tags({ characters, selectedCharacter }) {
                 placeholder='Jegyzet'
               />
               <InputGroup.Text>
-                <Button size='sm' className='py-0 px-1 text-nowrap' variant='secondary' type='submit'>
+                <Button
+                  size='sm'
+                  className='py-0 px-1 text-nowrap'
+                  variant='secondary'
+                  type='submit'>
                   Ok
                 </Button>
               </InputGroup.Text>
