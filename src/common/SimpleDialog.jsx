@@ -36,7 +36,8 @@ export function useSimpleDialog() {
     }));
   }
 
-  function closeModal(result) {
+  function closeModal(e, result) {
+    if (e && e.preventDefault) e.preventDefault();
     setState((prevState) => ({ ...prevState, open: false }));
     state.onClose && state.onClose(result);
   }
@@ -54,11 +55,15 @@ export function useSimpleDialog() {
 
     function submitForm(e) {
       e.preventDefault();
-      closeModal(inputText);
+      closeModal(e, inputText);
     }
 
     return (
-      <Modal show={open} onHide={() => closeModal(undefined)}>
+      <Modal
+        show={open}
+        onHide={() => {
+          closeModal(undefined, undefined);
+        }}>
         <Modal.Header closeButton>
           <Modal.Title>{title}</Modal.Title>
         </Modal.Header>
@@ -81,14 +86,22 @@ export function useSimpleDialog() {
         </Modal.Body>
         <Modal.Footer className='d-flex justify-content-between'>
           {cancelButton ? (
-            <Button variant='secondary' onClick={() => closeModal(false)}>
+            <Button
+              variant='secondary'
+              onClick={(e) => {
+                closeModal(e, false);
+              }}>
               {cancelButton}
             </Button>
           ) : (
             <div></div>
           )}
 
-          <Button variant='primary' onClick={() => closeModal(inputText || true)}>
+          <Button
+            variant='primary'
+            onClick={(e) => {
+              closeModal(e, inputText || true);
+            }}>
             {okButton}
           </Button>
         </Modal.Footer>

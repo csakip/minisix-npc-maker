@@ -65,7 +65,13 @@ function DetailsPane({
               <InputGroup.Text>Kezd.</InputGroup.Text>
               <Form.Control
                 value={selectedCharacter.initiative?.reduced ?? "-"}
-                onChange={(e) => setInitiative(selectedCharacter.id, e.target.value, characters)}
+                onChange={(e) =>
+                  setInitiative(
+                    selectedCharacter.id,
+                    isNaN(e.target.value) ? undefined : e.target.value,
+                    characters
+                  )
+                }
               />
               <InputGroup.Text key={selectedCharacter.initiative?.reduced}>
                 <Button

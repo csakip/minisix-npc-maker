@@ -16,17 +16,18 @@ const sortableOptions = {
 };
 
 function InitiativeList({ characters, selectedCharacterId, setSelectedCharacterId, whoseTurn }) {
-  const { openModal, closeModal, SimpleDialog } = useSimpleDialog();
+  const { openModal, SimpleDialog } = useSimpleDialog();
 
   function reorderCharacters(chars) {
     updateCharacters(chars.map((c, i) => ({ ...c, order: i })));
   }
 
   function setInitiativeForCharacter(characterId, value) {
-    if (value && !isNaN(parseInt(value))) {
+    if (value >= 0 && !isNaN(parseInt(value))) {
       setInitiative(characterId, parseInt(value), characters);
+    } else if (value !== undefined && value !== false) {
+      setInitiative(characterId, undefined, characters);
     }
-    closeModal(false);
   }
 
   return (

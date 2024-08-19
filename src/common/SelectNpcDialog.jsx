@@ -1,4 +1,4 @@
-import { Badge, CloseButton, InputGroup, ListGroup } from "react-bootstrap";
+import { Badge, InputGroup, ListGroup } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import Row from "react-bootstrap/Row";
