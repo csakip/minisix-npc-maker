@@ -29,6 +29,7 @@ import useLocalStorageState from "use-local-storage-state";
 import { debounce } from "lodash";
 import SpellDialog from "../common/SpellDialog";
 import PsiDialog from "../common/PsiDialog";
+import { useLiveQuery } from "dexie-react-hooks";
 
 function Npc() {
   const [currentNpc, setCurrentNpc] = useLocalStorageState("minisix-npc-generator-currentnpc", {
@@ -49,8 +50,20 @@ function Npc() {
   const [psiDialogOpen, setPsiDialogOpen] = useState(false);
   const [spells, setSpells] = useState(currentNpc?.spells || []);
   const [psis, setPsis] = useState(currentNpc?.psis || []);
+  const [tags, setTags] = useState(currentNpc?.tags || []);
 
   const { openModal, SimpleDialog } = useSimpleDialog();
+
+  const allNpcs = useLiveQuery(() => db.npcs.toArray());
+
+  const allTags = new Set(
+    allNpcs
+      ?.map((npc) => npc.tags || [])
+      .flat()
+      .filter((t) => t) ?? ["archived"]
+  );
+
+  tags.forEach((tag) => allTags.add(tag));
 
   // Load character if id is set in query
   useEffect(() => {
@@ -76,8 +89,8 @@ function Npc() {
 
   const storeCurrentNpc = useCallback(
     debounce(
-      (attrs, charName, charNotes, charId, spells, psis) =>
-        setCurrentNpc({ attrs, charName, charNotes, id: charId, spells, psis }),
+      (attrs, charName, charNotes, charId, spells, psis, tags) =>
+        setCurrentNpc({ attrs, charName, charNotes, id: charId, spells, psis, tags }),
       1000
     ),
     []
@@ -85,8 +98,8 @@ function Npc() {
 
   // Save attrs to local storage with debounce
   useEffect(() => {
-    storeCurrentNpc(attrs, charName, charNotes, charId, spells, psis);
-  }, [attrs, charName, charNotes, charId, spells, psis]);
+    storeCurrentNpc(attrs, charName, charNotes, charId, spells, psis, tags);
+  }, [attrs, charName, charNotes, charId, spells, psis, tags]);
 
   function attrButton(item, step = 1, className = "") {
     const selected = findAttr(attrs, item.name)?.value ? "selected" : "";
@@ -159,6 +172,7 @@ function Npc() {
     setCharId(undefined);
     setSpells([]);
     setPsis([]);
+    setTags([]);
     setAttrs(
       skillTree.attributes.filter((a) => !a.showAsSkill).map((a) => ({ name: a.name, value: 6 }))
     );
@@ -230,6 +244,7 @@ function Npc() {
     setCharId(character.id);
     setSpells(character.spells || []);
     setPsis(character.psis || []);
+    setTags(character.tags || []);
   }
 
   // Store to db
@@ -257,6 +272,7 @@ function Npc() {
       updated: Date.now(),
       spells: spells,
       psis: psis,
+      tags: tags,
     };
     db.npcs.put(toSave, toSave.id).then((ret) => setCharId(ret));
   }
@@ -264,6 +280,24 @@ function Npc() {
   function addRandomDescription() {
     const rndDesc = generateRandomDescription();
     setCharNotes(charNotes + "\n" + rndDesc);
+  }
+
+  function tagClicked(tag) {
+    if (tag === "Archív") tag = "archived";
+    // Archive is a 2 state tag
+    if (tags.includes(tag)) {
+      setTags(tags.filter((t) => t !== tag));
+    } else {
+      setTags([...tags, tag]);
+    }
+  }
+
+  function addTagToSelecteds(tag) {
+    if (tag) {
+      if (!tags?.includes(tag)) {
+        setTags([...tags, tag]);
+      }
+    }
   }
 
   return (
@@ -360,6 +394,32 @@ function Npc() {
                     onChange={(e) => setCharNotes(e.target.value)}
                   />
                 </InputGroup>
+              </Row>
+              <Row>
+                <Col>
+                  {[...allTags]?.map((tag) => (
+                    <Button
+                      key={tag}
+                      size='sm'
+                      className='mt-2 me-1 cursor-pointer py-0'
+                      variant={tags?.includes(tag) ? "primary" : "secondary"}
+                      onClick={() => tagClicked(tag)}>
+                      {tag === "archived" ? "Archiv" : tag}
+                    </Button>
+                  ))}
+                  <Button
+                    size='sm'
+                    className='mt-2 me-1 cursor-pointer py-0'
+                    onClick={() =>
+                      openModal({
+                        title: "Új címke",
+                        input: "Címke",
+                        onClose: addTagToSelecteds,
+                      })
+                    }>
+                    <i className='bi bi-plus-lg'></i>
+                  </Button>
+                </Col>
               </Row>
               <Row>
                 <Col className='d-flex gap-2'>
