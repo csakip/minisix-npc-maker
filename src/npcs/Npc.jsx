@@ -284,7 +284,6 @@ function Npc() {
 
   function tagClicked(tag) {
     if (tag === "Archív") tag = "archived";
-    // Archive is a 2 state tag
     if (tags.includes(tag)) {
       setTags(tags.filter((t) => t !== tag));
     } else {
@@ -293,7 +292,7 @@ function Npc() {
   }
 
   function addTagToSelecteds(tag) {
-    if (tag) {
+    if (typeof tag === "string" && tag) {
       if (!tags?.includes(tag)) {
         setTags([...tags, tag]);
       }
@@ -397,6 +396,7 @@ function Npc() {
               </Row>
               <Row>
                 <Col>
+                  <span className='mt-2 me-2 align-bottom'>Címkék:</span>
                   {[...allTags]?.map((tag) => (
                     <Button
                       key={tag}

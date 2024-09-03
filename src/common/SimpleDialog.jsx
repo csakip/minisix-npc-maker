@@ -49,8 +49,10 @@ export function useSimpleDialog() {
 
     useEffect(() => {
       if (!state.open) return;
-      inputRef.current?.focus();
-      inputRef.current?.select();
+      setTimeout(() => {
+        inputRef.current?.select();
+        inputRef.current?.focus();
+      }, 10);
     }, [state.open]);
 
     function submitForm(e) {
